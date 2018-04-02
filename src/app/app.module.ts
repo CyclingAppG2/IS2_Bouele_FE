@@ -15,6 +15,7 @@ import { SignInOrgComponent } from './sign-in/sign-in-org/sign-in-org.component'
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { SignUpUserComponent } from './sign-up/sign-up-user/sign-up-user.component';
 import { SignUpOrgComponent } from './sign-up/sign-up-org/sign-up-org.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { SignUpOrgComponent } from './sign-up/sign-up-org/sign-up-org.component'
     SignUpComponent,
     SignUpUserComponent,
     SignUpOrgComponent,
-    ConfirmEqualValidatorDirective
+    ConfirmEqualValidatorDirective,
+    HomeComponent
   ],
   imports: [NgbModule.forRoot(), BrowserModule, AppRoutingModule, FormsModule],
   providers: [],

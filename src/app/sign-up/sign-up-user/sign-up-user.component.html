@@ -47,7 +47,7 @@
       <!-- Confirmación de contraseña -->
       <div class="form-group">
         <label for="password-confirm" class="sr-only">Confirma tu contraseña</label>
-        <input type="password" name="confirmPassword" [ngModel]="model.confirmPassword" required appConfirmEqualValidator="password"
+        <input type="password" name="confirmPassword" [ngModel]="model.password_confirm" required appConfirmEqualValidator="password"
           #confirmPassword="ngModel" class="form-control" placeholder="Confirma tu contraseña">
       </div>
       <!-- Cumpleaños -->
@@ -78,10 +78,10 @@
           #celPhone="ngModel">
       </div>
       <!-- Nombre de usuario -->
-      <div class="form-group" [class.has-error]="modelname.touched && modelname.invalid">
+      <div class="form-group" [class.has-error]="username.touched && username.invalid">
         <label for="modelname" class="sr-only">Nombre de Usuario</label>
-        <input type="text" class="form-control" id="modelname" name="modelname" required [(ngModel)]="model.modelname" placeholder="Username"
-          #modelname="ngModel">
+        <input type="text" class="form-control" id="username" name="username" required [(ngModel)]="model.username" placeholder="Username"
+          #username="ngModel">
       </div>
       <!-- Ciudad -->
       <div class="form-group" [class.has-error]="city.touched && city.invalid">
@@ -95,7 +95,7 @@
       <!-- Acepta -->
       <div class="form-group" [class.has-error]="accepts.touched && accepts.invalid">
         <div class="form-check d-block mx-auto" style="width: 17rem;">
-          <input class="form-check-input" type="checkbox" value="accepts" id="accepts" name="accepts" #accepts="ngModel" [(ngModel)]="model.accepts"
+          <input class="form-check-input" type="checkbox" value="accepts" id="accepts" name="accepts" #accepts="ngModel" [(ngModel)]="model"
             required>
           <label class="form-check-label text-white text-center" for="terms">
             Acepto

@@ -1,44 +1,45 @@
 /* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css?family=Lobster");
 
 html,
-body{
+body {
   height: 100%;
 }
 
-.text-primary-app{
-    color: #F4C500 !important;
+.text-primary-app {
+  color: #f4c500 !important;
 }
 
-.bg-primary-app{
-    background-color: #F4C500 !important;
+.bg-primary-app {
+  background-color: #f4c500 !important;
 }
 
-.btn-outline-primary-app{
-    border: 1px solid #F4C500 !important;
-    background-color: transparent;
+.btn-outline-primary-app {
+  border: 1px solid #f4c500 !important;
+  background-color: transparent;
 }
-.btn-primary-app{
-    background-color: #FFBB33;
-    color: white;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    max-width: 7rem;
+.btn-primary-app {
+  background-color: #ffbb33;
+  color: white;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  max-width: 7rem;
 }
 
-.btn-primary-app:hover{
+.btn-primary-app:hover {
   color: grey !important;
 }
 
-.banner-opacity{
-    background-color: rgba(0, 0, 0, 0.29)
+.banner-opacity {
+  background-color: rgba(0, 0, 0, 0.29);
 }
 
-.text-center-justified{
+.text-center-justified {
   text-align: justify;
   text-align-last: center;
 }
 
-.fill{
+.fill {
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -46,58 +47,56 @@ body{
   width: 15rem;
 }
 
-.footer{
+.footer {
   position: relative;
   bottom: 0;
   width: 100%;
   height: 3.5rem;
 }
 
-.w-30{
+.w-30 {
   max-width: 30rem !important;
 }
 
-.float-container{
+.float-container {
   padding-top: 2vh;
   padding-bottom: 2vh;
-  background-color: rgba(0, 0, 0, 0.5)
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
-.full-height{
+.full-height {
   min-height: 100% !important;
 }
 
-.bg-white{
+.bg-white {
   background-color: white;
 }
 
 #sign-up,
-#login{
+#login {
   background-image: url(/assets/images/doe-gold-award.jpg);
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
 }
 
-.grayscale{
-  -moz-filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
-  -o-filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
+.grayscale {
+  -moz-filter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='grayscale'><feColorMatrix type='matrix' values='0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0'/></filter></svg>#grayscale");
+  -o-filter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='grayscale'><feColorMatrix type='matrix' values='0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0'/></filter></svg>#grayscale");
   -webkit-filter: grayscale(100%);
   filter: gray;
-  filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
+  filter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='grayscale'><feColorMatrix type='matrix' values='0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0'/></filter></svg>#grayscale");
 }
 
-
-.nongrayscale{
+.nongrayscale {
   filter: none !important;
   -webkit-filter: grayscale(0%) !important;
-  -moz-filter:    grayscale(0%);
-  -ms-filter:     grayscale(0%);
-  -o-filter:      grayscale(0%);
+  -moz-filter: grayscale(0%);
+  -ms-filter: grayscale(0%);
+  -o-filter: grayscale(0%);
 }
 
-
-.vertical-center{
+.vertical-center {
   position: relative;
   top: 50%;
   transform: translateY(-50%);
@@ -106,21 +105,31 @@ body{
   line-height: 1.8em;
 }
 
-.font-lobster{
-  font-family: 'Lobster', cursive;
+.font-lobster {
+  font-family: "Lobster", cursive;
 }
 
-.unselectable{
+.unselectable {
   -webkit-user-select: none; /* Safari */
--moz-user-select: none; /* Firefox */
--ms-user-select: none; /* IE10+/Edge */
-user-select: none; /* Standard */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
 }
 
-.text-muted{
+.text-muted {
   color: rgba(255, 255, 255, 0.69) !important;
 }
 
-.bg-white{
+.bg-white {
   background-color: white !important;
+}
+
+#welcome {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 10vw;
+  line-height: 1.8em;
+  -webkit-text-fill-color: rgb(241, 201, 19);
+  -webkit-text-stroke: 1px black;
 }
