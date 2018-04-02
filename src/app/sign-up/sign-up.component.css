@@ -1,0 +1,14 @@
+.nav-link.active{
+  color: white !important;
+  background-color: #F4C500 !important;
+}
+
+.nav-link{
+  color: #F4C500 !important;
+  background-color: white !important;
+}
+
+.nav-item{
+  width: 50% !important;
+  border-top-right-radius: 50% !important;
+}

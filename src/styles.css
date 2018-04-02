@@ -116,3 +116,11 @@ body{
 -ms-user-select: none; /* IE10+/Edge */
 user-select: none; /* Standard */
 }
+
+.text-muted{
+  color: rgba(255, 255, 255, 0.69) !important;
+}
+
+.bg-white{
+  background-color: white !important;
+}

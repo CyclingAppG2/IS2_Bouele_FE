@@ -1,7 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
+
+import { ConfirmEqualValidatorDirective} from './_validators/confirm-equal-validator.directive';
 
 import { AppComponent } from './app.component';
 import { LandingComponent } from './landing/landing.component';
@@ -21,9 +25,10 @@ import { SignUpOrgComponent } from './sign-up/sign-up-org/sign-up-org.component'
     SignInOrgComponent,
     SignUpComponent,
     SignUpUserComponent,
-    SignUpOrgComponent
+    SignUpOrgComponent,
+    ConfirmEqualValidatorDirective
   ],
-  imports: [BrowserModule, AppRoutingModule],
+  imports: [NgbModule.forRoot(), BrowserModule, AppRoutingModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent]
 })
