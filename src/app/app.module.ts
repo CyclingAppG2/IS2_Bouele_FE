@@ -21,6 +21,7 @@ import { HomeComponent } from './home/home.component';
 import { UserService } from './_services';
 import { SocialLinksComponent } from './social-links/social-links.component';
 import { FooterComponent } from './footer/footer.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { FooterComponent } from './footer/footer.component';
     ConfirmEqualValidatorDirective,
     HomeComponent,
     SocialLinksComponent,
-    FooterComponent
+    FooterComponent,
+    NavbarComponent
   ],
   imports: [NgbModule.forRoot(), BrowserModule, AppRoutingModule, FormsModule,  AuthenticationModule, HttpClientModule],
   providers: [UserService],

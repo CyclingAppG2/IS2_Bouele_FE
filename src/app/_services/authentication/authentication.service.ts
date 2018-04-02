@@ -20,7 +20,7 @@ export class AuthenticationService implements AuthService {
 
   private url = 'api/auth';
   private headers = new Headers({ 'Content-Type': 'application/json' });
-
+  private isLogged = false;
 
   constructor(private http: HttpClient, private tokenStorage: TokenStorage) {}
 
@@ -33,6 +33,7 @@ export class AuthenticationService implements AuthService {
   public isAuthorized(): Observable<boolean> {
     return this.tokenStorage.getAccessToken().map(token => !!token);
   }
+
 
   /**
    * Get access token
@@ -96,6 +97,7 @@ export class AuthenticationService implements AuthService {
       .post(`http://localhost:3000/users`, {})
       .do((tokens: AccessData) => this.saveAccessData(tokens));
   }
+
 
   /**
    * Logout
