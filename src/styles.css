@@ -1,1 +1,118 @@
 /* You can add global styles to this file, and also import other style files */
+
+html,
+body{
+  height: 100%;
+}
+
+.text-primary-app{
+    color: #F4C500 !important;
+}
+
+.bg-primary-app{
+    background-color: #F4C500 !important;
+}
+
+.btn-outline-primary-app{
+    border: 1px solid #F4C500 !important;
+    background-color: transparent;
+}
+.btn-primary-app{
+    background-color: #FFBB33;
+    color: white;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    max-width: 7rem;
+}
+
+.btn-primary-app:hover{
+  color: grey !important;
+}
+
+.banner-opacity{
+    background-color: rgba(0, 0, 0, 0.29)
+}
+
+.text-center-justified{
+  text-align: justify;
+  text-align-last: center;
+}
+
+.fill{
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  height: 15rem;
+  width: 15rem;
+}
+
+.footer{
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  height: 3.5rem;
+}
+
+.w-30{
+  max-width: 30rem !important;
+}
+
+.float-container{
+  padding-top: 2vh;
+  padding-bottom: 2vh;
+  background-color: rgba(0, 0, 0, 0.5)
+}
+
+.full-height{
+  min-height: 100% !important;
+}
+
+.bg-white{
+  background-color: white;
+}
+
+#sign-up,
+#login{
+  background-image: url(/assets/images/doe-gold-award.jpg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.grayscale{
+  -moz-filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
+  -o-filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
+  -webkit-filter: grayscale(100%);
+  filter: gray;
+  filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
+}
+
+
+.nongrayscale{
+  filter: none !important;
+  -webkit-filter: grayscale(0%) !important;
+  -moz-filter:    grayscale(0%);
+  -ms-filter:     grayscale(0%);
+  -o-filter:      grayscale(0%);
+}
+
+
+.vertical-center{
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: arial;
+  font-size: 30px;
+  line-height: 1.8em;
+}
+
+.font-lobster{
+  font-family: 'Lobster', cursive;
+}
+
+.unselectable{
+  -webkit-user-select: none; /* Safari */
+-moz-user-select: none; /* Firefox */
+-ms-user-select: none; /* IE10+/Edge */
+user-select: none; /* Standard */
+}
