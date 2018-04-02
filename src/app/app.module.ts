@@ -4,15 +4,29 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { LandingComponent } from './landing/landing.component';
+import { SignInComponent } from './sign-in/sign-in.component';
+import { SignInUserComponent } from './sign-in/sign-in-user/sign-in-user.component';
+import { SignInOrgComponent } from './sign-in/sign-in-org/sign-in-org.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
+import { SignUpUserComponent } from './sign-up/sign-up-user/sign-up-user.component';
+import { SignUpOrgComponent } from './sign-up/sign-up-org/sign-up-org.component';
+import { AppRoutingModule } from './app-routing.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    LandingComponent
+    LandingComponent,
+    SignInComponent,
+    SignInUserComponent,
+    SignInOrgComponent,
+    SignUpComponent,
+    SignUpUserComponent,
+    SignUpOrgComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
