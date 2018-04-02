@@ -1,8 +1,31 @@
 
-<p>
-    Public area!
-  </p>
 
-  <button (click)="login()">
-    Login
-  </button>
+  <div class="full-page" id="login">
+    <div class="row container-fluid">
+      <div class="col-6">
+        <ul class="nav nav-tabs bg-white text-center" >
+          <li class="nav-item rounded">
+            <a class="nav-link active" data-toggle="tab" href="#volunteers">Voluntarios</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#organizations">Organizaciones</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="volunteers">
+            <div class="container-fluid d-block ml-auto float-container rounded mx-4 nongrayscale">
+              <app-sign-in-user></app-sign-in-user>
+            </div>
+          </div>
+          <div class="tab-pane" id="organizations">
+            <div class="container-fluid d-block ml-auto float-container rounded mx-4 nongrayscale">
+              <app-sign-in-org></app-sign-in-org>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <p class="text-white font-lobster text-center" id="welcome">¡Hola de nuevo!</p>
+      </div>
+    </div>
+  </div>

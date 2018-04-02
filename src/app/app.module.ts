@@ -18,6 +18,8 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { SignUpUserComponent } from './sign-up/sign-up-user/sign-up-user.component';
 import { SignUpOrgComponent } from './sign-up/sign-up-org/sign-up-org.component';
 import { HomeComponent } from './home/home.component';
+import { UserService } from './_services';
+import { SocialLinksComponent } from './social-links/social-links.component';
 
 @NgModule({
   declarations: [
@@ -30,10 +32,11 @@ import { HomeComponent } from './home/home.component';
     SignUpUserComponent,
     SignUpOrgComponent,
     ConfirmEqualValidatorDirective,
-    HomeComponent
+    HomeComponent,
+    SocialLinksComponent
   ],
-  imports: [NgbModule.forRoot(), BrowserModule, AppRoutingModule, FormsModule,  AuthenticationModule],
-  providers: [],
+  imports: [NgbModule.forRoot(), BrowserModule, AppRoutingModule, FormsModule,  AuthenticationModule, HttpClientModule],
+  providers: [UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

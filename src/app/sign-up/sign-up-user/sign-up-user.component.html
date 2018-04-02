@@ -1,6 +1,6 @@
 <div class="container">
   <div [hidden]="submitted">
-    <form (ngSubmit)="onSubmit()" #signInUserForm="ngForm" class="my-4 px-3">
+    <form (ngSubmit)="onSubmit()" #signUpUserForm="ngForm" class="my-4 px-3">
       <!-- Nombres completos -->
       <div class="row px-0">
         <div class="col-6">
@@ -105,20 +105,11 @@
       </div>
       <!-- Botón de envio -->
       <div class="form-group">
-        <button [disabled]="!signInUserForm.valid" type="submit" class="btn btn-primary-app d-block mx-auto text-center">Comenzar</button>
+        <button [disabled]="!signUpUserForm.valid" type="submit" class="btn btn-primary-app d-block mx-auto text-center">Comenzar</button>
       </div>
       <!-- Inicio son redes sociales -->
       <hr>
-      <div class="form-inline">
-        <button class="d-block mx-auto btn btn-light text-center">
-          <img src="/assets/icons/google_PNG19635.png" alt="google-icon" height="25rem">
-          <small>Comenzar con Google</small>
-        </button>
-        <button class="d-block mx-auto btn btn-light text-center">
-          <img src="/assets/icons/Facebook_logo_(square).png" alt="google-icon" height="25rem">
-          <small>Comenzar con Facebook</small>
-        </button>
-      </div>
+      <app-social-links></app-social-links>
       <hr>
       <!-- Links -->
       <a routerLink="/sign-in" class="text-muted text-center d-block mx-auto">¿Ya tienes una cuenta?</a>

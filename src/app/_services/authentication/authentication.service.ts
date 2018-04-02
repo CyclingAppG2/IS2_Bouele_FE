@@ -18,10 +18,11 @@ interface AccessData {
 @Injectable()
 export class AuthenticationService implements AuthService {
 
-  constructor(
-    private http: HttpClient,
-    private tokenStorage: TokenStorage
-  ) {}
+  private url = 'api/auth';
+  private headers = new Headers({ 'Content-Type': 'application/json' });
+
+
+  constructor(private http: HttpClient, private tokenStorage: TokenStorage) {}
 
   /**
    * Check, if user already authorized.
@@ -29,10 +30,8 @@ export class AuthenticationService implements AuthService {
    * @returns {Observable<boolean>}
    * @memberOf AuthService
    */
-  public isAuthorized(): Observable < boolean > {
-    return this.tokenStorage
-      .getAccessToken()
-      .map(token => !!token);
+  public isAuthorized(): Observable<boolean> {
+    return this.tokenStorage.getAccessToken().map(token => !!token);
   }
 
   /**
@@ -41,7 +40,7 @@ export class AuthenticationService implements AuthService {
    * localStorage
    * @returns {Observable<string>}
    */
-  public getAccessToken(): Observable < string > {
+  public getAccessToken(): Observable<string> {
     return this.tokenStorage.getAccessToken();
   }
 
@@ -51,14 +50,16 @@ export class AuthenticationService implements AuthService {
    * can execute pending requests or retry original one
    * @returns {Observable<any>}
    */
-  public refreshToken(): Observable < AccessData > {
+  public refreshToken(): Observable<AccessData> {
     return this.tokenStorage
       .getRefreshToken()
       .switchMap((refreshToken: string) => {
-        return this.http.post(`http://localhost:3000/refresh`, { refreshToken });
+        return this.http.post(`http://localhost:3000/refresh`, {
+          refreshToken
+        });
       })
       .do(this.saveAccessData.bind(this))
-      .catch((err) => {
+      .catch(err => {
         this.logout();
 
         return Observable.throw(err);
@@ -91,8 +92,9 @@ export class AuthenticationService implements AuthService {
    */
 
   public login(): Observable<any> {
-    return this.http.post(`http://localhost:3000/login`, { })
-    .do((tokens: AccessData) => this.saveAccessData(tokens));
+    return this.http
+      .post(`http://localhost:3000/users`, {})
+      .do((tokens: AccessData) => this.saveAccessData(tokens));
   }
 
   /**
@@ -100,7 +102,6 @@ export class AuthenticationService implements AuthService {
    */
   public logout(): void {
     this.tokenStorage.clear();
-    location.reload(true);
   }
 
   /**
@@ -110,9 +111,6 @@ export class AuthenticationService implements AuthService {
    * @param {AccessData} data
    */
   private saveAccessData({ accessToken, refreshToken }: AccessData) {
-    this.tokenStorage
-      .setAccessToken(accessToken)
-      .setRefreshToken(refreshToken);
+    this.tokenStorage.setAccessToken(accessToken).setRefreshToken(refreshToken);
   }
-
 }
