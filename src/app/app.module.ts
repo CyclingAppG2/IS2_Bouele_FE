@@ -20,6 +20,7 @@ import { SignUpOrgComponent } from './sign-up/sign-up-org/sign-up-org.component'
 import { HomeComponent } from './home/home.component';
 import { UserService } from './_services';
 import { SocialLinksComponent } from './social-links/social-links.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { SocialLinksComponent } from './social-links/social-links.component';
     SignUpOrgComponent,
     ConfirmEqualValidatorDirective,
     HomeComponent,
-    SocialLinksComponent
+    SocialLinksComponent,
+    FooterComponent
   ],
   imports: [NgbModule.forRoot(), BrowserModule, AppRoutingModule, FormsModule,  AuthenticationModule, HttpClientModule],
   providers: [UserService],

@@ -127,3 +127,22 @@ body {
   font-size: 7vw;
   line-height: 1;
 }
+
+.nav-tabs-rounded{
+  border-top-left-radius: 1rem !important;
+  border-top-right-radius: 1rem !important;
+}
+
+.nav-item-rounded{
+  border-top-left-radius: 1rem !important;
+  border-top-right-radius: 1rem !important;
+}
+
+.nav-link-rounded{
+  border-top-left-radius: 1rem !important;
+  border-top-right-radius: 1rem !important;
+}
+
+.bg-transparent{
+  background-color: transparent !important;
+}
