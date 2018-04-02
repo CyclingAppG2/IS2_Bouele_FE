@@ -1,3 +1,94 @@
-<p>
-  sign-up-org works!
-</p>
+<div class="container">
+  <div [hidden]="submitted">
+    <form (ngSubmit)="onSubmit()" #signInUserForm="ngForm" class="my-4 px-3">
+      <!-- Nombre de la organización -->
+      <div class="form-group">
+        <label for="for" class="sr-only">Nombre</label>
+        <input type="text" class="form-control" id="name" required [(ngModel)]="model.name" name="name" #name="ngModel" placeholder="Nombre de tu compañia">
+        <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+          Por favor introduce tu(s) nombre(s)
+        </div>
+      </div>
+      <!-- Correo electrónico -->
+      <div class="form-group">
+        <label for="for" class="sr-only">Correo electrónico</label>
+        <input type="email" class="form-control" id="email" required email [(ngModel)]="model.email" name="email" #email="ngModel"
+          placeholder="Correo Electrónico">
+        <small id="emailHelp" class="form-text text-muted text-right">No compartirémos tu correo con nadie más</small>
+        <div [hidden]="email.valid || email.pristine" class="alert alert-danger">
+          Debes escribir tu correo electrónico
+        </div>
+      </div>
+      <!-- Contraseña -->
+      <div class="form-group">
+        <label for="password" class="sr-only">Contraseña</label>
+        <input type="password" name="password" id="password" required minlength="8" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!#%*?&])[A-Za-z\d$@$!%*?&].{8,}"
+          [(ngModel)]="model.password" #password="ngModel" name="password" class="form-control" placeholder="Contraseña">
+        <small id="passwordHelp" class="form-text text-muted text-right">Por lo menos 8 caracteres 1 Mayuscula 1 Minuscula, un Entero y un caracter especial($ % & # - ...)</small>
+        <div [hidden]="password.valid || password.pristine" class="alert alert-danger">
+          Debes escribir una contraseña
+        </div>
+      </div>
+      <!-- Confirmación de contraseña -->
+      <div class="form-group">
+        <label for="password-confirm" class="sr-only">Confirma tu contraseña</label>
+        <input type="password" name="confirmPassword" [ngModel]="model.password_confirmation" required appConfirmEqualValidator="password"
+          #confirmPassword="ngModel" class="form-control" placeholder="Confirma tu contraseña">
+      </div>
+      <!-- Genero -->
+      <div class="form-group" [class.has-error]="category.touched && category.invalid">
+        <label for="gender" class="sr-only">Categoria</label>
+        <select class="custom-select" required [(ngModel)]="model.category" name="category" #category="ngModel">
+          <option [ngValue]="undefined" disabled selected hidden> Categoria </option>
+          <option *ngFor="let category of categories" [value]="category.value">
+            {{ category.viewValue }}</option>
+        </select>
+      </div>
+      <!-- Nombre de usuario -->
+      <div class="form-group" [class.has-error]="nit.touched && nit.invalid">
+        <label for="nit" class="sr-only">NIT</label>
+        <input type="text" class="form-control" id="nit" name="nit" required [(ngModel)]="model.nit" placeholder="NIT de tu empresa"
+          #nit="ngModel">
+      </div>
+      <!-- Ciudad -->
+      <div class="form-group" [class.has-error]="city.touched && city.invalid">
+        <label for="city" class="sr-only">Ciudad</label>
+        <select class="custom-select" required [(ngModel)]="model.city" name="city" #city="ngModel">
+          <option [ngValue]="undefined" disabled selected hidden> Ciudad </option>
+          <option *ngFor="let city of cities" [value]="city.value">
+            {{ city.viewValue }}</option>
+        </select>
+      </div>
+      <!-- Acepta -->
+      <div class="form-group" [class.has-error]="accepts.touched && accepts.invalid">
+        <div class="form-check d-block mx-auto" style="width: 17rem;">
+          <input class="form-check-input" type="checkbox" value="accepts" id="accepts" name="accepts" #accepts="ngModel" [(ngModel)]="model.accepts"
+            required>
+          <label class="form-check-label text-white text-center" for="terms">
+            Acepto
+            <a href="">Términos y condiciones</a>
+          </label>
+        </div>
+      </div>
+      <!-- Botón de envio -->
+      <div class="form-group">
+        <button [disabled]="!signInUserForm.valid" type="submit" class="btn btn-primary-app d-block mx-auto text-center">Comenzar</button>
+      </div>
+      <!-- Inicio son redes sociales -->
+      <hr>
+      <div class="form-inline">
+        <button class="d-block mx-auto btn btn-light text-center">
+          <img src="/assets/icons/google_PNG19635.png" alt="google-icon" height="25rem">
+          <small>Comenzar con Google</small>
+        </button>
+        <button class="d-block mx-auto btn btn-light text-center">
+          <img src="/assets/icons/Facebook_logo_(square).png" alt="google-icon" height="25rem">
+          <small>Comenzar con Facebook</small>
+        </button>
+      </div>
+      <hr>
+      <!-- Links -->
+      <a routerLink="/sign-in" class="text-muted text-center d-block mx-auto">¿Ya tienes una cuenta?</a>
+    </form>
+  </div>
+</div>
