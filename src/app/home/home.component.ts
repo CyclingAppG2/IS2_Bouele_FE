@@ -1,15 +1,30 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { AuthenticationService, UserService } from '../_services/index';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent  {
 
-  constructor() { }
+  public users$: Observable<any>;
 
-  ngOnInit() {
+  constructor(
+    private router: Router,
+    private dataService: UserService,
+    private authService: AuthenticationService
+  ) { }
+
+  public loadData() {
+    this.users$ = this.dataService.getUsers();
   }
+
+  public logout() {
+    this.authService.logout();
+    this.router.navigateByUrl('/');
+}
 
 }

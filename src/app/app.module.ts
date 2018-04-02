@@ -1,11 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { HttpClientModule, HttpResponse } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 
 import { ConfirmEqualValidatorDirective} from './_validators/confirm-equal-validator.directive';
+
+import { AuthenticationModule } from './_services/authentication/authentication.module';
 
 import { AppComponent } from './app.component';
 import { LandingComponent } from './landing/landing.component';
@@ -30,7 +32,7 @@ import { HomeComponent } from './home/home.component';
     ConfirmEqualValidatorDirective,
     HomeComponent
   ],
-  imports: [NgbModule.forRoot(), BrowserModule, AppRoutingModule, FormsModule],
+  imports: [NgbModule.forRoot(), BrowserModule, AppRoutingModule, FormsModule,  AuthenticationModule],
   providers: [],
   bootstrap: [AppComponent]
 })
