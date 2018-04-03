@@ -1,3 +1,15 @@
-<p>
-  sign-in-admin works!
-</p>
+<form (ngSubmit)="login()" #signInAdminForm="ngForm" class="my-4 px-3">
+  <div class="form-group">
+    <label for="" class="sr-only">Correo Electrónico</label>
+    <input type="email" name="" id="" class="form-control" placeholder="Correo electrónico" aria-describedby="helpId">
+  </div>
+  <div class="form-group">
+    <label for="" class="sr-only">Contraseña</label>
+    <input type="password" name="" id="" class="form-control" placeholder="Contraseña" aria-describedby="helpId">
+  </div>
+  <div class="form-group text-center">
+    <button type="submit" class="btn btn-primary-app d-block mx-auto">Iniciar Sesión</button>
+  </div>
+  <app-social-links></app-social-links>
+  
+</form>

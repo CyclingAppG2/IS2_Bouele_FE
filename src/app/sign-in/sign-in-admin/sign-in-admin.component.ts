@@ -12,4 +12,7 @@ export class SignInAdminComponent implements OnInit {
   ngOnInit() {
   }
 
+  login() {
+
+  }
 }
