@@ -22,6 +22,8 @@ import { UserService } from './_services';
 import { SocialLinksComponent } from './social-links/social-links.component';
 import { FooterComponent } from './footer/footer.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { EventFormComponent } from './event-form/event-form.component';
+import { SignInAdminComponent } from './sign-in/sign-in-admin/sign-in-admin.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,9 @@ import { NavbarComponent } from './navbar/navbar.component';
     HomeComponent,
     SocialLinksComponent,
     FooterComponent,
-    NavbarComponent
+    NavbarComponent,
+    EventFormComponent,
+    SignInAdminComponent
   ],
   imports: [NgbModule.forRoot(), BrowserModule, AppRoutingModule, FormsModule,  AuthenticationModule, HttpClientModule],
   providers: [UserService],

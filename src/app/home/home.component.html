@@ -1,28 +1,29 @@
-<div class="container full-page">
+<div class="container full-page" id="home">
   <div class="row container-fluid">
-    <div class="col-lg-9">
-      <div class="row  border border-info rounded my-2 align-middle">
+    <div class="col-lg-9 border-right">
+      <div class="row container-fluid event border border-info rounded my-2 d-flex align-items-center p-2">
         <div class="col-3">
-          <div class="event-fill border border-warning rounded-circle align-middle"></div>
+          <div class="event-fill border border-warning rounded-circle d-block mx-auto" style="background-image: url(/assets/images/referendo_agro.jpg)"></div>
         </div>
         <div class="col-9">
           <div class="event-description">
-            <p class="event-name"></p>
-            <p class="event-content">
-              <br>Cillum labore ex duis et dolore qui esse ipsum elit magna nulla. Adipisicing exercitation ipsum ut pariatur occaecat nostrud pariatur exercitation aliquip id eu. Sint non voluptate do adipisicing cupidatat ad qui dolor eu ex ipsum pariatur duis amet. Labore sint incididunt cupidatat cillum mollit sunt ut labore cupidatat amet consectetur tempor anim enim. Fugiat velit reprehenderit id non. Qui ipsum in sunt magna laborum officia Lorem fugiat.
+            <p class="event-name mb-1">Referendo por el agro</p>
+            <p class="event-content mb-1">
+             Cillum labore ex duis et dolore qui esse ipsum elit magna nulla. Adipisicing exercitation ipsum ut pariatur occaecat nostrud pariatur exercitation aliquip id eu. Sint non voluptate do adipisicing cupidatat ad qui dolor eu ex ipsum pariatur duis amet. Labore sint incididunt cupidatat cillum mollit sunt ut labore cupidatat amet consectetur tempor anim enim. Fugiat velit reprehenderit id non. Qui ipsum in sunt magna laborum officia Lorem fugiat.
             </p>
             <ul class="list-inline d-block ml-auto text-right mb-1">
               <li class="list-inline-item event-link">Comentar</li>
               <li class="list-inline-item event-link">Compartir</li>
               <li class="list-inline-item event-link">Ver más</li>
-              <li class="list-inline-item event-link">Aplicar</li>
+              <li class="list-inline-item event-link"> <i class="fa fa-paper-plane rounded-circle bg-primary-app p-2 text-white" aria-hidden="true"></i>
+                <span class="sr-only"> Aplicar</span> </li>
             </ul>
           </div>
         </div>
       </div>
-      <a href="" class="btn btn-success d-block mx-auto text-center text-white "><i class="fa fa-plus"> Nueva campaña</i></a>
+      <a routerLink="/new-event" class="btn btn-success d-block mx-auto text-center text-white mb-2" style="max-width: 20vw;"><i class="fa fa-plus"> Nueva campaña</i></a>
     </div>
-    <div class="col-lg-3">
+    <div class="col-lg-3 border-left">
     </div>
   </div>
 </div>
