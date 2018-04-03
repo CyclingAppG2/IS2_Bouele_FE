@@ -146,3 +146,21 @@ body {
 .bg-transparent{
   background-color: transparent !important;
 }
+
+.event-link{
+  color: #AAA !important;
+  font-size: 1vw;
+}
+
+.event-content{
+
+}
+
+.event-title{
+
+}
+
+.event-fill{
+  width: 7rem;
+  height: 7rem;
+}
