@@ -5,7 +5,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule, HttpResponse } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 
-import { ConfirmEqualValidatorDirective} from './_validators/confirm-equal-validator.directive';
+import { ConfirmEqualValidatorDirective } from './_validators/confirm-equal-validator.directive';
 
 import { AuthenticationModule } from './_services/authentication/authentication.module';
 
@@ -24,6 +24,7 @@ import { FooterComponent } from './footer/footer.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { EventFormComponent } from './event-form/event-form.component';
 import { SignInAdminComponent } from './sign-in/sign-in-admin/sign-in-admin.component';
+import { ContactComponent } from './contact/contact.component';
 
 @NgModule({
   declarations: [
@@ -41,9 +42,17 @@ import { SignInAdminComponent } from './sign-in/sign-in-admin/sign-in-admin.comp
     FooterComponent,
     NavbarComponent,
     EventFormComponent,
-    SignInAdminComponent
+    SignInAdminComponent,
+    ContactComponent
   ],
-  imports: [NgbModule.forRoot(), BrowserModule, AppRoutingModule, FormsModule,  AuthenticationModule, HttpClientModule],
+  imports: [
+    NgbModule.forRoot(),
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    AuthenticationModule,
+    HttpClientModule
+  ],
   providers: [UserService],
   bootstrap: [AppComponent]
 })

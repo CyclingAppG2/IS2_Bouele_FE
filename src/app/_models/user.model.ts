@@ -10,5 +10,6 @@ export class User {
   gender: string;
   phone: string;
   city: string;
+  accepts: boolean;
 
 }

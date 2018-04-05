@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../../_models/user.model';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../_services';
+import { Organization } from '../../_models/organization.model';
 
 @Component({
   selector: 'app-sign-in-org',
@@ -11,7 +12,7 @@ import { AuthenticationService } from '../../_services';
 export class SignInOrgComponent {
 
   submitted = false;
-  model = new User();
+  model = new Organization();
 
   constructor(
     private router: Router,
@@ -21,7 +22,7 @@ export class SignInOrgComponent {
 
   public login() {
     this.authService
-      .login()
+      .login(this.model.email, this.model.password)
       .subscribe(() => this.router.navigateByUrl('/home'));
   }
 

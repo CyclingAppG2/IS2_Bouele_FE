@@ -20,7 +20,7 @@ export class SignInUserComponent {
 
   public login() {
     this.authService
-      .login()
+      .login(this.model.email, this.model.password)
       .subscribe(() => this.router.navigateByUrl('/home'));
   }
 

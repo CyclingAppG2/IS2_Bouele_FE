@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse , HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from 'ngx-auth';
 import 'rxjs/add/operator/do';
@@ -9,6 +9,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
 
 import { TokenStorage } from './token-storage.service';
+import { User } from '../../_models/user.model';
 
 interface AccessData {
   accessToken: string;
@@ -18,7 +19,8 @@ interface AccessData {
 @Injectable()
 export class AuthenticationService implements AuthService {
 
-  private url = 'api/auth';
+
+  private apiUrl = 'http://localhost:3000';
   private headers = new Headers({ 'Content-Type': 'application/json' });
   private isLogged = false;
 
@@ -92,9 +94,21 @@ export class AuthenticationService implements AuthService {
    * EXTRA AUTH METHODS
    */
 
-  public login(): Observable<any> {
+  public login(email: string, password: string): Observable<any> {
     return this.http
-      .post(`http://localhost:3000/users`, {})
+      .post(this.apiUrl + '/auth_user/sign_in', {email, password})
+      .do((tokens: AccessData) => this.saveAccessData(tokens));
+  }
+
+  public signUpUser(user: any): any {
+    const name = user.firstname + ' ' + user.lastname;
+    const email = user.email;
+    const password = user.password;
+    const password_confirmation = user.password_confirm;
+    const username = user.username;
+    console.log(name);
+    return this.http
+      .post('http://localhost:3000/auth_user', {name, username, email, password, password_confirmation})
       .do((tokens: AccessData) => this.saveAccessData(tokens));
   }
 
@@ -103,7 +117,9 @@ export class AuthenticationService implements AuthService {
    * Logout
    */
   public logout(): void {
+    console.log(this.tokenStorage);
     this.tokenStorage.clear();
+
   }
 
   /**

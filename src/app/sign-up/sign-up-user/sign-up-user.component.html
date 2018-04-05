@@ -93,19 +93,15 @@
         </select>
       </div>
       <!-- Acepta -->
-      <div class="form-group" [class.has-error]="accepts.touched && accepts.invalid">
-        <div class="form-check d-block mx-auto" style="width: 17rem;">
-          <input class="form-check-input" type="checkbox" value="accepts" id="accepts" name="accepts" #accepts="ngModel" [(ngModel)]="model"
-            required>
-          <label class="form-check-label text-white text-center" for="terms">
-            Acepto
-            <a href="">Términos y condiciones</a>
-          </label>
-        </div>
+      <div class="form-check form-check-inline d-block mx-auto text-white text-center">
+        <label class="form-check-label">
+          <input class="form-check-input" type="checkbox" name="accepts" id="accepts" value="true" [(ngModel)]="model.accepts" #accepts="ngModel" required> Acepta terminos y condiciones
+        </label>
       </div>
+      <br>
       <!-- Botón de envio -->
       <div class="form-group">
-        <button [disabled]="!signUpUserForm.valid" type="submit" class="btn btn-primary-app d-block mx-auto text-center">Comenzar</button>
+        <button [disabled]="!signUpUserForm.form.valid" type="submit" class="btn btn-primary-app d-block mx-auto text-center">Comenzar</button>
       </div>
       <!-- Inicio son redes sociales -->
       <hr>

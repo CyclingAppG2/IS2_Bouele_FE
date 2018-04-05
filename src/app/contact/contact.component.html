@@ -1,0 +1,58 @@
+<div class=" container-fluid full-height d-flex align-item-middle">
+  <form (onSubmit)="onSubmit()" #contactForm="ngForm" role="form" class="col-6 d-block mx-auto my-auto rounded">
+
+    <div class="card">
+      <div class="card-header text-center">
+        Contactanos
+      </div>
+      <div class="card-body">
+        <h1 class="text-center">¿Tienes alguna duda?</h1>
+        <p class="text-center">Envianos tus peticiones y te respondemos lo antes posible</p>
+        <div class="text-center d-block mx-auto">
+          <label class="radio-inline px-2">
+            <input type="radio" name="optradio"> Queja </label>
+          <label class="radio-inline px-2">
+            <input type="radio" name="optradio"> Petición </label>
+          <label class="radio-inline px-2">
+            <input type="radio" name="optradio"> Reclamo </label>
+        </div>
+        <div class="row">
+          <div class="form-group col-6">
+            <input type="text" class="form-control" placeholder="Tu nombre" id="form-c" required>
+          </div>
+          <div class="form-group col-6" required>
+            <select class="form-control" placeholder="Ciudad" id="form-c">
+              <option value="" disabled selected hidden>Ciudad</option>
+              <option value="">Bogotá</option>
+              <option value="">Ḿanizales</option>
+              <option value="">Medellín</option>
+              <option value="">Palmira</option>
+              <option value="">Orinoquía</option>
+              <option value="">Tumaco</option>
+              <option value="">Caribe</option>
+              <option value="">Amazonas</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-6">
+            <input type="text" class="form-control" placeholder="Telefono celular" id="form-c" required>
+          </div>
+
+          <div class="form-group col-6">
+            <input type="email" class="form-control" placeholder="Email" id="form-c" required email>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="">Mensaje:</label>
+          <textarea class="form-control" name="" id="" rows="3" required></textarea>
+        </div>
+        <div class="text-right">
+          <button [disabled]="!contactForm.form.valid" type="submit" class="btn btn btn-primary-app">Enviar</button>
+        </div>
+      </div>
+      <div class="card-footer text-muted">
+      </div>
+    </div>
+  </form>
+</div>

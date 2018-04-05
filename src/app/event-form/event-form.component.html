@@ -1,25 +1,66 @@
-<form action="">
-  <div class="form-group">
-    <label for="" class="sr-only"></label>
-    <input type="text|password|email|number|submit|date|datetime|datetime-local|month|color|range|search|tel|time|url|week" name="" id="" class="form-control" placeholder="" aria-describedby="helpId">
+<div class="row container-fluid">
+  <div class="col-3">
   </div>
-  <div class="form-group">
-    <label for="" class="sr-only"></label>
-    <input type="text|password|email|number|submit|date|datetime|datetime-local|month|color|range|search|tel|time|url|week" name="" id="" class="form-control" placeholder="" aria-describedby="helpId">
+  <div class="col-6">
+    <form (ngSubmit)="onSubmit()" #eventForm="ngForm" class="my-4 px-3">
+      <div class="form-group">
+        <label for="name" class="sr-only">Nombre del evento</label>
+        <input type="text" name="name" id="name" class="form-control" placeholder="Nombre del evento" [(ngModel)]="model.name" #name="ngModel"
+          required>
+      </div>
+      <div class="form-group">
+        <label for="description" class="sr-only">Descripción</label>
+        <textarea class="form-control" name="description" id="description" placeholder="Breve descripción del evento" rows="7" [(ngModel)]="model.description"
+          #description="ngModel" required></textarea>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <div class="form-group">
+            <label for="duration" class="sr-only">Duración</label>
+            <input type="number" name="duration" id="duration" class="form-control" placeholder="Duración" [(ngModel)]="model.duration"
+              #duration="ngModel" required number>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group">
+            <label for="" class="sr-only"></label>
+            <select class="form-control" name="" id="" required>
+              <option>Minutos</option>
+              <option>Horas</option>
+              <option>Dias</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="custom-file">
+          <span class="custom-file-control"></span>
+          <input type="file" name="photos" id="photos" placeholder="Agrega imagenes a tu evento" class="form-control-file" [(ngModel)]="model.photos"
+            #photos="ngModel">
+        </label>
+      </div>
+      <div class="form-group">
+        <div class="input-group">
+          <input class="form-control" required [(ngModel)]="model.date" [minDate]="minDate" [maxDate]="maxDate" placeholder="Fecha del evento"
+            name="date" ngbDatepicker #d="ngbDatepicker" #date="ngModel">
+          <div class="input-group-append bg-primary-app ">
+            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+              <i class="fa fa-calendar text-white"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="form-group text-center">
+          <a class="btn btn-primary-app text-white" routerLin="/home" role="button">Agrega este evento</a>
+      </div>
+
+
+
+
+
+    </form>
   </div>
-  <div class="form-group">
-    <label for="" class="sr-only"></label>
-    <input type="text|password|email|number|submit|date|datetime|datetime-local|month|color|range|search|tel|time|url|week" name="" id="" class="form-control" placeholder="" aria-describedby="helpId">
+  <div class="col-3">
+
   </div>
-  <div class="form-group">
-    <label for="" class="sr-only"></label>
-    <input type="text|password|email|number|submit|date|datetime|datetime-local|month|color|range|search|tel|time|url|week" name="" id="" class="form-control" placeholder="" aria-describedby="helpId">
-  </div>
-  <div class="form-group">
-    <label for="" class="sr-only"></label>
-    <input type="text|password|email|number|submit|date|datetime|datetime-local|month|color|range|search|tel|time|url|week" name="" id="" class="form-control" placeholder="" aria-describedby="helpId">
-  </div>
-  <div class="form-group text-center">
-    <button  type="submit" class="btn btn-primary-app">Nuevo Evento</button>
-  </div>
-</form>
+</div>
