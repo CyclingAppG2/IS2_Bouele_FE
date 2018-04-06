@@ -19,7 +19,6 @@ interface AccessData {
 @Injectable()
 export class AuthenticationService implements AuthService {
 
-
   private apiUrl = 'http://localhost:3000';
   private headers = new Headers({ 'Content-Type': 'application/json' });
   private isLogged = false;
@@ -94,7 +93,7 @@ export class AuthenticationService implements AuthService {
    * EXTRA AUTH METHODS
    */
 
-  public login(email: string, password: string): Observable<any> {
+  public loginUser(email: string, password: string): Observable<any> {
     return this.http
       .post(this.apiUrl + '/auth_user/sign_in', {email, password})
       .do((tokens: AccessData) => this.saveAccessData(tokens));
@@ -112,7 +111,15 @@ export class AuthenticationService implements AuthService {
       .do((tokens: AccessData) => this.saveAccessData(tokens));
   }
 
+  loginAdmin(email: string, password: string): any {
+    return this.http.post(this.apiUrl + '/auth_admin/sign_in', {email, password})
+    .do((tokens: AccessData) => this.saveAccessData(tokens));
+  }
 
+  loginOrg(email: string,  password: string): any {
+    return this.http.post(this.apiUrl + '/auth_org/sign_in', {email, password})
+      .do((tokens: AccessData) => this.saveAccessData(tokens));
+  }
   /**
    * Logout
    */

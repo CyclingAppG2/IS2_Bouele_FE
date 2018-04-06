@@ -25,6 +25,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { EventFormComponent } from './event-form/event-form.component';
 import { SignInAdminComponent } from './sign-in/sign-in-admin/sign-in-admin.component';
 import { ContactComponent } from './contact/contact.component';
+import { EventService } from './_services/event.service';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,7 @@ import { ContactComponent } from './contact/contact.component';
     AuthenticationModule,
     HttpClientModule
   ],
-  providers: [UserService],
+  providers: [UserService, EventService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

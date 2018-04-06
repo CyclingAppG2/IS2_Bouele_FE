@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { AuthenticationService, UserService } from '../_services/index';
+import { AuthenticationService, EventService } from '../_services/index';
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,23 +8,26 @@ import { Router } from '@angular/router';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent  {
-
+export class HomeComponent {
   public users$: Observable<any>;
+  public events = [];
 
   constructor(
     private router: Router,
-    private dataService: UserService,
+    private dataService: EventService,
     private authService: AuthenticationService
-  ) { }
+  ) {}
 
   public loadData() {
-    this.users$ = this.dataService.getUsers();
+    this.dataService.getEvents().subscribe(events => {
+      this.events = events;
+      console.log(this.events);
+
+    });
   }
 
   public logout() {
     this.authService.logout();
     this.router.navigateByUrl('/');
-}
-
+  }
 }

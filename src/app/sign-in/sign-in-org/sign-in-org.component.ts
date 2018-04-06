@@ -22,7 +22,7 @@ export class SignInOrgComponent {
 
   public login() {
     this.authService
-      .login(this.model.email, this.model.password)
+      .loginOrg(this.model.email, this.model.password)
       .subscribe(() => this.router.navigateByUrl('/home'));
   }
 
