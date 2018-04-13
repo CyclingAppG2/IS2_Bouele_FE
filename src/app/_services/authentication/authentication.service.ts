@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse , HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from 'ngx-auth';
+import { environment } from '../../../environments/environment';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
@@ -11,17 +12,18 @@ import 'rxjs/add/operator/switchMap';
 import { TokenStorage } from './token-storage.service';
 import { User } from '../../_models/user.model';
 
-interface AccessData {
+class AccessData {
   accessToken: string;
-  refreshToken: string;
+  client: string;
+  uid: string;
 }
+
+const API_URL = environment.apiUrl;
 
 @Injectable()
 export class AuthenticationService implements AuthService {
 
-  private apiUrl = 'http://localhost:3000';
-  private headers = new Headers({ 'Content-Type': 'application/json' });
-  private isLogged = false;
+  private currentUser = new AccessData;
 
   constructor(private http: HttpClient, private tokenStorage: TokenStorage) {}
 
@@ -56,7 +58,7 @@ export class AuthenticationService implements AuthService {
     return this.tokenStorage
       .getRefreshToken()
       .switchMap((refreshToken: string) => {
-        return this.http.post(`http://localhost:3000/refresh`, {
+        return this.http.post(API_URL + '/refresh', {
           refreshToken
         });
       })
@@ -95,8 +97,19 @@ export class AuthenticationService implements AuthService {
 
   public loginUser(email: string, password: string): Observable<any> {
     return this.http
-      .post(this.apiUrl + '/auth_user/sign_in', {email, password})
-      .do((tokens: AccessData) => this.saveAccessData(tokens));
+      .post(API_URL + '/auth_user/sign_in', { email,  password}, {observe: 'response'})
+        .do(
+          resp => {
+            this.currentUser.accessToken = resp.headers.get('access-token');
+            this.currentUser.client = resp.headers.get('client');
+            this.currentUser.uid = resp.headers.get('uid');
+            this.saveAccessData();
+            }, err => {
+              console.error(err);
+              this.tokenStorage.clear();
+            }
+        );
+
   }
 
   public signUpUser(user: any): any {
@@ -105,28 +118,36 @@ export class AuthenticationService implements AuthService {
     const password = user.password;
     const password_confirmation = user.password_confirm;
     const username = user.username;
-    console.log(name);
     return this.http
-      .post('http://localhost:3000/auth_user', {name, username, email, password, password_confirmation})
-      .do((tokens: AccessData) => this.saveAccessData(tokens));
+      .post(API_URL + '/auth_user', {name, username, email, password, password_confirmation})
+      .do((tokens: AccessData) => this.saveAccessData());
   }
 
   loginAdmin(email: string, password: string): any {
-    return this.http.post(this.apiUrl + '/auth_admin/sign_in', {email, password})
-    .do((tokens: AccessData) => this.saveAccessData(tokens));
+    return this.http.post(API_URL  + '/auth_admin/sign_in', {email, password})
+    .do((tokens: AccessData) => this.saveAccessData());
   }
 
   loginOrg(email: string,  password: string): any {
-    return this.http.post(this.apiUrl + '/auth_org/sign_in', {email, password})
-      .do((tokens: AccessData) => this.saveAccessData(tokens));
+    return this.http.post(API_URL  + '/auth_org/sign_in', {email, password})
+      .do((tokens: AccessData) => this.saveAccessData());
   }
   /**
    * Logout
    */
-  public logout(): void {
-    console.log(this.tokenStorage);
-    this.tokenStorage.clear();
+  public logout() {
 
+    const headers = new HttpHeaders({
+    'Content-Type':  'application/json; charset=utf-8',
+    'access-token': <string>localStorage.getItem('access-token'),
+    'client': <string>localStorage.getItem('client'),
+    'uid': <string>localStorage.getItem('uid')
+  });
+    return this.http.delete(API_URL + '/auth_user/sign_out'
+      , { headers: headers})
+      .do(
+        data => this.tokenStorage.clear()
+      );
   }
 
   /**
@@ -135,7 +156,9 @@ export class AuthenticationService implements AuthService {
    * @private
    * @param {AccessData} data
    */
-  private saveAccessData({ accessToken, refreshToken }: AccessData) {
-    this.tokenStorage.setAccessToken(accessToken).setRefreshToken(refreshToken);
+  private saveAccessData() {
+    this.tokenStorage.setAccessToken(this.currentUser.accessToken);
+    this.tokenStorage.setClient(this.currentUser.client);
+    this.tokenStorage.setUid(this.currentUser.uid);
   }
 }

@@ -21,8 +21,6 @@ export class HomeComponent {
   public loadData() {
     this.dataService.getEvents().subscribe(events => {
       this.events = events;
-      console.log(this.events);
-
     });
   }
 

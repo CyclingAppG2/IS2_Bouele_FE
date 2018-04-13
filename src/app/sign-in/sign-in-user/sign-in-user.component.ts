@@ -21,7 +21,7 @@ export class SignInUserComponent {
   public login() {
     this.authService
       .loginUser(this.model.email, this.model.password)
-      .subscribe(() => this.router.navigateByUrl('/home'));
+        .subscribe( () => this.router.navigateByUrl('/home'));
   }
 
   onSubmit() {

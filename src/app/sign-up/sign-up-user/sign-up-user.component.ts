@@ -26,9 +26,9 @@ export class SignUpUserComponent {
 
 
   public signUpUser() {
-    console.log(    this.authService
+    this.authService
       .signUpUser(this.model)
-      .subscribe(() => this.router.navigateByUrl('/home')));
+      .subscribe(() => this.router.navigateByUrl('/home'));
 
   }
 

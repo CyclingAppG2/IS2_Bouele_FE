@@ -17,10 +17,13 @@ export class NavbarComponent {
   ) {}
 
   isLogged() {
-    return !!localStorage.getItem('accessToken');
+    return !!localStorage.getItem('access-token');
   }
 
   onLogout() {
-    this.authService.logout();
+    this.authService.logout()
+      .subscribe(
+        () => this.router.navigateByUrl('')
+      );
   }
 }
