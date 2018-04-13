@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthenticationService } from '../../_services/authentication/authentication.service';
 import { Router } from '@angular/router';
 import { User } from '../../_models/user.model';
+import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-sign-in-user',
   templateUrl: './sign-in-user.component.html',
@@ -11,6 +12,7 @@ export class SignInUserComponent {
 
   submitted = false;
   model = new User();
+  error;
 
   constructor(
     private router: Router,
@@ -21,7 +23,8 @@ export class SignInUserComponent {
   public login() {
     this.authService
       .loginUser(this.model.email, this.model.password)
-        .subscribe( () => this.router.navigateByUrl('/home'));
+        .subscribe( () => this.router.navigateByUrl('/home'),
+        (err: HttpErrorResponse) => this.error = err.error.errors[0]);
   }
 
   onSubmit() {

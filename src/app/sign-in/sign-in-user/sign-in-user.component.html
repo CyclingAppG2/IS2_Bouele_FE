@@ -13,8 +13,7 @@
       <div class="form-group">
         <label for="" class="sr-only">Contraseña</label>
         <input type="password" class="form-control" required [(ngModel)]="model.password" #password="ngModel" placeholder="Ćontraseña"
-          name="password" minlength="8" >
-
+          name="password" minlength="8">
       </div>
       <!-- Links -->
       <ul class="list-inline text-center">
@@ -25,6 +24,10 @@
           <a routerLink="/sign-up" class="text-muted text-center">¿Aún no tienes una cuenta?</a>
         </li>
       </ul>
+      <!-- Errors -->
+      <div *ngIf="error" class="alert alert-danger text-center">
+        {{error}}
+      </div>
       <!-- Iniciar Sesión -->
       <div class="form-group">
         <button [disabled]="!signInUserForm.form.valid" class="btn btn-primary-app text-center d-block mx-auto">Iniciar Sesión</button>
