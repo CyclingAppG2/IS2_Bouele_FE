@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse , HttpHeaders} from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders
+} from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from 'ngx-auth';
 import { environment } from '../../../environments/environment';
@@ -13,9 +17,39 @@ import { TokenStorage } from './token-storage.service';
 import { User } from '../../_models/user.model';
 
 class AccessData {
-  accessToken: string;
-  client: string;
-  uid: string;
+  private accessToken: string;
+  private client: string;
+  private uid: string;
+  private expiry: string;
+  private tokenType: string;
+
+  public constructor(accessToken, client, uid, expiry, tokenType) {
+    this.accessToken = accessToken;
+    this.client = client;
+    this.uid = uid;
+    this.expiry = expiry;
+    this.tokenType = tokenType;
+  }
+
+  public getAccessToken() {
+    return this.accessToken;
+  }
+
+  public getUid() {
+    return this.uid;
+  }
+
+  public getClient() {
+    return this.client;
+  }
+
+  public getExpiry() {
+    return this.expiry;
+  }
+
+  public getTokenType() {
+    return this.tokenType;
+  }
 }
 
 const API_URL = environment.apiUrl;
@@ -23,7 +57,7 @@ const API_URL = environment.apiUrl;
 @Injectable()
 export class AuthenticationService implements AuthService {
 
-  private currentUser = new AccessData;
+  private currentUser: AccessData;
 
   constructor(private http: HttpClient, private tokenStorage: TokenStorage) {}
 
@@ -36,7 +70,6 @@ export class AuthenticationService implements AuthService {
   public isAuthorized(): Observable<boolean> {
     return this.tokenStorage.getAccessToken().map(token => !!token);
   }
-
 
   /**
    * Get access token
@@ -97,19 +130,27 @@ export class AuthenticationService implements AuthService {
 
   public loginUser(email: string, password: string): Observable<any> {
     return this.http
-      .post(API_URL + '/auth_user/sign_in', { email,  password}, {observe: 'response'})
-        .do(
-          resp => {
-            this.currentUser.accessToken = resp.headers.get('access-token');
-            this.currentUser.client = resp.headers.get('client');
-            this.currentUser.uid = resp.headers.get('uid');
-            this.saveAccessData();
-            }, err => {
-              console.error(err);
-              this.tokenStorage.clear();
-            }
-        );
-
+      .post(
+        API_URL + '/auth_user/sign_in',
+        { email, password },
+        { observe: 'response' }
+      )
+      .do(
+        resp => {
+          this.currentUser = new AccessData(
+            resp.headers.get('access-token'),
+            resp.headers.get('client'),
+            resp.headers.get('uid'),
+            resp.headers.get('expiry'),
+            resp.headers.get('token-type')
+          );
+          this.saveAccessData();
+        },
+        err => {
+          console.error(err);
+          this.tokenStorage.clear();
+        }
+      );
   }
 
   public signUpUser(user: any): any {
@@ -119,35 +160,75 @@ export class AuthenticationService implements AuthService {
     const password_confirmation = user.password_confirm;
     const username = user.username;
     return this.http
-      .post(API_URL + '/auth_user', {name, username, email, password, password_confirmation})
-      .do((tokens: AccessData) => this.saveAccessData());
+      .post(
+        API_URL + '/auth_user',
+        { name, username, email, password, password_confirmation },
+        { observe: 'response' }
+      )
+      .do(
+        resp => {
+          this.currentUser = new AccessData(
+            resp.headers.get('access-token'),
+            resp.headers.get('client'),
+            resp.headers.get('uid'),
+            resp.headers.get('expiry'),
+            resp.headers.get('token-type')
+          );
+          this.saveAccessData();
+        },
+        err => {
+          console.log(err.message);
+        }
+      );
   }
 
   loginAdmin(email: string, password: string): any {
-    return this.http.post(API_URL  + '/auth_admin/sign_in', {email, password})
-    .do((tokens: AccessData) => this.saveAccessData());
+    return this.http
+      .post(API_URL + '/auth_admin/sign_in', { email, password })
+      .do((tokens: AccessData) => this.saveAccessData());
   }
 
-  loginOrg(email: string,  password: string): any {
-    return this.http.post(API_URL  + '/auth_org/sign_in', {email, password})
+  loginOrg(email: string, password: string): any {
+    return this.http
+      .post(API_URL + '/auth_org/sign_in', { email, password })
       .do((tokens: AccessData) => this.saveAccessData());
   }
   /**
    * Logout
    */
   public logout() {
-
     const headers = new HttpHeaders({
-    'Content-Type':  'application/json; charset=utf-8',
-    'access-token': <string>localStorage.getItem('access-token'),
-    'client': <string>localStorage.getItem('client'),
-    'uid': <string>localStorage.getItem('uid')
-  });
-    return this.http.delete(API_URL + '/auth_user/sign_out'
-      , { headers: headers})
+      'Content-Type': 'application/json; charset=utf-8',
+      'access-token': <string>localStorage.getItem('access-token'),
+      'client': <string>localStorage.getItem('client'),
+      'uid': <string>localStorage.getItem('uid')
+    });
+
+    return this.http
+      .delete(API_URL + '/auth_user/sign_out', { headers: headers })
       .do(
-        data => this.tokenStorage.clear()
+        data => {
+          this.tokenStorage.clear();
+        },
+        err => {
+          this.tokenStorage.clear();
+        }
       );
+  }
+
+  public validateToken() {
+    const headers = this.getCurrentHeaders();
+    return this.http
+      .get(API_URL + '/auth_user/validate_token', { headers: headers })
+        .subscribe(
+          data => {
+          },
+          err => {
+            if (err.status === 401) {
+              this.tokenStorage.clear();
+            }
+          }
+        );
   }
 
   /**
@@ -157,8 +238,19 @@ export class AuthenticationService implements AuthService {
    * @param {AccessData} data
    */
   private saveAccessData() {
-    this.tokenStorage.setAccessToken(this.currentUser.accessToken);
-    this.tokenStorage.setClient(this.currentUser.client);
-    this.tokenStorage.setUid(this.currentUser.uid);
+    this.tokenStorage.setAccessToken(this.currentUser.getAccessToken());
+    this.tokenStorage.setClient(this.currentUser.getClient());
+    this.tokenStorage.setUid(this.currentUser.getUid());
+    this.tokenStorage.setExpiry(this.currentUser.getExpiry());
+    this.tokenStorage.setTokenType(this.currentUser.getTokenType());
+  }
+
+  public getCurrentHeaders(): HttpHeaders {
+      return new HttpHeaders({
+      'Content-Type': 'application/json; charset=utf-8',
+      'access-token': <string>localStorage.getItem('access-token'),
+      'client': <string>localStorage.getItem('client'),
+      'uid': <string>localStorage.getItem('uid')
+    });
   }
 }

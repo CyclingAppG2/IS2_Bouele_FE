@@ -1,15 +1,15 @@
-<div class="container full-height" id="home">
+<div class="container full-height" id="home" >
   <div class="row container-fluid">
     <div class="col-lg-9 border-right">
-      <div class="row container-fluid event border border-info rounded my-2 d-flex align-items-center p-2">
+      <div class="row container-fluid event border border-info rounded my-2 d-flex align-items-center p-2" *ngFor="let event of events">
         <div class="col-3">
           <div class="event-fill border border-warning rounded-circle d-block mx-auto" style="background-image: url(/assets/images/referendo_agro.jpg)"></div>
         </div>
-        <div class="col-9">
+        <div class="col-9" >
           <div class="event-description">
-            <p class="event-name mb-1">Referendo por el agro</p>
+            <p class="event-name mb-1">{{event.name}}</p>
             <p class="event-content mb-1">
-             Cillum labore ex duis et dolore qui esse ipsum elit magna nulla. Adipisicing exercitation ipsum ut pariatur occaecat nostrud pariatur exercitation aliquip id eu. Sint non voluptate do adipisicing cupidatat ad qui dolor eu ex ipsum pariatur duis amet. Labore sint incididunt cupidatat cillum mollit sunt ut labore cupidatat amet consectetur tempor anim enim. Fugiat velit reprehenderit id non. Qui ipsum in sunt magna laborum officia Lorem fugiat.
+             {{event.description}}
             </p>
             <ul class="list-inline d-block ml-auto text-right mb-1">
               <li class="list-inline-item event-link">Comentar</li>
@@ -28,10 +28,5 @@
   </div>
 </div>
 
-<button (click)="loadData()">sfadjk </button>
 
-<ul>
-  <li *ngFor="let event of events" >
-    {{event}}
-  </li>
-</ul>
+

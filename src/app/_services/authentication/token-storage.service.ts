@@ -43,6 +43,16 @@ export class TokenStorage {
     return this;
   }
 
+  public setExpiry(expiry: string): TokenStorage {
+    localStorage.setItem('expiry', expiry);
+    return this;
+  }
+
+  public setTokenType(tokenType: string): TokenStorage {
+    localStorage.setItem('token-type', tokenType);
+    return this;
+  }
+
    /**
    * Set refresh token
    * @returns {TokenStorage}
@@ -60,5 +70,7 @@ export class TokenStorage {
     localStorage.removeItem('access-token');
     localStorage.removeItem('client');
     localStorage.removeItem('uid');
+    localStorage.removeItem('expiry');
+    localStorage.removeItem('token-type');
   }
 }

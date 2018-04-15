@@ -2,15 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AuthenticationService, EventService } from '../_services/index';
 import { Router } from '@angular/router';
+import { User } from '../_models/user.model';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   public users$: Observable<any>;
-  public events = [];
+  public events: any;
 
   constructor(
     private router: Router,
@@ -18,14 +19,8 @@ export class HomeComponent {
     private authService: AuthenticationService
   ) {}
 
-  public loadData() {
-    this.dataService.getEvents().subscribe(events => {
-      this.events = events;
-    });
-  }
-
-  public logout() {
-    this.authService.logout();
-    this.router.navigateByUrl('/');
+  ngOnInit() {
+    // this.authService.validateToken();
+    this.dataService.getEvents().subscribe(events => (this.events = events));
   }
 }

@@ -4,18 +4,39 @@ import { Observable } from 'rxjs/Observable';
 import { catchError, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 import { Event } from '../_models/event.model';
+import { AuthenticationService } from '.';
+import { environment } from '../../environments/environment';
 
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};
+const API_URL = environment.apiUrl;
 
 @Injectable()
 export class EventService {
-  private baseUrl = 'http://localhost:3000';
+  private headers = this.authService.getCurrentHeaders();
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthenticationService
+  ) {}
 
   getEvents(): Observable<Event[]> {
-    return this.http.get<Event[]>(this.baseUrl + '/events');
+    return this.http.get<Event[]>(API_URL + '/events', {
+      headers: this.headers
+    });
+  }
+
+  newEvent(event: Event): Observable<Event> {
+    console.log(this.headers);
+    return this.http.post<Event>(
+      API_URL + '/organization/new_event',
+      {
+        event: {
+          name: event.name,
+          description: event.description,
+          duration: event.duration,
+          organization_id: 1
+        }
+      },
+      { headers: this.headers }
+    );
   }
 }
