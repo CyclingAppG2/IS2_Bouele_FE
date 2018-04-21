@@ -189,6 +189,6 @@ body {
   border-radius: 0.5rem;
 }
 
-.vertical-center{
-
+.h-80{
+  height: 80% !important;
 }

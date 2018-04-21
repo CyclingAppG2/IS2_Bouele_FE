@@ -9,6 +9,7 @@ import { HomeComponent } from './home/home.component';
 import { EventFormComponent } from './event-form/event-form.component';
 import { SignInAdminComponent } from './sign-in/sign-in-admin/sign-in-admin.component';
 import { ContactComponent } from './contact/contact.component';
+import { CompleteFormComponent } from './complete-form/complete-form.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/', pathMatch: 'full' },
@@ -18,7 +19,8 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [ ProtectedGuard ]},
   { path: 'new-event', component: EventFormComponent, canActivate: [ProtectedGuard]},
   { path: 'admin-login', component: SignInAdminComponent, canActivate: [PublicGuard]},
-  { path: 'contact', component: ContactComponent}
+  { path: 'contact', component: ContactComponent},
+  { path: 'complete-form', component: CompleteFormComponent, canActivate: [ProtectedGuard]}
 ];
 
 @NgModule({

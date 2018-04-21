@@ -1,0 +1,40 @@
+<form (ngSubmit)="onSubmit()" #signUpUserForm="ngForm" class="my-4 px-3 text-center">
+  <!-- Cumpleaños -->
+  <div class="form-group" [class.has-error]="birthday.touched && birthday.invalid">
+    <div class="input-group">
+      <input class="form-control" required [(ngModel)]="voluntary.birthday" [minDate]="minDate" [maxDate]="maxDate" placeholder="Fecha de nacimiento"
+        name="birthday" ngbDatepicker #d="ngbDatepicker" #birthday="ngModel">
+      <div class="input-group-append bg-primary-app ">
+        <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+          <i class="fa fa-calendar text-white"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- Genero -->
+  <div class="form-group" [class.has-error]="gender.touched && gender.invalid">
+    <label for="gender" class="sr-only">Genero</label>
+    <select class="custom-select" required [(ngModel)]="voluntary.gender" name="gender" #gender="ngModel">
+      <option [ngValue]="undefined" disabled selected hidden> Genero </option>
+      <option *ngFor="let gender of genders" [value]="gender.value">
+        {{ gender.viewValue }}</option>
+    </select>
+  </div>
+  <!-- Número de celular -->
+  <div class="form-group" [class.has-error]="celPhone.touched && celPhone.invalid">
+    <label for="cel-phone" class="sr-only">Numero Celular</label>
+    <input type="text" class="form-control" id="cel-phone" required [(ngModel)]="voluntary.cellphone" name="celPhone" placeholder="Numero de celular"
+      #celPhone="ngModel">
+  </div>
+  <!-- Ciudad -->
+  <div class="form-group" [class.has-error]="gender.touched && gender.invalid">
+    <label for="gender" class="sr-only">Ciudad</label>
+    <select class="custom-select" required [(ngModel)]="voluntary.city" name="city" #city="ngModel">
+      <option [ngValue]="undefined" disabled selected hidden> Ciudad </option>
+      <option *ngFor="let city of cities" [value]="city.value">
+        {{ city.viewValue }}</option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary-app">Terminar</button>
+  <a href="#" class="text-danger text-right position-absolute" id="skip">Saltar <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i></a>
+</form>

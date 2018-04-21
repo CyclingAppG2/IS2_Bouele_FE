@@ -15,6 +15,8 @@ import 'rxjs/add/operator/switchMap';
 
 import { TokenStorage } from './token-storage.service';
 import { User } from '../../_models/user.model';
+import { Volunteer } from '../../_models/volunteer.model';
+import { CompileStylesheetMetadata } from '@angular/compiler';
 
 class AccessData {
   private accessToken: string;
@@ -31,33 +33,43 @@ class AccessData {
     this.tokenType = tokenType;
   }
 
-  public getAccessToken() {
+  public getAccessToken(): string {
     return this.accessToken;
   }
 
-  public getUid() {
+  public getUid(): string {
     return this.uid;
   }
 
-  public getClient() {
+  public getClient(): string {
     return this.client;
   }
 
-  public getExpiry() {
+  public getExpiry(): string {
     return this.expiry;
   }
 
-  public getTokenType() {
+  public getTokenType(): string {
     return this.tokenType;
   }
+}
+
+interface UserData {
+  allow_password_change: boolean;
+  email: string;
+  id: number;
+  name: string;
+  provider: string;
+  uid: string;
+  username: string;
 }
 
 const API_URL = environment.apiUrl;
 
 @Injectable()
 export class AuthenticationService implements AuthService {
-
   private currentUser: AccessData;
+  private currentHeaders = new HttpHeaders();
 
   constructor(private http: HttpClient, private tokenStorage: TokenStorage) {}
 
@@ -153,11 +165,11 @@ export class AuthenticationService implements AuthService {
       );
   }
 
-  public signUpUser(user: any): any {
+  public signUpUser(user: User): Observable<any> {
     const name = user.firstname + ' ' + user.lastname;
     const email = user.email;
     const password = user.password;
-    const password_confirmation = user.password_confirm;
+    const password_confirmation = user.password_confirmation;
     const username = user.username;
     return this.http
       .post(
@@ -177,10 +189,36 @@ export class AuthenticationService implements AuthService {
           this.saveAccessData();
         },
         err => {
-          console.log(err.message);
+          console.error(err.message);
+          return null;
         }
       );
   }
+
+  public signUpVoluntary(voluntary: Volunteer) {
+    const birthday = voluntary.birthday;
+    const gender = voluntary.gender;
+    const city = voluntary.city;
+    const cellphone = voluntary.cellphone;
+    // const interest = voluntary.theme_interest;
+    const headers = this.getCurrentHeaders();
+    console.log(headers.get('access-token'));
+    return this.http.post(
+      API_URL + '/voluntaries',
+      {
+        gender,
+        city,
+        cellphone
+      },
+      {
+        headers: headers
+      }
+    );
+  }
+
+  completeSignUp() {
+/*     this.validateToken();
+ */  }
 
   loginAdmin(email: string, password: string): any {
     return this.http
@@ -200,8 +238,8 @@ export class AuthenticationService implements AuthService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json; charset=utf-8',
       'access-token': <string>localStorage.getItem('access-token'),
-      'client': <string>localStorage.getItem('client'),
-      'uid': <string>localStorage.getItem('uid')
+      client: <string>localStorage.getItem('client'),
+      uid: <string>localStorage.getItem('uid')
     });
 
     return this.http
@@ -215,21 +253,22 @@ export class AuthenticationService implements AuthService {
         }
       );
   }
-
+/*
   public validateToken() {
     const headers = this.getCurrentHeaders();
     return this.http
-      .get(API_URL + '/auth_user/validate_token', { headers: headers })
-        .subscribe(
-          data => {
-          },
-          err => {
-            if (err.status === 401) {
-              this.tokenStorage.clear();
-            }
+      .get<UserData>(API_URL + '/auth_user/validate_token', { headers: headers })
+      .subscribe(
+        data => {
+          console.log(data.name);
+        },
+        err => {
+          if (err.status === 401) {
+            this.tokenStorage.clear();
           }
-        );
-  }
+        }
+      );
+  } */
 
   /**
    * Save access data in the storage
@@ -246,11 +285,11 @@ export class AuthenticationService implements AuthService {
   }
 
   public getCurrentHeaders(): HttpHeaders {
-      return new HttpHeaders({
+    return new HttpHeaders({
       'Content-Type': 'application/json; charset=utf-8',
       'access-token': <string>localStorage.getItem('access-token'),
-      'client': <string>localStorage.getItem('client'),
-      'uid': <string>localStorage.getItem('uid')
+      client: <string>localStorage.getItem('client'),
+      uid: <string>localStorage.getItem('uid')
     });
   }
 }

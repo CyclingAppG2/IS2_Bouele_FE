@@ -4,26 +4,89 @@
       <p class="text-white font-lobster" id="welcome">¡Bienvenido!</p>
     </div>
     <div class="col-6">
-      <ul class="nav nav-tabs text-center nav-tabs-rounded" >
-        <li class="nav-item nav-item-rounded">
-          <a class="nav-link nav-link-rounded active" data-toggle="tab" href="#volunteers">Voluntarios</a>
-        </li>
-        <li class="nav-item nav-item-rounded">
-          <a class="nav-link nav-link-rounded" data-toggle="tab" href="#organizations">Organizaciones</a>
-        </li>
-      </ul>
-      <div class="tab-content">
         <div class="tab-pane active" id="volunteers">
           <div class="container-fluid d-block ml-auto float-container rounded mx-4 nongrayscale">
-            <app-sign-up-user></app-sign-up-user>
+            <div class="container">
+              <div [hidden]="submitted">
+                <form (ngSubmit)="onSubmit()" #signUpUserForm="ngForm" class="my-4 px-3">
+                  <!-- Nombres completos -->
+                  <div class="row px-0">
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label for="for" class="sr-only">Nombres</label>
+                        <input type="text" class="form-control" id="firstname"  required [(ngModel)]="user.firstname" name="firstname" #firstname="ngModel"
+                          placeholder="Nombres">
+                        <div [hidden]="firstname.valid || firstname.pristine" class="alert alert-danger">
+                          Por favor introduce tu(s) nombre(s)
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label for="for" class="sr-only">Apellidos</label>
+                        <input type="text" class="form-control" id="lastname" required [(ngModel)]="user.lastname" name="lastname" #lastname="ngModel"
+                          placeholder="Apellidos">
+                        <div [hidden]="lastname.valid || lastname.pristine" class="alert alert-danger">
+                          Por favor introduce tu(s) apellido(s)
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Correo electrónico -->
+                  <div class="form-group">
+                    <label for="for" class="sr-only">Correo electrónico</label>
+                    <input type="email" class="form-control" id="email" required email [(ngModel)]="user.email" name="email" #email="ngModel"
+                      placeholder="Correo Electrónico">
+                    <small id="emailHelp" class="form-text text-muted text-right">No compartirémos tu correo con nadie más</small>
+                    <div [hidden]="email.valid || email.pristine" class="alert alert-danger">
+                      Debes escribir tu correo electrónico
+                    </div>
+                  </div>
+                  <!-- Contraseña -->
+                  <div class="form-group">
+                    <label for="password" class="sr-only">Contraseña</label>
+                    <input type="password" name="password" id="password" required minlength="8" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!#%*?&])[A-Za-z\d$@$!%*?&].{8,}"
+                      [(ngModel)]="user.password" #password="ngModel" name="password" class="form-control" placeholder="Contraseña">
+                    <small id="passwordHelp" class="form-text text-muted text-right">Por lo menos 8 caracteres 1 Mayuscula 1 Minuscula, un Entero y un caracter especial($ % & # - ...)</small>
+                    <div [hidden]="password.valid || password.pristine" class="alert alert-danger">
+                      Debes escribir una contraseña
+                    </div>
+                  </div>
+                  <!-- Confirmación de contraseña -->
+                  <div class="form-group">
+                    <label for="password-confirm" class="sr-only">Confirma tu contraseña</label>
+                    <input type="password" name="confirmPassword" [ngModel]="user.password_confirmation" required appConfirmEqualValidator="password"
+                      #passwordConfirmation="ngModel" class="form-control" placeholder="Confirma tu contraseña">
+                  </div>
+                  <!-- Nombre de usuario -->
+                  <div class="form-group" [class.has-error]="username.touched && username.invalid">
+                    <label for="username" class="sr-only">Nombre de Usuario</label>
+                    <input type="text" class="form-control" id="username" name="username" required [(ngModel)]="user.username" placeholder="Username"
+                      #username="ngModel">
+                  </div>
+                  <!-- Acepta -->
+                  <div class="form-check form-check-inline d-block mx-auto text-white text-center">
+                    <label class="form-check-label">
+                      <input class="form-check-input" type="checkbox" name="accepts" id="accepts" value="true" ngModel required> Acepta terminos y condiciones
+                    </label>
+                  </div>
+                  <br>
+                  <!-- Botón de envio -->
+                  <div class="form-group">
+                    <button [disabled]="!signUpUserForm.form.valid" type="submit" class="btn btn-primary-app d-block mx-auto text-center">Comenzar</button>
+                  </div>
+                  <!-- Inicio son redes sociales -->
+                  <hr>
+                  <app-social-links></app-social-links>
+                  <hr>
+                  <!-- Links -->
+                  <a routerLink="/sign-in" class="text-muted text-center d-block mx-auto">¿Ya tienes una cuenta?</a>
+                </form>
+              </div>
+            </div>
+
           </div>
         </div>
-        <div class="tab-pane" id="organizations">
-          <div class="container-fluid d-block ml-auto float-container rounded mx-4 nongrayscale">
-            <app-sign-up-org></app-sign-up-org>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </div>

@@ -23,4 +23,8 @@ export class HomeComponent implements OnInit {
     // this.authService.validateToken();
     this.dataService.getEvents().subscribe(events => (this.events = events));
   }
+
+  validate() {
+/*     this.authService.validateToken();
+ */  }
 }

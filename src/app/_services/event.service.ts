@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { catchError, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 import { Event } from '../_models/event.model';
-import { AuthenticationService } from '.';
+import { AuthenticationService } from './authentication';
 import { environment } from '../../environments/environment';
 
 const API_URL = environment.apiUrl;

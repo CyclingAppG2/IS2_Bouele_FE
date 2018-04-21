@@ -15,8 +15,6 @@ import { SignInComponent } from './sign-in/sign-in.component';
 import { SignInUserComponent } from './sign-in/sign-in-user/sign-in-user.component';
 import { SignInOrgComponent } from './sign-in/sign-in-org/sign-in-org.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
-import { SignUpUserComponent } from './sign-up/sign-up-user/sign-up-user.component';
-import { SignUpOrgComponent } from './sign-up/sign-up-org/sign-up-org.component';
 import { HomeComponent } from './home/home.component';
 import { UserService } from './_services';
 import { SocialLinksComponent } from './social-links/social-links.component';
@@ -26,6 +24,9 @@ import { EventFormComponent } from './event-form/event-form.component';
 import { SignInAdminComponent } from './sign-in/sign-in-admin/sign-in-admin.component';
 import { ContactComponent } from './contact/contact.component';
 import { EventService } from './_services/event.service';
+import { CompleteFormComponent } from './complete-form/complete-form.component';
+import { SignUpVolunteerComponent } from './complete-form/sign-up-volunteer/sign-up-volunteer.component';
+import { SignUpOrganizationComponent } from './complete-form/sign-up-organization/sign-up-organization.component';
 
 @NgModule({
   declarations: [
@@ -35,8 +36,6 @@ import { EventService } from './_services/event.service';
     SignInUserComponent,
     SignInOrgComponent,
     SignUpComponent,
-    SignUpUserComponent,
-    SignUpOrgComponent,
     ConfirmEqualValidatorDirective,
     HomeComponent,
     SocialLinksComponent,
@@ -44,7 +43,10 @@ import { EventService } from './_services/event.service';
     NavbarComponent,
     EventFormComponent,
     SignInAdminComponent,
-    ContactComponent
+    ContactComponent,
+    CompleteFormComponent,
+    SignUpVolunteerComponent,
+    SignUpOrganizationComponent
   ],
   imports: [
     NgbModule.forRoot(),
