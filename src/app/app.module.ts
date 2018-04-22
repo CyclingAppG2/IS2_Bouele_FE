@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 import { HttpClientModule, HttpResponse } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 
@@ -27,6 +28,7 @@ import { EventService } from './_services/event.service';
 import { CompleteFormComponent } from './complete-form/complete-form.component';
 import { SignUpVolunteerComponent } from './complete-form/sign-up-volunteer/sign-up-volunteer.component';
 import { SignUpOrganizationComponent } from './complete-form/sign-up-organization/sign-up-organization.component';
+import { ContactService } from './_services/contact.service';
 
 @NgModule({
   declarations: [
@@ -54,9 +56,10 @@ import { SignUpOrganizationComponent } from './complete-form/sign-up-organizatio
     AppRoutingModule,
     FormsModule,
     AuthenticationModule,
-    HttpClientModule
+    HttpClientModule,
+    SweetAlert2Module.forRoot()
   ],
-  providers: [UserService, EventService],
+  providers: [UserService, EventService, ContactService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
