@@ -10,6 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class SignInUserComponent {
 
+  socialAuthService: any;
   submitted = false;
   model = new User();
   error;
@@ -23,8 +24,10 @@ export class SignInUserComponent {
   public login() {
     this.authService
       .loginUser(this.model.email, this.model.password)
-        .subscribe( () => this.router.navigateByUrl('/home'),
-        (err: HttpErrorResponse) => this.error = err.error.errors[0]);
+        .subscribe(
+          () => this.router.navigateByUrl('/home'),
+          err =>  console.error(err.message)
+        );
   }
 
   onSubmit() {

@@ -24,13 +24,24 @@ class AccessData {
   private uid: string;
   private expiry: string;
   private tokenType: string;
+  private name: string;
+  private email: string;
+  private id: string;
+  private username: string;
+  private role: string;
 
-  public constructor(accessToken, client, uid, expiry, tokenType) {
+
+  constructor(accessToken?, client?, uid?, expiry?, tokenType?, id?, name?, username?, email?, role?) {
     this.accessToken = accessToken;
     this.client = client;
     this.uid = uid;
     this.expiry = expiry;
     this.tokenType = tokenType;
+    this.name = name;
+    this.id = id;
+    this.username = username;
+    this.role = role;
+    this.email = email;
   }
 
   public getAccessToken(): string {
@@ -52,23 +63,31 @@ class AccessData {
   public getTokenType(): string {
     return this.tokenType;
   }
-}
-
-interface UserData {
-  allow_password_change: boolean;
-  email: string;
-  id: number;
-  name: string;
-  provider: string;
-  uid: string;
-  username: string;
+  public getName(): string {
+    return this.name;
+  }
+  public getId(): string {
+    return this.id;
+  }
+  public getUsername(): string {
+    return this.username;
+  }
+  public  getEmail(): string {
+    return this.email;
+  }
+  public getRole(): string {
+    return this.role;
+  }
+  public setRole(role: string) {
+    this.role = role;
+  }
 }
 
 const API_URL = environment.apiUrl;
 
 @Injectable()
 export class AuthenticationService implements AuthService {
-  private currentUser: AccessData;
+  private currentUser = new AccessData();
   private currentHeaders = new HttpHeaders();
 
   constructor(private http: HttpClient, private tokenStorage: TokenStorage) {}
@@ -103,14 +122,13 @@ export class AuthenticationService implements AuthService {
     return this.tokenStorage
       .getRefreshToken()
       .switchMap((refreshToken: string) => {
-        return this.http.post(API_URL + '/refresh', {
+        return this.http.post(API_URL + '/validate-token', {
           refreshToken
         });
       })
       .do(this.saveAccessData.bind(this))
       .catch(err => {
         this.logout();
-
         return Observable.throw(err);
       });
   }
@@ -133,7 +151,7 @@ export class AuthenticationService implements AuthService {
    * @returns {boolean}
    */
   public verifyTokenRequest(url: string): boolean {
-    return url.endsWith('/refresh');
+    return url.endsWith('/validate-token');
   }
 
   /**
@@ -154,9 +172,14 @@ export class AuthenticationService implements AuthService {
             resp.headers.get('client'),
             resp.headers.get('uid'),
             resp.headers.get('expiry'),
-            resp.headers.get('token-type')
+            resp.headers.get('token-type'),
+            JSON.parse(JSON.stringify(resp)).body.data.id,
+            JSON.parse(JSON.stringify(resp)).body.data.name,
+            JSON.parse(JSON.stringify(resp)).body.data.username,
+            JSON.parse(JSON.stringify(resp)).body.data.email
           );
           this.saveAccessData();
+
         },
         err => {
           console.error(err);
@@ -184,7 +207,11 @@ export class AuthenticationService implements AuthService {
             resp.headers.get('client'),
             resp.headers.get('uid'),
             resp.headers.get('expiry'),
-            resp.headers.get('token-type')
+            resp.headers.get('token-type'),
+            JSON.parse(JSON.stringify(resp)).body.data.id,
+            JSON.parse(JSON.stringify(resp)).body.data.name,
+            JSON.parse(JSON.stringify(resp)).body.data.username,
+            JSON.parse(JSON.stringify(resp)).body.data.email
           );
           this.saveAccessData();
         },
@@ -196,13 +223,12 @@ export class AuthenticationService implements AuthService {
   }
 
   public signUpVoluntary(voluntary: Volunteer) {
-    const birthday = voluntary.birthday;
+    // const birthday = voluntary.birthday;
     const gender = voluntary.gender;
     const city = voluntary.city;
     const cellphone = voluntary.cellphone;
     // const interest = voluntary.theme_interest;
     const headers = this.getCurrentHeaders();
-    console.log(headers.get('access-token'));
     return this.http.post(
       API_URL + '/voluntaries',
       {
@@ -213,12 +239,31 @@ export class AuthenticationService implements AuthService {
       {
         headers: headers
       }
+    )
+    .do(
+      resp => {
+        this.currentUser.setRole('Voluntary');
+        this.tokenStorage.setRole('Voluntary');
+        localStorage.setItem('user-data-id', JSON.parse(JSON.stringify(resp)).id);
+      },
+      err => {
+        console.error(err.message);
+      }
     );
   }
 
-  completeSignUp() {
-/*     this.validateToken();
- */  }
+  public completeSignUp(userId, voluntaryId, userType) {
+    const headers = this.getCurrentHeaders();
+    return this.http.post(API_URL + '/user_polymorphisms', {
+      'user_id': userId,
+      'user_data_id': voluntaryId,
+      'user_data_type': userType
+    },
+    {
+      headers: headers
+    });
+  }
+
 
   loginAdmin(email: string, password: string): any {
     return this.http
@@ -238,8 +283,8 @@ export class AuthenticationService implements AuthService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json; charset=utf-8',
       'access-token': <string>localStorage.getItem('access-token'),
-      client: <string>localStorage.getItem('client'),
-      uid: <string>localStorage.getItem('uid')
+      'client': <string>localStorage.getItem('client'),
+      'uid': <string>localStorage.getItem('uid')
     });
 
     return this.http
@@ -247,9 +292,11 @@ export class AuthenticationService implements AuthService {
       .do(
         data => {
           this.tokenStorage.clear();
+          location.reload(true);
         },
         err => {
           this.tokenStorage.clear();
+          location.reload(true);
         }
       );
   }
@@ -282,6 +329,10 @@ export class AuthenticationService implements AuthService {
     this.tokenStorage.setUid(this.currentUser.getUid());
     this.tokenStorage.setExpiry(this.currentUser.getExpiry());
     this.tokenStorage.setTokenType(this.currentUser.getTokenType());
+    this.tokenStorage.setUsername(this.currentUser.getUsername());
+    this.tokenStorage.setEmail(this.currentUser.getEmail());
+    this.tokenStorage.setId( this.currentUser.getId());
+    this.tokenStorage.setName(this.currentUser.getName());
   }
 
   public getCurrentHeaders(): HttpHeaders {

@@ -25,7 +25,6 @@ export class EventService {
   }
 
   newEvent(event: Event): Observable<Event> {
-    console.log(this.headers);
     return this.http.post<Event>(
       API_URL + '/organization/new_event',
       {

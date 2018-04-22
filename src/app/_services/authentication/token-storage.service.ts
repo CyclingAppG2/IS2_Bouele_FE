@@ -58,19 +58,45 @@ export class TokenStorage {
    * @returns {TokenStorage}
    */
   public setRefreshToken(token: string): TokenStorage {
-    localStorage.setItem('refreshToken', token);
+    localStorage.setItem('access-token', token);
 
     return this;
+  }
+
+  public setName(name: string): TokenStorage {
+    localStorage.setItem('name', name);
+    return this;
+
+  }
+
+  public setId(id: string): TokenStorage {
+    localStorage.setItem('user-id', id);
+    return this;
+
+  }
+
+  public setUsername(username: string): TokenStorage {
+    localStorage.setItem('username', username);
+    return this;
+
+  }
+
+  public setEmail(email: any): TokenStorage {
+    localStorage.setItem('email', email);
+    return this;
+
+  }
+
+  public setRole(role: any): TokenStorage {
+    localStorage.setItem('role', role);
+    return this;
+
   }
 
    /**
    * Remove tokens
    */
   public clear() {
-    localStorage.removeItem('access-token');
-    localStorage.removeItem('client');
-    localStorage.removeItem('uid');
-    localStorage.removeItem('expiry');
-    localStorage.removeItem('token-type');
+    localStorage.clear();
   }
 }

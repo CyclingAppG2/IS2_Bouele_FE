@@ -10,6 +10,15 @@ import { ConfirmEqualValidatorDirective } from './_validators/confirm-equal-vali
 
 import { AuthenticationModule } from './_services/authentication/authentication.module';
 
+import {
+  SocialLoginModule,
+  AuthServiceConfig,
+  GoogleLoginProvider,
+  FacebookLoginProvider,
+} from 'angular5-social-login';
+
+import { getAuthServiceConfigs } from './_config/social-login.config';
+
 import { AppComponent } from './app.component';
 import { LandingComponent } from './landing/landing.component';
 import { SignInComponent } from './sign-in/sign-in.component';
@@ -29,6 +38,7 @@ import { CompleteFormComponent } from './complete-form/complete-form.component';
 import { SignUpVolunteerComponent } from './complete-form/sign-up-volunteer/sign-up-volunteer.component';
 import { SignUpOrganizationComponent } from './complete-form/sign-up-organization/sign-up-organization.component';
 import { ContactService } from './_services/contact.service';
+
 
 @NgModule({
   declarations: [
@@ -57,9 +67,18 @@ import { ContactService } from './_services/contact.service';
     FormsModule,
     AuthenticationModule,
     HttpClientModule,
-    SweetAlert2Module.forRoot()
+    SweetAlert2Module.forRoot(),
+    SocialLoginModule
   ],
-  providers: [UserService, EventService, ContactService],
+  providers: [
+    UserService,
+    EventService,
+    ContactService,
+    {
+      provide: AuthServiceConfig,
+      useFactory: getAuthServiceConfigs
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

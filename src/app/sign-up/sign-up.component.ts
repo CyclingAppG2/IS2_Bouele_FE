@@ -23,7 +23,10 @@ export class SignUpComponent {
   public signUpUser() {
     this.authService
       .signUpUser(this.user)
-      .subscribe(() => this.router.navigateByUrl('/complete-form'),
+      .subscribe(
+        resp => {
+          this.router.navigateByUrl('/complete-form');
+        },
      err => {
        console.error(err.status);
      });
