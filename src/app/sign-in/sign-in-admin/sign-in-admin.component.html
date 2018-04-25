@@ -7,15 +7,15 @@
         <h1 class="text-center font-lobster">Bienvenido Administrador</h1>
 
       <div class="form-group">
-        <label for="" class="sr-only">Correo Electrónico</label>
-        <input type="email" name="" id="" class="form-control" placeholder="Correo electrónico" aria-describedby="helpId">
+        <label for="email" class="sr-only">Correo Electrónico</label>
+        <input type="email" name="email" id="email" class="form-control" placeholder="Correo electrónico" aria-describedby="helpId" [(ngModel)]="model.email" #email="ngModel" >
       </div>
       <div class="form-group">
         <label for="" class="sr-only">Contraseña</label>
-        <input type="password" name="" id="" class="form-control" placeholder="Contraseña" aria-describedby="helpId">
+        <input type="password" name="password" id="password" class="form-control" placeholder="Contraseña" aria-describedby="helpId" [(ngModel)]="model.password" #password="ngModel">
       </div>
       <div class="form-group text-center">
-        <button type="submit" class="btn btn-primary-app d-block mx-auto">Iniciar Sesión</button>
+        <button type="submit" class="btn btn-primary-app d-block mx-auto" (click)="login()" >Iniciar Sesión</button>
       </div>
       <app-social-links></app-social-links>
     </form>

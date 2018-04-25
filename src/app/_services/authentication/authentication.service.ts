@@ -87,8 +87,8 @@ const API_URL = environment.apiUrl;
 
 @Injectable()
 export class AuthenticationService implements AuthService {
+
   private currentUser = new AccessData();
-  private currentHeaders = new HttpHeaders();
 
   constructor(private http: HttpClient, private tokenStorage: TokenStorage) {}
 
@@ -176,8 +176,9 @@ export class AuthenticationService implements AuthService {
             JSON.parse(JSON.stringify(resp)).body.data.id,
             JSON.parse(JSON.stringify(resp)).body.data.name,
             JSON.parse(JSON.stringify(resp)).body.data.username,
-            JSON.parse(JSON.stringify(resp)).body.data.email
+            JSON.parse(JSON.stringify(resp)).body.data.email,
           );
+          this.tokenStorage.setRole('Voluntary');
           this.saveAccessData();
 
         },
@@ -186,6 +187,37 @@ export class AuthenticationService implements AuthService {
           this.tokenStorage.clear();
         }
       );
+  }
+
+  public loginAdmin(email: string, password: string): any {
+    return this.http
+    .post(
+      API_URL + '/auth_admin/sign_in',
+      { email, password },
+      { observe: 'response' }
+    )
+    .do(
+      resp => {
+        this.currentUser = new AccessData(
+          resp.headers.get('access-token'),
+          resp.headers.get('client'),
+          resp.headers.get('uid'),
+          resp.headers.get('expiry'),
+          resp.headers.get('token-type'),
+          JSON.parse(JSON.stringify(resp)).body.data.id,
+          JSON.parse(JSON.stringify(resp)).body.data.name,
+          JSON.parse(JSON.stringify(resp)).body.data.username,
+          JSON.parse(JSON.stringify(resp)).body.data.email,
+        );
+        this.tokenStorage.setRole('Administrator');
+        this.saveAccessData();
+
+      },
+      err => {
+        console.error(err);
+        this.tokenStorage.clear();
+      }
+    );
   }
 
   public signUpUser(user: User): Observable<any> {
@@ -221,6 +253,8 @@ export class AuthenticationService implements AuthService {
         }
       );
   }
+
+
 
   public signUpVoluntary(voluntary: Volunteer) {
     // const birthday = voluntary.birthday;
@@ -265,11 +299,7 @@ export class AuthenticationService implements AuthService {
   }
 
 
-  loginAdmin(email: string, password: string): any {
-    return this.http
-      .post(API_URL + '/auth_admin/sign_in', { email, password })
-      .do((tokens: AccessData) => this.saveAccessData());
-  }
+
 
   loginOrg(email: string, password: string): any {
     return this.http
@@ -342,5 +372,10 @@ export class AuthenticationService implements AuthService {
       client: <string>localStorage.getItem('client'),
       uid: <string>localStorage.getItem('uid')
     });
+  }
+
+  public getRole(): string {
+    console.log(this.currentUser.getRole);
+    return this.currentUser.getRole();
   }
 }

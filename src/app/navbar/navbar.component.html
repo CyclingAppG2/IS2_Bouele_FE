@@ -7,7 +7,10 @@
   <a class="navbar-brand d-block mx-auto" routerLink="/">
     <img src="\assets\images\logo.svg" height="50" class="d-block mx-auto" />
   </a>
-  <ul class="navbar-nav ml-auto align-middle">
+  <ul class="navbar-nav ml-auto d-flex align-items-center text-center">
+      <li class="nav-item px-2" [hidden]="!isLogged()">
+        <a class="text-primary-app my-2 pt-1">{{ name }}</a>
+      </li>
       <li class="nav-item px-2" [hidden]="!isLogged()">
           <a routerLink="/" (click)="onLogout()"><i class="fa fa-sign-out-alt fa-2x text-primary-app my-2 pt-1"> <span class="sr-only">Salir</span> </i></a>
       </li>

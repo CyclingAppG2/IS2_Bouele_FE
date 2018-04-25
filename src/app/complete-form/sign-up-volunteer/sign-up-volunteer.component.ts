@@ -27,15 +27,25 @@ export class SignUpVolunteerComponent implements OnInit {
   onSubmit() {
     this.authService.signUpVoluntary(this.voluntary)
     .subscribe(
-      resp => {
-      swal({
-        title: 'Has completado tu registro',
-        text: 'Ahora empieza a compartir y disfrutar',
-        type: 'success',
-        showConfirmButton: false,
-        timer: 1500
-      });
-      this.router.navigateByUrl('/home');
+      () => {
+        this.authService.completeSignUp(
+          localStorage.getItem('user-id'),
+          localStorage.getItem('user-data-id') ,
+          'Voluntary')
+          .subscribe(
+            () => {
+              swal({
+                title: 'Has completado tu registro',
+                text: 'Ahora empieza a compartir y disfrutar',
+                type: 'success',
+                showConfirmButton: false,
+                timer: 1500
+              });
+              this.router.navigateByUrl('/home');
+            },
+            err => console.error(err)
+          );
+
     }, err => {
       swal({
         type: 'error',
@@ -46,14 +56,7 @@ export class SignUpVolunteerComponent implements OnInit {
     }
   );
 
-  this.authService.completeSignUp(
-    localStorage.getItem('user-id'),
-    localStorage.getItem('user-data-id') ,
-    'Voluntary')
-    .subscribe(
-      () => {},
-      err => console.error(err)
-    );
+
 
   }
 }

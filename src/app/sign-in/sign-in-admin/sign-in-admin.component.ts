@@ -21,6 +21,6 @@ export class SignInAdminComponent {
   login() {
     this.authService
     .loginAdmin(this.model.email, this.model.password)
-    .subscribe(() => this.router.navigateByUrl('/home'));
+    .subscribe(() => this.router.navigateByUrl('/administrator-home'));
   }
 }

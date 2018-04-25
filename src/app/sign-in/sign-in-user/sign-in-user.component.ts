@@ -3,6 +3,7 @@ import { AuthenticationService } from '../../_services/authentication/authentica
 import { Router } from '@angular/router';
 import { User } from '../../_models/user.model';
 import { HttpErrorResponse } from '@angular/common/http';
+import swal from 'sweetalert2';
 @Component({
   selector: 'app-sign-in-user',
   templateUrl: './sign-in-user.component.html',
@@ -25,7 +26,16 @@ export class SignInUserComponent {
     this.authService
       .loginUser(this.model.email, this.model.password)
         .subscribe(
-          () => this.router.navigateByUrl('/home'),
+          () => {
+            this.router.navigateByUrl('/voluntary-home');
+            swal({
+              title: '¡Bienvenido!',
+              text: localStorage.getItem('name'),
+              type: 'success',
+              showConfirmButton: false,
+              timer: 1500
+            });
+          },
           err =>  console.error(err.message)
         );
   }

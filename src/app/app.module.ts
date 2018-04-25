@@ -5,6 +5,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 import { HttpClientModule, HttpResponse } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+
+import { AdministratorGuard} from './_guards/administrator.guard';
+import { OrganizationGuard} from './_guards/organization.guard';
+import { VoluntaryGuard} from './_guards/voluntary.guard';
 
 import { ConfirmEqualValidatorDirective } from './_validators/confirm-equal-validator.directive';
 
@@ -38,6 +45,11 @@ import { CompleteFormComponent } from './complete-form/complete-form.component';
 import { SignUpVolunteerComponent } from './complete-form/sign-up-volunteer/sign-up-volunteer.component';
 import { SignUpOrganizationComponent } from './complete-form/sign-up-organization/sign-up-organization.component';
 import { ContactService } from './_services/contact.service';
+import { OrganizationHomeComponent } from './home/organization-home/organization-home.component';
+import { VolunteerHomeComponent } from './home/volunteer-home/volunteer-home.component';
+import { AdministratorHomeComponent } from './home/administrator-home/administrator-home.component';
+
+
 
 
 @NgModule({
@@ -58,7 +70,10 @@ import { ContactService } from './_services/contact.service';
     ContactComponent,
     CompleteFormComponent,
     SignUpVolunteerComponent,
-    SignUpOrganizationComponent
+    SignUpOrganizationComponent,
+    OrganizationHomeComponent,
+    VolunteerHomeComponent,
+    AdministratorHomeComponent
   ],
   imports: [
     NgbModule.forRoot(),
@@ -68,7 +83,7 @@ import { ContactService } from './_services/contact.service';
     AuthenticationModule,
     HttpClientModule,
     SweetAlert2Module.forRoot(),
-    SocialLoginModule
+    SocialLoginModule,
   ],
   providers: [
     UserService,
@@ -77,7 +92,10 @@ import { ContactService } from './_services/contact.service';
     {
       provide: AuthServiceConfig,
       useFactory: getAuthServiceConfigs
-    }
+    },
+    AdministratorGuard,
+    VoluntaryGuard,
+    OrganizationGuard
   ],
   bootstrap: [AppComponent]
 })

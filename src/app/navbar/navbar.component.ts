@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { map } from '../_utils/rxjs.util';
 import { Router } from '@angular/router';
 import { UserService, AuthenticationService } from '../_services';
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-navbar',
@@ -10,6 +11,8 @@ import { UserService, AuthenticationService } from '../_services';
 })
 export class NavbarComponent {
 
+  name: string;
+
   constructor(
     private router: Router,
     private dataService: UserService,
@@ -17,13 +20,23 @@ export class NavbarComponent {
   ) {}
 
   isLogged() {
+    this.name = localStorage.getItem('name');
     return !!localStorage.getItem('access-token');
   }
 
   onLogout() {
     this.authService.logout()
       .subscribe(
-        () => this.router.navigateByUrl('')
-      );
+        () => {
+          swal({
+            title: 'Adios',
+            text: 'Te esperamos de vuelta',
+            type: 'success',
+            showConfirmButton: false,
+            timer: 2000
+          });
+          this.router.navigateByUrl('');
+      }
+    )
   }
 }
