@@ -48,6 +48,7 @@ import { ContactService } from './_services/contact.service';
 import { OrganizationHomeComponent } from './home/organization-home/organization-home.component';
 import { VolunteerHomeComponent } from './home/volunteer-home/volunteer-home.component';
 import { AdministratorHomeComponent } from './home/administrator-home/administrator-home.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 
 
@@ -73,7 +74,8 @@ import { AdministratorHomeComponent } from './home/administrator-home/administra
     SignUpOrganizationComponent,
     OrganizationHomeComponent,
     VolunteerHomeComponent,
-    AdministratorHomeComponent
+    AdministratorHomeComponent,
+    NotFoundComponent
   ],
   imports: [
     NgbModule.forRoot(),

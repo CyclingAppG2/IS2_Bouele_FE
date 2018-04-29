@@ -12,45 +12,42 @@ export class VoluntaryGuard implements CanActivate {
     @Inject(ADMINISTRATOR_FALLBACK_PAGE_URI) private administratorFallbackPageUri: string,
     @Inject(ORGANIZATION_FALLBACK_PAGE_URI) private organizationFallbackPageUri: string,
     private router: Router
-  ) {}
+  ) { }
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-      const isAuthenticated = !!localStorage.getItem('access-token');
-      const isVoluntary = ( localStorage.getItem('role') === 'Voluntary');
-      if ( !isVoluntary || !isAuthenticated ) {
-        swal({
-          title: 'Acceso Denegado',
-          text: 'Solo puedes acceder a esta pagina si eres un voluntario',
-          type: 'error',
-          footer: 'Redirigiendo',
-          timer: 2000
-        });
-        const role = localStorage.getItem('role');
-        switch (role) {
-          case 'Administrator':
-            this.navigate(this.administratorFallbackPageUri);
-            break;
-          case 'Organization':
-            this.navigate(this.organizationFallbackPageUri);
-            break;
-        }
-        return false;
+    const isAuthenticated = !!localStorage.getItem('access-token');
+    const isVoluntary = localStorage.getItem('role') === 'Voluntary';
+    if (!isAuthenticated || !isVoluntary) {
+      const role = localStorage.getItem('role');
+      console.log('Soy un' + role);
+      console.log(this.administratorFallbackPageUri);
+      swal({
+        title: 'Acceso Denegado',
+        text: 'Solo puedes acceder a esta pagina si eres un voluntario \n has sido redirigido a tu inicio',
+        type: 'error',
+      });
+      switch (role) {
+        case 'Administrator':
+          this.navigate(this.administratorFallbackPageUri);
+          break;
+        case 'Organization':
+          this.navigate(this.organizationFallbackPageUri);
+          break;
       }
-      return true;
-  }
-
-  private isVoluntaryPage(state: RouterStateSnapshot): boolean {
-    return state.url === this.administratorFallbackPageUri
-      || state.url === this.organizationFallbackPageUri;
+      return false;
+    }
+    return true;
   }
 
   private navigate(url: string): void {
+    console.log(url);
     if (url.startsWith('http')) {
       window.location.href = url;
     } else {
       this.router.navigateByUrl(url);
     }
-}
+
+  }
 }

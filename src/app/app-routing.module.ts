@@ -22,7 +22,7 @@ const routes: Routes = [
   { path: 'sign-up', component: SignUpComponent, canActivate: [ PublicGuard ] },
   { path: 'voluntary-home', component: VolunteerHomeComponent, canActivate: [ VoluntaryGuard ]},
   { path: 'organization-home', component: OrganizationHomeComponent, canActivate: [ OrganizationGuard ]},
-  { path: 'administratorhome', component: AdministratorHomeComponent, canActivate: [ AdministratorGuard ]},
+  { path: 'administrator-home', component: AdministratorHomeComponent, canActivate: [ AdministratorGuard ]},
   { path: 'new-event', component: EventFormComponent, canActivate: [ProtectedGuard]},
   { path: 'admin-login', component: SignInAdminComponent, canActivate: [PublicGuard]},
   { path: 'contact', component: ContactComponent},

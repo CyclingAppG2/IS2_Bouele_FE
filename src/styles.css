@@ -64,7 +64,9 @@ body {
 }
 
 .full-height {
-  min-height: 80vh !important;
+  min-height: 85vh !important;
+  max-height: 100vh !important;
+  height: 85%;
 }
 
 .bg-white {
