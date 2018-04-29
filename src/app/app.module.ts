@@ -8,6 +8,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { AgmCoreModule } from '@agm/core';
+
 
 import { AdministratorGuard} from './_guards/administrator.guard';
 import { OrganizationGuard} from './_guards/organization.guard';
@@ -41,14 +43,16 @@ import { EventFormComponent } from './event-form/event-form.component';
 import { SignInAdminComponent } from './sign-in/sign-in-admin/sign-in-admin.component';
 import { ContactComponent } from './contact/contact.component';
 import { EventService } from './_services/event.service';
-import { CompleteFormComponent } from './complete-form/complete-form.component';
-import { SignUpVolunteerComponent } from './complete-form/sign-up-volunteer/sign-up-volunteer.component';
-import { SignUpOrganizationComponent } from './complete-form/sign-up-organization/sign-up-organization.component';
+import { CompleteFormComponent } from './sign-up/complete-form/complete-form.component';
+import { SignUpVolunteerComponent } from './sign-up/complete-form/sign-up-volunteer/sign-up-volunteer.component';
+import { SignUpOrganizationComponent } from './sign-up/complete-form/sign-up-organization/sign-up-organization.component';
 import { ContactService } from './_services/contact.service';
 import { OrganizationHomeComponent } from './home/organization-home/organization-home.component';
 import { VolunteerHomeComponent } from './home/volunteer-home/volunteer-home.component';
 import { AdministratorHomeComponent } from './home/administrator-home/administrator-home.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { VoluntaryProfileComponent } from './profile/voluntary-profile/voluntary-profile.component';
+import { FileUploadService } from './_services/file-upload.service';
 
 
 
@@ -75,7 +79,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
     OrganizationHomeComponent,
     VolunteerHomeComponent,
     AdministratorHomeComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    VoluntaryProfileComponent
   ],
   imports: [
     NgbModule.forRoot(),
@@ -86,11 +91,15 @@ import { NotFoundComponent } from './not-found/not-found.component';
     HttpClientModule,
     SweetAlert2Module.forRoot(),
     SocialLoginModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyBODCemGB-zpXz27GtynA1i2SCfU-BdQlE'
+    })
   ],
   providers: [
     UserService,
     EventService,
     ContactService,
+    FileUploadService,
     {
       provide: AuthServiceConfig,
       useFactory: getAuthServiceConfigs

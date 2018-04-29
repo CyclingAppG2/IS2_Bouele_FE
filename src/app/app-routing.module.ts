@@ -12,7 +12,7 @@ import { HomeComponent } from './home/home.component';
 import { EventFormComponent } from './event-form/event-form.component';
 import { SignInAdminComponent } from './sign-in/sign-in-admin/sign-in-admin.component';
 import { ContactComponent } from './contact/contact.component';
-import { CompleteFormComponent } from './complete-form/complete-form.component';
+import { CompleteFormComponent } from './sign-up/complete-form/complete-form.component';
 import { VolunteerHomeComponent, OrganizationHomeComponent, AdministratorHomeComponent } from './home';
 
 const routes: Routes = [
