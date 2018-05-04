@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CITIES, GENDERS } from '../../../_lists';
 import { Volunteer } from '../../../_models/volunteer.model';
 import { AuthenticationService } from '../../../_services/authentication';
@@ -21,7 +21,9 @@ export class SignUpVolunteerComponent implements OnInit {
   localUrl: any[];
   user = new User();
   loading = false;
-  selectedFile: File;
+  selectedFile: File = null;
+  @ViewChild('fileInput') fileInput;
+
 
 
   constructor(
@@ -33,8 +35,14 @@ export class SignUpVolunteerComponent implements OnInit {
   ngOnInit() { }
 
   onSubmit() {
-    this.fileUpload.avatarUserUploader(this.selectedFile);
-    this.authService.signUpVoluntary(this.voluntary)
+    this.fileUpload.avatarUserUploader(this.selectedFile)
+      .subscribe(
+        data => {
+        }, err => {
+          console.error(err);
+        }
+      );
+     this.authService.signUpVoluntary(this.voluntary)
       .subscribe(
         () => {
           this.authService.completeSignUp(
@@ -50,7 +58,7 @@ export class SignUpVolunteerComponent implements OnInit {
                   showConfirmButton: false,
                   timer: 1500
                 });
-                this.router.navigateByUrl('/home');
+                this.router.navigateByUrl('/voluntary-home');
               },
               err => console.error(err)
             );
@@ -64,19 +72,18 @@ export class SignUpVolunteerComponent implements OnInit {
           console.log(err);
         }
       );
-
   }
 
   showPreviewImage(event: any) {
     if (event.target.files && event.target.files[0]) {
       const reader = new FileReader();
+      this.selectedFile = <File>event.target.files[0];
       // tslint:disable-next-line:no-shadowed-variable
       reader.onload = (event: any) => {
         this.localUrl = event.target.result;
-        console.log(this.localUrl);
       };
       reader.readAsDataURL(event.target.files[0]);
-
+      reader.readAsArrayBuffer(this.selectedFile);
     }
   }
 }

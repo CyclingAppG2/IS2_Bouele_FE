@@ -367,15 +367,19 @@ export class AuthenticationService implements AuthService {
 
   public getCurrentHeaders(): HttpHeaders {
     return new HttpHeaders({
-      'Content-Type': 'application/json; charset=utf-8',
       'access-token': <string>localStorage.getItem('access-token'),
-      client: <string>localStorage.getItem('client'),
-      uid: <string>localStorage.getItem('uid')
+      'client': <string>localStorage.getItem('client'),
+      'uid': <string>localStorage.getItem('uid')
     });
   }
 
   public getRole(): string {
     console.log(this.currentUser.getRole);
     return this.currentUser.getRole();
+  }
+
+  public getUser(): Observable<any> {
+    return this.http.get(API_URL + '/auth_user/validate_token', {headers: this.getCurrentHeaders()});
+
   }
 }

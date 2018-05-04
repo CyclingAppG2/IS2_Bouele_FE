@@ -6,5 +6,5 @@ export class User {
   password: string;
   password_confirmation: string;
   username: string;
-  avatar: File;
+  avatar: any[];
 }

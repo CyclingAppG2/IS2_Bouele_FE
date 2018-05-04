@@ -14,8 +14,12 @@
       <li class="nav-item px-2" [hidden]="!isLogged()">
           <a routerLink="/" (click)="onLogout()"><i class="fa fa-sign-out-alt fa-2x text-primary-app my-2 pt-1"> <span class="sr-only">Salir</span> </i></a>
       </li>
+      <li class="nav-item px-2" [hidden]="!isLogged()">
+        <a routerLink="/" (click)="onLogout()"> <img src="{{image_url}}" class="rounded-circle" width="50" height="50"></a>
+    </li>
       <li class="nav-item px-2" [hidden]="isLogged()">
           <a routerLink="/sign-in" ><i class="fa fa-sign-in-alt text-primary-app my-2 pt-1"> Iniciar Sesión</i></a>
       </li>
   </ul>
 </nav>
+
