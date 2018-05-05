@@ -12,7 +12,7 @@ import { Organization } from '../../_models/organization.model';
 export class SignInOrgComponent {
 
   submitted = false;
-  model = new Organization();
+  model = new User();
 
   constructor(
     private router: Router,

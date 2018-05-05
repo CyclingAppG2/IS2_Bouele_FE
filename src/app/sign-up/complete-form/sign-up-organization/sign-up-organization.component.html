@@ -1,3 +1,47 @@
-<p>
-  sign-up-organization works!
-</p>
+<form (ngSubmit)="onSubmit()" #signUpUserForm="ngForm" class="my-4 px-3 text-center">
+  <!-- Avatar -->
+  <div *ngIf="!localUrl" class="position-relative border border-primary rounded-circle d-block mx-auto d-flex align-items-center justify-content-center mb-3" style="width: 12rem; height: 12rem">
+      <input type="file" (change)="showPreviewImage($event)" class="image-uploader" [(ngModel)]="user.avatar" #avatar="ngModel">
+      <i class="fa fa-user fa-7x"></i>
+  </div>
+  <img [src]="localUrl" *ngIf="localUrl" class="image-previewer d-flex align-items-center justify-content-center mb-3 mx-auto">
+  <a *ngIf="localUrl" class="text-secondary pr-3 float-right" (click)="localUrl = !localUrl" > <i class="fa fa-exchange-alt"></i> <span class="sr-only">Cambiar imagen</span> </a>
+  <!-- Categorias -->
+  <div class="form-group" [class.has-error]="category.touched && category.invalid">
+    <label for="category" class="sr-only">Categoria</label>
+    <select class="custom-select" required [(ngModel)]="organization.category" name="category" #category="ngModel">
+      <option [ngValue]="undefined" disabled selected hidden> Categoria </option>
+      <option *ngFor="let category of categories" [value]="category.value">
+        {{ category.viewValue }}</option>
+    </select>
+  </div>
+  <!-- Número de celular -->
+<!--   <div class="form-group" [class.has-error]="celPhone.touched && celPhone.invalid">
+    <label for="cel-phone" class="sr-only">Numero Celular</label>
+    <input type="text" class="form-control" id="cel-phone" required [(ngModel)]="voluntary.cellphone" name="celPhone" placeholder="Numero de celular"
+      #celPhone="ngModel">
+  </div> -->
+  <!-- NIT -->
+  <div class="form-group" [class.has-error]="nit.touched && nit.invalid">
+    <label for="nit" class="sr-only">NIT</label>
+    <input type="text" class="form-control" id="nit" required [(ngModel)]="organization.nit" name="nit" #nit="ngModel" placeholder="Numero de identificación Tributaria"
+      #celPhone="ngModel">
+  </div>
+  <!-- Ciudad -->
+  <div class="form-group" [class.has-error]="city.touched && city.invalid">
+    <label for="gender" class="sr-only">Ciudad</label>
+    <select class="custom-select" required [(ngModel)]="organization.city" name="city" #city="ngModel">
+      <option [ngValue]="undefined" disabled selected hidden> Ciudad </option>
+      <option *ngFor="let city of cities" [value]="city.value">
+        {{ city.viewValue }}</option>
+    </select>
+  </div>
+  <!-- Dirección -->
+  <div class="form-group" [class.has-error]="address.touched && address.invalid">
+    <label for="nit" class="sr-only">NIT</label>
+    <input type="text" class="form-control" id="nit" required [(ngModel)]="organization.address" name="address" #address="ngModel" placeholder="Dirección"
+      #celPhone="ngModel">
+  </div>
+  <button type="submit" class="btn btn-primary-app"[disabled]="signUpUserForm.invalid || loading"  >Terminar</button>
+  <a href="#" class="text-danger text-right position-absolute" id="skip">Saltar <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i></a>
+</form>

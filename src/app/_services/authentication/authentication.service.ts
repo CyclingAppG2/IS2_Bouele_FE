@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, InjectionToken } from '@angular/core';
 import {
   HttpClient,
   HttpErrorResponse,
@@ -17,6 +17,7 @@ import { TokenStorage } from './token-storage.service';
 import { User } from '../../_models/user.model';
 import { Volunteer } from '../../_models/volunteer.model';
 import { CompileStylesheetMetadata } from '@angular/compiler';
+import { Organization } from '../../_models';
 
 class AccessData {
   private accessToken: string;
@@ -178,11 +179,25 @@ export class AuthenticationService implements AuthService {
             JSON.parse(JSON.stringify(resp)).body.data.username,
             JSON.parse(JSON.stringify(resp)).body.data.email,
           );
-          this.tokenStorage.setRole('Voluntary');
+
+          localStorage.setItem('role', 'Voluntary');
           this.saveAccessData();
+
+          /* this.http.get(
+            API_URL + '/user_polimorphysms/' + JSON.parse(JSON.stringify(resp)).body.data.id,
+            {headers: resp.headers})
+            .subscribe(
+            data => {
+              localStorage.setItem('user-data-id', JSON.parse(JSON.stringify(data)).id);
+              localStorage.setItem('role', JSON.parse(JSON.stringify(data)).user_data_type);
+
+            }
+          ); */
+
 
         },
         err => {
+
           console.error(err);
           this.tokenStorage.clear();
         }
@@ -255,7 +270,6 @@ export class AuthenticationService implements AuthService {
   }
 
 
-
   public signUpVoluntary(voluntary: Volunteer) {
     // const birthday = voluntary.birthday;
     const gender = voluntary.gender;
@@ -284,6 +298,36 @@ export class AuthenticationService implements AuthService {
         console.error(err.message);
       }
     );
+  }
+
+  public signUpOrganization(organization: Organization) {
+        // const birthday = voluntary.birthday;
+        const category = organization.category;
+        const city = organization.city;
+        const address = organization.address;
+        // const interest = voluntary.theme_interest;
+        const headers = this.getCurrentHeaders();
+        return this.http.post(
+          API_URL + '/voluntaries',
+          {
+            category,
+            city,
+            address
+          },
+          {
+            headers: headers
+          }
+        )
+        .do(
+          resp => {
+            this.currentUser.setRole('Organization');
+            this.tokenStorage.setRole('Organization');
+            localStorage.setItem('user-data-id', JSON.parse(JSON.stringify(resp)).id);
+          },
+          err => {
+            console.error(err.message);
+          }
+        );
   }
 
   public completeSignUp(userId, voluntaryId, userType) {
@@ -374,12 +418,12 @@ export class AuthenticationService implements AuthService {
   }
 
   public getRole(): string {
-    console.log(this.currentUser.getRole);
-    return this.currentUser.getRole();
+    return localStorage.getItem('role');
   }
 
   public getUser(): Observable<any> {
     return this.http.get(API_URL + '/auth_user/validate_token', {headers: this.getCurrentHeaders()});
 
   }
+
 }

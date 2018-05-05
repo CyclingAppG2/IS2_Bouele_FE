@@ -1,4 +1,23 @@
 agm-map {
-    height: 300px;
-  }
-  
+  height: 10rem;
+}
+
+.image-uploader {
+  opacity: 0;
+  font-size: 10px !important;
+  direction: ltr;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 50%;
+}
+
+.image-previewer {
+  height: 12rem;
+  width: 12rem;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  background-size: contain !important;
+
+}

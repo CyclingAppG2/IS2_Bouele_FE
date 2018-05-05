@@ -19,7 +19,7 @@ export function factory(authenticationService: AuthenticationService) {
     providers: [
       TokenStorage,
       AuthenticationService,
-      { provide: PROTECTED_FALLBACK_PAGE_URI, useValue: '/home' },
+      { provide: PROTECTED_FALLBACK_PAGE_URI, useValue: '/' },
       { provide: PUBLIC_FALLBACK_PAGE_URI, useValue: '/sign-up' },
       { provide: ADMINISTRATOR_FALLBACK_PAGE_URI, useValue: '/administrator-home' },
       { provide: VOLUNTARY_FALLBACK_PAGE_URI, useValue: '/voluntary-home' },

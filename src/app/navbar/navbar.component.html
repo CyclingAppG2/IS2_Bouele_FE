@@ -1,25 +1,38 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <ul class="navbar-nav mr-auto align-middle">
     <li class="nav-item">
-      <a routerLink="/sign-up" class="text-primary-app" [hidden]="isLogged()"><i class="fa fa-sign"> Registrarse</i></a>
+      <a routerLink="/sign-up" class="text-primary-app" [hidden]="isLogged()">
+        <i class="fa fa-sign"> Registrarse</i>
+      </a>
+    </li>
+    <li class="nav-item" [hidden]="!isLogged()">
+      <a href="" class="text-primary-app">
+        <i class="fa fa-bars fa-2x">
+          <span class="sr-only">Menu</span>
+        </i>
+      </a>
     </li>
   </ul>
-  <a class="navbar-brand d-block mx-auto" routerLink="/">
-    <img src="\assets\images\logo.svg" height="50" class="d-block mx-auto" />
+  <a class="navbar-brand d-block mx-auto" (click)="goHome()">
+    <img src="\assets\images\logo.svg" height="50" class="d-block mx-auto" style="cursor: pointer"/>
   </a>
   <ul class="navbar-nav ml-auto d-flex align-items-center text-center">
-      <li class="nav-item px-2" [hidden]="!isLogged()">
-        <a class="text-primary-app my-2 pt-1">{{ name }}</a>
-      </li>
-      <li class="nav-item px-2" [hidden]="!isLogged()">
-          <a routerLink="/" (click)="onLogout()"><i class="fa fa-sign-out-alt fa-2x text-primary-app my-2 pt-1"> <span class="sr-only">Salir</span> </i></a>
-      </li>
-      <li class="nav-item px-2" [hidden]="!isLogged()">
-        <a routerLink="/" (click)="onLogout()"> <img src="{{image_url}}" class="rounded-circle" width="50" height="50"></a>
+    <li class="nav-item px-2" [hidden]="!isLogged()">
+      <a routerLink="/profile">
+        <img src="{{image_url}}" class="rounded-circle" width="35" height="35" title="{{name}}">
+      </a>
     </li>
-      <li class="nav-item px-2" [hidden]="isLogged()">
-          <a routerLink="/sign-in" ><i class="fa fa-sign-in-alt text-primary-app my-2 pt-1"> Iniciar Sesión</i></a>
-      </li>
+    <li class="nav-item px-2" [hidden]="!isLogged()">
+      <a routerLink="/" (click)="onLogout()" title="Cerrar Sesión">
+        <i class="fa fa-sign-out-alt fa-2x text-primary-app my-2 pt-1">
+          <span class="sr-only">Salir</span>
+        </i>
+      </a>
+    </li>
+    <li class="nav-item px-2" [hidden]="isLogged()">
+      <a routerLink="/sign-in">
+        <i class="fa fa-sign-in-alt text-primary-app my-2 pt-1"> Iniciar Sesión</i>
+      </a>
+    </li>
   </ul>
 </nav>
-

@@ -53,9 +53,7 @@ import { AdministratorHomeComponent } from './home/administrator-home/administra
 import { NotFoundComponent } from './not-found/not-found.component';
 import { VoluntaryProfileComponent } from './profile/voluntary-profile/voluntary-profile.component';
 import { FileUploadService } from './_services/file-upload.service';
-
-
-
+import { NgUploaderModule } from 'ngx-uploader';
 
 @NgModule({
   declarations: [
@@ -93,7 +91,8 @@ import { FileUploadService } from './_services/file-upload.service';
     SocialLoginModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBODCemGB-zpXz27GtynA1i2SCfU-BdQlE'
-    })
+    }),
+    NgUploaderModule
   ],
   providers: [
     UserService,

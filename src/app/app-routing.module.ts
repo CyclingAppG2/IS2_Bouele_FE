@@ -14,6 +14,7 @@ import { SignInAdminComponent } from './sign-in/sign-in-admin/sign-in-admin.comp
 import { ContactComponent } from './contact/contact.component';
 import { CompleteFormComponent } from './sign-up/complete-form/complete-form.component';
 import { VolunteerHomeComponent, OrganizationHomeComponent, AdministratorHomeComponent } from './home';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/', pathMatch: 'full' },
@@ -26,7 +27,8 @@ const routes: Routes = [
   { path: 'new-event', component: EventFormComponent, canActivate: [ProtectedGuard]},
   { path: 'admin-login', component: SignInAdminComponent, canActivate: [PublicGuard]},
   { path: 'contact', component: ContactComponent},
-  { path: 'complete-form', component: CompleteFormComponent, canActivate: [ProtectedGuard]}
+  { path: 'complete-form', component: CompleteFormComponent, canActivate: [ProtectedGuard]},
+  { path: '**', component: NotFoundComponent}
 ];
 
 @NgModule({

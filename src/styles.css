@@ -151,7 +151,7 @@ body {
 
 .event-link {
   color: #aaa !important;
-  font-size: 1vw;
+  font-size: 0.7vw;
   cursor: pointer;
 }
 
@@ -161,16 +161,20 @@ body {
 }
 
 .event-content {
-  overflow:hidden;
+  overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
-  word-wrap:break-word;
-  line-height:1.2;
-  max-height: 5.72rem;
-  font-size: 1.1vw;
+  word-wrap: break-word;
+  line-height: 1;
+  max-height: 3.72rem;
+  font-size: 0.8vw;
+  text-align: justify;
+  text-align-last: center;
+  max-width: 85%;
   color: #777;
+  margin: auto;
 }
 
 .event-name {
@@ -179,8 +183,8 @@ body {
 }
 
 .event-fill {
-  width: 9rem;
-  height: 9rem;
+  width: 7rem;
+  height: 7rem;
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;

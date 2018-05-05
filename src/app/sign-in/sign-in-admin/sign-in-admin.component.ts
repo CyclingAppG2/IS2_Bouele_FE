@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../_services';
-import { Organization } from '../../_models/organization.model';
+import { User } from '../../_models';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class SignInAdminComponent {
 
-  model = new Organization();
+  model = new User();
 
   constructor(
     private authService: AuthenticationService,

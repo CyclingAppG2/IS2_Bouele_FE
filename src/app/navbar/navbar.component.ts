@@ -15,6 +15,7 @@ import 'rxjs/add/operator/takeWhile';
 })
 export class NavbarComponent implements OnInit {
 
+  home_url: any;
   name: string;
   image_url: string;
   @ViewChild('avatar') image: ElementRef;
@@ -25,7 +26,7 @@ export class NavbarComponent implements OnInit {
     private authService: AuthenticationService
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.getImage();
   }
 
@@ -37,8 +38,13 @@ export class NavbarComponent implements OnInit {
   getImage() {
     this.authService.getUser().subscribe(
       data => {
-        this.image_url = 'http://localhost:3000' + data.data.image.url;
-        console.log(this.image_url);
+        if (data.data.image.url) {
+          this.image_url = 'http://localhost:3000' + data.data.image.url;
+        } else {
+          this.image_url = 'https://image.flaticon.com/icons/svg/149/149071.svg';
+        }
+      }, err => {
+        console.log('No se encontró imagen del usuario');
       }
     );
   }
@@ -57,5 +63,23 @@ export class NavbarComponent implements OnInit {
           this.router.navigateByUrl('');
       }
     );
+  }
+
+  goHome() {
+    const role = this.authService.getRole();
+    switch (role) {
+      case 'Voluntary':
+        this.router.navigateByUrl('voluntary-home');
+        break;
+      case 'Administrator':
+        this.router.navigateByUrl('administrator-home');
+        break;
+      case 'Organization':
+        this.router.navigateByUrl('Organization-home');
+        break;
+      default:
+        break;
+
+    }
   }
 }

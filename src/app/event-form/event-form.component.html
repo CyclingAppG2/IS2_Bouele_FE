@@ -2,76 +2,84 @@
   <div class="col-3">
   </div>
   <div class="col-6">
-    <form (ngSubmit)="onSubmit()" #eventForm="ngForm" class="my-4 px-3">
-      <div class="form-group">
-        <label for="name" class="sr-only">Nombre del evento</label>
-        <input type="text" name="name" id="name" class="form-control" placeholder="Nombre del evento" [(ngModel)]="model.name" #name="ngModel"
-          required>
+    <div class="card my-3">
+      <div class="card-header font-lobster text-center fa-2x">
+        Creemos tu evento
       </div>
-      <div class="form-group">
-        <label for="description" class="sr-only">Descripción</label>
-        <textarea class="form-control" name="description" id="description" placeholder="Breve descripción del evento" rows="7" [(ngModel)]="model.description"
-          #description="ngModel" required></textarea>
-      </div>
-      <div class="row">
-        <div class="col-6">
+      <div class="card-body">
+        <form (ngSubmit)="onSubmit()" #eventForm="ngForm" class="my-4 px-3">
+          <!-- Nombre -->
           <div class="form-group">
-            <label for="duration" class="sr-only">Duración</label>
-            <input type="number" name="duration" id="duration" class="form-control" placeholder="Duración" [(ngModel)]="model.duration"
-              #duration="ngModel" required number>
+            <label for="name" class="sr-only">Nombre del evento</label>
+            <input type="text" name="name" id="name" class="form-control" placeholder="Nombre del evento" [(ngModel)]="model.name" #name="ngModel"
+              required>
           </div>
-        </div>
-        <div class="col-6">
+          <!-- Descripción -->
           <div class="form-group">
-            <label for="" class="sr-only"></label>
-            <select class="form-control" name="" id="" required>
-              <option>Minutos</option>
-              <option>Horas</option>
-              <option>Dias</option>
-            </select>
+            <label for="description" class="sr-only">Descripción</label>
+            <textarea class="form-control" name="description" id="description" placeholder="Breve descripción del evento" rows="5" [(ngModel)]="model.description"
+              #description="ngModel" maxlength="200" required></textarea>
           </div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="custom-file">
-          <span class="custom-file-control"></span>
-          <input type="file" name="photos" id="photos" placeholder="Agrega imagenes a tu evento" class="form-control-file" [(ngModel)]="model.photos"
-            #photos="ngModel">
-        </label>
-      </div>
-      <div class="form-group">
-        <div class="input-group">
-          <input class="form-control" required [(ngModel)]="model.date" [minDate]="minDate" [maxDate]="maxDate" placeholder="Fecha del evento"
-            name="date" ngbDatepicker #d="ngbDatepicker" #date="ngModel">
-          <div class="input-group-append bg-primary-app ">
-            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
-              <i class="fa fa-calendar text-white"></i>
-            </button>
+          <!-- Duración -->
+          <div class="row">
+            <div class="col-6">
+              <div class="form-group">
+                <label for="duration" class="sr-only">Duración</label>
+                <input type="number" name="duration" id="duration" class="form-control" placeholder="Duración" [(ngModel)]="model.duration"
+                  #duration="ngModel" required number>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label for="" class="sr-only"></label>
+                <select class="form-control" name="" id="" required>
+                  <option>Minutos</option>
+                  <option>Horas</option>
+                  <option>Dias</option>
+                </select>
+              </div>
+            </div>
           </div>
-        </div>
+          <!-- Fecha -->
+          <div class="form-group">
+            <div class="input-group">
+              <input class="form-control" [(ngModel)]="model.date" [minDate]="minDate" [maxDate]="maxDate" placeholder="Fecha del evento"
+                name="date" ngbDatepicker #d="ngbDatepicker" #date="ngModel" required>
+              <div class="input-group-append bg-primary-app ">
+                <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                  <i class="fa fa-calendar text-white"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- Photos -->
+          <div class="form-group">
+            <div *ngIf="urls.length <= 0" class="position-relative border border-secondary btn btn-secondary rounded d-block mx-auto d-flex align-items-center justify-content-center mb-3"
+              style="width: 100%; height: 6rem">
+              <input type="file" multiple (change)="showerPreviewImages($event)" class="image-uploader" [(ngModel)]="model.photos" #photos="ngModel">
+              <i class="fa fa-images  fa-5x"></i>
+            </div>
+            <div class=" d-inline text-center">
+              <img *ngFor="let url of urls" [src]="url" class="rounded mb-3 mx-2 border border-secondary rounded-circle" width="100" height="100">
+            </div>
+            <a *ngIf="urls.length > 0" class="text-secondary pr-3 d-block mx-center text-center" (click)="toEmptyUrls(urls)">
+              <i class="fa fa-exchange-alt"></i>
+              <span class="sr-only">Cambiar imagen</span>
+            </a>
+          </div>
+          <!-- Maps -->
+          <div class="form-group">
+            <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false" (mapClick)="mapClicked($event)">
+              <agm-marker *ngFor="let m of markers; let i = index" [latitude]="m.lat" [longitude]="m.lng" [label]="m.label" [markerDraggable]="m.draggable"></agm-marker>
+            </agm-map>
+          </div>
+          <div class="form-group text-center">
+            <button class="btn btn-primary-app text-white" type="submit" role="button">Agrega este evento</button>
+          </div>
+
+        </form>
       </div>
-      <agm-map  [latitude]="lat"
-      [longitude]="lng"
-      [zoom]="zoom"
-      [disableDefaultUI]="false"
-      [zoomControl]="false"
-      (mapClick)="mapClicked($event)">
-        <agm-marker *ngFor="let m of markers; let i = index"
-        (markerClick)="clickedMarker(m.label, i)"
-        [latitude]="m.lat"
-        [longitude]="m.lng"
-        [label]="m.label"
-        [markerDraggable]="m.draggable"></agm-marker>
-      </agm-map>
-      <div class="form-group text-center">
-          <button class="btn btn-primary-app text-white" type="submit" role="button">Agrega este evento</button>
-      </div>
-
-
-
-
-
-    </form>
+    </div>
   </div>
   <div class="col-3">
 
