@@ -6,6 +6,11 @@
   </div>
   <img [src]="localUrl" *ngIf="localUrl" class="image-previewer d-flex align-items-center justify-content-center mb-3 mx-auto">
   <a *ngIf="localUrl" class="text-secondary pr-3 float-right" (click)="localUrl = !localUrl" > <i class="fa fa-exchange-alt"></i> <span class="sr-only">Cambiar imagen</span> </a>
+  <!-- Nombre -->
+  <div class="form-group" [class.has-error]="name.touched && name.invalid">
+    <label for="name" class="sr-only">NIT</label>
+    <input type="text" class="form-control" id="name" required [(ngModel)]="organization.name" name="name" #name="ngModel" placeholder="Nombre">
+  </div>
   <!-- Categorias -->
   <div class="form-group" [class.has-error]="category.touched && category.invalid">
     <label for="category" class="sr-only">Categoria</label>
@@ -24,7 +29,7 @@
   <!-- NIT -->
   <div class="form-group" [class.has-error]="nit.touched && nit.invalid">
     <label for="nit" class="sr-only">NIT</label>
-    <input type="text" class="form-control" id="nit" required [(ngModel)]="organization.nit" name="nit" #nit="ngModel" placeholder="Numero de identificación Tributaria"
+    <input type="number" class="form-control" id="nit" required min="4" max="10" [(ngModel)]="organization.nit" name="nit" #nit="ngModel" placeholder="Numero de identificación Tributaria"
       #celPhone="ngModel">
   </div>
   <!-- Ciudad -->
@@ -39,8 +44,7 @@
   <!-- Dirección -->
   <div class="form-group" [class.has-error]="address.touched && address.invalid">
     <label for="nit" class="sr-only">NIT</label>
-    <input type="text" class="form-control" id="nit" required [(ngModel)]="organization.address" name="address" #address="ngModel" placeholder="Dirección"
-      #celPhone="ngModel">
+    <input type="text" class="form-control" id="nit" required [(ngModel)]="organization.address" name="address" #address="ngModel" placeholder="Dirección">
   </div>
   <button type="submit" class="btn btn-primary-app"[disabled]="signUpUserForm.invalid || loading"  >Terminar</button>
   <a href="#" class="text-danger text-right position-absolute" id="skip">Saltar <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i></a>

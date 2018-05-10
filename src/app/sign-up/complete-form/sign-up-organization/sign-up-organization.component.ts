@@ -39,13 +39,13 @@ export class SignUpOrganizationComponent implements OnInit {
           console.error(err);
         }
       );
-      this.authService.signUpOrganization(this.organization)
+    this.authService.signUpOrganization(this.organization)
       .subscribe(
         () => {
           this.authService.completeSignUp(
             localStorage.getItem('user-id'),
             localStorage.getItem('user-data-id'),
-            'Administrator')
+            'Organization')
             .subscribe(
               () => {
                 swal({
@@ -55,7 +55,7 @@ export class SignUpOrganizationComponent implements OnInit {
                   showConfirmButton: false,
                   timer: 1500
                 });
-                this.router.navigateByUrl('/administrator-home');
+                this.router.navigateByUrl('/organization-home');
               },
               err => console.error(err)
             );
@@ -71,8 +71,17 @@ export class SignUpOrganizationComponent implements OnInit {
       );
   }
 
-  showPreviewImage(event: Event) {
-
+  showPreviewImage(event) {
+    if (event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+      this.selectedFile = <File>event.target.files[0];
+      // tslint:disable-next-line:no-shadowed-variable
+      reader.onload = (event: any) => {
+        this.localUrl = event.target.result;
+      };
+      reader.readAsDataURL(event.target.files[0]);
+      reader.readAsArrayBuffer(this.selectedFile);
+    }
   }
 
 }

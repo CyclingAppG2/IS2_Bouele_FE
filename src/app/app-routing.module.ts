@@ -15,6 +15,7 @@ import { ContactComponent } from './contact/contact.component';
 import { CompleteFormComponent } from './sign-up/complete-form/complete-form.component';
 import { VolunteerHomeComponent, OrganizationHomeComponent, AdministratorHomeComponent } from './home';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { VoluntaryProfileComponent } from './profile/voluntary-profile/voluntary-profile.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/', pathMatch: 'full' },
@@ -24,10 +25,11 @@ const routes: Routes = [
   { path: 'voluntary-home', component: VolunteerHomeComponent, canActivate: [ VoluntaryGuard ]},
   { path: 'organization-home', component: OrganizationHomeComponent, canActivate: [ OrganizationGuard ]},
   { path: 'administrator-home', component: AdministratorHomeComponent, canActivate: [ AdministratorGuard ]},
-  { path: 'new-event', component: EventFormComponent, canActivate: [ProtectedGuard]},
+  { path: 'new-event', component: EventFormComponent, canActivate: [OrganizationGuard]},
   { path: 'admin-login', component: SignInAdminComponent, canActivate: [PublicGuard]},
   { path: 'contact', component: ContactComponent},
   { path: 'complete-form', component: CompleteFormComponent, canActivate: [ProtectedGuard]},
+  { path: 'profile', component: VoluntaryProfileComponent, canActivate: [ProtectedGuard] },
   { path: '**', component: NotFoundComponent}
 ];
 

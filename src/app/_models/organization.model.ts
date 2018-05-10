@@ -1,5 +1,6 @@
 export class Organization {
   id: number;
+  name: string;
   category: string;
   nit: string;
   address: string;

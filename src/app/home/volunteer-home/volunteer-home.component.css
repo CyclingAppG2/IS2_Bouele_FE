@@ -1,0 +1,14 @@
+#wrapper{
+    height: 100vh;
+    overflow: hidden;
+}
+
+#events{
+    width: 100vh;
+    overflow: auto;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+ 

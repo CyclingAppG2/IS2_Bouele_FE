@@ -21,8 +21,6 @@ export class VoluntaryGuard implements CanActivate {
     const isVoluntary = localStorage.getItem('role') === 'Voluntary';
     if (!isAuthenticated || !isVoluntary) {
       const role = localStorage.getItem('role');
-      console.log('Soy un' + role);
-      console.log(this.administratorFallbackPageUri);
       swal({
         title: 'Acceso Denegado',
         text: 'Solo puedes acceder a esta pagina si eres un voluntario \n has sido redirigido a tu inicio',

@@ -2,6 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 import { HttpClientModule, HttpResponse } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
@@ -32,7 +34,6 @@ import { AppComponent } from './app.component';
 import { LandingComponent } from './landing/landing.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { SignInUserComponent } from './sign-in/sign-in-user/sign-in-user.component';
-import { SignInOrgComponent } from './sign-in/sign-in-org/sign-in-org.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { HomeComponent } from './home/home.component';
 import { UserService } from './_services';
@@ -61,7 +62,6 @@ import { NgUploaderModule } from 'ngx-uploader';
     LandingComponent,
     SignInComponent,
     SignInUserComponent,
-    SignInOrgComponent,
     SignUpComponent,
     ConfirmEqualValidatorDirective,
     HomeComponent,
@@ -92,7 +92,8 @@ import { NgUploaderModule } from 'ngx-uploader';
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBODCemGB-zpXz27GtynA1i2SCfU-BdQlE'
     }),
-    NgUploaderModule
+    NgUploaderModule,
+    InfiniteScrollModule
   ],
   providers: [
     UserService,

@@ -29,13 +29,17 @@ export class EventService {
       API_URL + '/organization/new_event',
       {
         event: {
-          name: event.name,
-          description: event.description,
-          duration: event.duration,
-          organization_id: 1
+          'name': event.name,
+          'description': event.description,
+          'duration': event.duration,
+          'organization_id': localStorage.getItem('user_data_id')
         }
       },
       { headers: this.headers }
+    ).do(
+      resp => {
+        console.log(resp);
+      }
     );
   }
 }

@@ -66,7 +66,8 @@ export class NavbarComponent implements OnInit {
   }
 
   goHome() {
-    const role = this.authService.getRole();
+    const role = localStorage.getItem('role');
+    console.log(role);
     switch (role) {
       case 'Voluntary':
         this.router.navigateByUrl('voluntary-home');
@@ -75,7 +76,7 @@ export class NavbarComponent implements OnInit {
         this.router.navigateByUrl('administrator-home');
         break;
       case 'Organization':
-        this.router.navigateByUrl('Organization-home');
+        this.router.navigateByUrl('organization-home');
         break;
       default:
         break;

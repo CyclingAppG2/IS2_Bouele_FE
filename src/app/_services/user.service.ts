@@ -2,23 +2,49 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { User } from '../_models';
+import { AuthenticationService } from '.';
+import { Router } from '@angular/router';
 
 const API_URL = environment.apiUrl;
 
 @Injectable()
 export class UserService {
 
-    constructor(private http: HttpClient) {}
+    constructor(
+        private authService: AuthenticationService,
+        private router: Router
+    ) { }
 
-    getUsers() {
-        return this.http.get('http://localhost:3000/auth/');
+
+    public initUser(): User {
+        const voluntary = new User();
+        this.authService.getUser()
+            .subscribe(
+                user => {
+                    const name = user.data.name.split(' ');
+                    voluntary.lastname = name[name.length - 2] + ' ' + name[name.length - 1];
+                    voluntary.firstname = name[0] + ' ' + name[1];
+                    voluntary.avatar = API_URL + user.data.image.url;
+                    voluntary.email = user.data.email;
+                    voluntary.username = user.data.username;
+                }
+            );
+        return voluntary;
     }
 
-    postAvatar(fileToUpload: File) {
-        const endpoint = API_URL + 'auth_user';
-        const formData: FormData = new FormData();
-        formData.append('Image', fileToUpload, fileToUpload.name);
-        return this.http
-          .post(endpoint, formData);
+    public goHome(): string {
+        const role = localStorage.getItem('role');
+        console.log('HOldskfjaslk', role);
+        switch (role) {
+            case 'Voluntary':
+                return 'voluntary-home';
+            case 'Administrator':
+                return 'administrator-home';
+            case 'Organization':
+                return 'organization-home';
+            case 'undefined':
+                return 'complete-form';
+        }
     }
 }
