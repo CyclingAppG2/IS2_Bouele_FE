@@ -16,6 +16,7 @@ import { CompleteFormComponent } from './sign-up/complete-form/complete-form.com
 import { VolunteerHomeComponent, OrganizationHomeComponent, AdministratorHomeComponent } from './home';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { VoluntaryProfileComponent } from './profile/voluntary-profile/voluntary-profile.component';
+import { EventDetailComponent } from './event-detail/event-detail.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/', pathMatch: 'full' },
@@ -30,6 +31,7 @@ const routes: Routes = [
   { path: 'contact', component: ContactComponent},
   { path: 'complete-form', component: CompleteFormComponent, canActivate: [ProtectedGuard]},
   { path: 'profile', component: VoluntaryProfileComponent, canActivate: [ProtectedGuard] },
+  { path: 'event-detail/:id', component: EventDetailComponent },
   { path: '**', component: NotFoundComponent}
 ];
 

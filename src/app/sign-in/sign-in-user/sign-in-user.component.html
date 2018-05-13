@@ -24,6 +24,7 @@
           <a routerLink="/sign-up" class="text-muted text-center">¿Aún no tienes una cuenta?</a>
         </li>
       </ul>
+      {{error}}
       <!-- Errors -->
       <div *ngIf="error" class="alert alert-danger text-center">
         {{error}}

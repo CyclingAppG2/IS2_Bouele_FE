@@ -5,6 +5,8 @@ import { AuthenticationService } from '../../../_services';
 import { FileUploadService } from '../../../_services/file-upload.service';
 import { Router } from '@angular/router';
 import swal from 'sweetalert2';
+import { MunicipalityService } from '../../../_services/municipality.service';
+import { CategoryService } from '../../../_services/category.service';
 @Component({
   selector: 'app-sign-up-organization',
   templateUrl: './sign-up-organization.component.html',
@@ -15,8 +17,8 @@ export class SignUpOrganizationComponent implements OnInit {
   organization = new Organization();
   localUrl: any;
   user = new User();
-  cities = CITIES;
-  categories = CATEGORIES;
+  cities;
+  categories;
   loading = false;
   selectedFile: File = null;
   @ViewChild('fileInput') fileInput;
@@ -24,11 +26,25 @@ export class SignUpOrganizationComponent implements OnInit {
   constructor(
     private authService: AuthenticationService,
     private fileUpload: FileUploadService,
-    private router: Router
+    private router: Router,
+    private municipalityService: MunicipalityService,
+    private categoryService: CategoryService
   ) { }
 
   ngOnInit() {
-
+   this.municipalityService.getMunicipalities()
+    .subscribe(
+      resp => {
+        this.cities = resp;
+      }
+    );
+    this.categoryService.getCategories()
+      .subscribe(
+        resp => {
+          this.categories = resp;
+          console.log(this.categories);
+        }
+      );
   }
 
   onSubmit() {

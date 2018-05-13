@@ -11,12 +11,13 @@ const API_URL = environment.apiUrl;
 
 @Injectable()
 export class EventService {
+
   private headers = this.authService.getCurrentHeaders();
 
   constructor(
     private http: HttpClient,
     private authService: AuthenticationService
-  ) {}
+  ) { }
 
   getEvents(): Observable<Event[]> {
     return this.http.get<Event[]>(API_URL + '/events', {
@@ -24,22 +25,20 @@ export class EventService {
     });
   }
 
-  newEvent(event: Event): Observable<Event> {
-    return this.http.post<Event>(
-      API_URL + '/organization/new_event',
-      {
-        event: {
-          'name': event.name,
-          'description': event.description,
-          'duration': event.duration,
-          'organization_id': localStorage.getItem('user_data_id')
-        }
-      },
+  newEvent(event): Observable<any> {
+
+    return this.http.post(
+      API_URL + '/events',
+      event,
       { headers: this.headers }
     ).do(
       resp => {
         console.log(resp);
       }
     );
+  }
+
+  getEventById(id: number): Observable<any> {
+    return this.http.get(API_URL + '/events/' + id, {headers: this.headers});
   }
 }

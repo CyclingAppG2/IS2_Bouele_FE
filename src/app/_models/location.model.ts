@@ -1,5 +1,9 @@
 export class Location {
-  id: number;
-  longitude: number;
-  latitude: number;
+  id?: number;
+  lat: number;
+  lng: number;
+  label: string;
+  person_name: string;
+  email: string;
+  draggable: boolean;
 }

@@ -7,56 +7,61 @@
         Creemos tu evento
       </div>
       <div class="card-body">
-        <form (ngSubmit)="onSubmit()" #eventForm="ngForm" class="my-4 px-3">
-          <!-- Nombre -->
+        <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
           <div class="form-group">
-            <label for="name" class="sr-only">Nombre del evento</label>
-            <input type="text" name="name" id="name" class="form-control" placeholder="Nombre del evento" [(ngModel)]="model.name" #name="ngModel"
-              required>
+            <label for="" class="d-block mx-auto"></label>
+            <input type="text" class="form-control" formControlName="name" placeholder="Agrega un nombre a tu evento" required>
           </div>
-          <!-- Descripción -->
           <div class="form-group">
-            <label for="description" class="sr-only">Descripción</label>
-            <textarea class="form-control" name="description" id="description" placeholder="Breve descripción del evento" rows="5" [(ngModel)]="model.description"
-              #description="ngModel" maxlength="200" required></textarea>
+            <label for="" class="d-block mx-auto"></label>
+            <textarea type="text" class="form-control" formControlName="description" placeholder="Agrega un nombre a tu evento" maxlength="200"
+              rows="5" style="resize: none;" required></textarea>
           </div>
-          <!-- Duración -->
-          <div class="row">
-            <div class="col-6">
-              <div class="form-group">
-                <label for="duration" class="sr-only">Duración</label>
-                <input type="number" name="duration" id="duration" class="form-control" placeholder="Duración" [(ngModel)]="model.duration"
-                  #duration="ngModel" required number>
-              </div>
-            </div>
-            <div class="col-6">
-              <div class="form-group">
-                <label for="" class="sr-only"></label>
-                <select class="form-control" name="" id="" required>
-                  <option>Minutos</option>
-                  <option>Horas</option>
-                  <option>Dias</option>
-                </select>
+          <div class="form-group">
+            <div class="row container-fluid d-flex align-items-center">
+              <div class="col-8 p-0">
+                <div class="form-group">
+                  <div class="input-group">
+                    <input class="form-control" formControlName="date" [minDate]="minDate" [maxDate]="maxDate" placeholder="Fecha del evento"
+                      name="date" ngbDatepicker #d="ngbDatepicker" required>
+                    <div class="input-group-append bg-primary-app ">
+                      <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                        <i class="fa fa-calendar text-white"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <!-- Fecha -->
           <div class="form-group">
-            <div class="input-group">
-              <input class="form-control" [(ngModel)]="model.date" [minDate]="minDate" [maxDate]="maxDate" placeholder="Fecha del evento"
-                name="date" ngbDatepicker #d="ngbDatepicker" #date="ngModel" required>
-              <div class="input-group-append bg-primary-app ">
-                <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
-                  <i class="fa fa-calendar text-white"></i>
-                </button>
+              <label for="" class="d-block mx-auto"></label>
+              <input type="number" class="form-control" formControlName="max_voluntaries" placeholder="Maximo número de voluntarios" required>
+            </div>
+          <div class="form-group">
+            <div class="row container-fluid d-flex align-items-center">
+              <div class="col-6 pl-0">
+                <div class="form-group">
+                  <label for="" class="d-block mx-auto"></label>
+                  <input type="number" class="form-control" formControlName="duration" placeholder="Duración" required>
+                </div>
+              </div>
+              <div class="col-6 pr-0 d-block ml-auto">
+                <div class="form-group">
+                  <label for="" class="d-block mx-auto"></label>
+                  <select class="form-control" formControlName="unidades" [(ngModel)]="unidades" required>
+                    <option [ngValue]="undefined" disabled selected hidden> Unidades</option>
+                    <option *ngFor="let unit of units" [value]="unit.value">{{unit.viewValue}}</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
-          <!-- Photos -->
+
           <div class="form-group">
-            <div *ngIf="urls.length <= 0" class="position-relative border border-secondary btn btn-secondary rounded d-block mx-auto d-flex align-items-center justify-content-center mb-3"
+            <div *ngIf="urls.length < 1" class="position-relative border border-secondary btn btn-secondary rounded d-block mx-auto d-flex align-items-center justify-content-center mb-3"
               style="width: 100%; height: 6rem">
-              <input type="file" multiple (change)="showerPreviewImages($event)" class="image-uploader" [(ngModel)]="model.photos" #photos="ngModel">
+              <input type="file" multiple (change)="showerPreviewImages($event)" class="image-uploader" formControlName="images">
               <i class="fa fa-images  fa-5x"></i>
             </div>
             <div class=" d-inline text-center">
@@ -67,16 +72,53 @@
               <span class="sr-only">Cambiar imagen</span>
             </a>
           </div>
-          <!-- Maps -->
           <div class="form-group">
-            <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false" (mapClick)="mapClicked($event)">
-              <agm-marker *ngFor="let m of markers; let i = index" [latitude]="m.lat" [longitude]="m.lng" [label]="m.label" [markerDraggable]="m.draggable"></agm-marker>
+            <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false" (mapClick)="mapClicked($event)"
+              required>
+              <agm-marker *ngFor="let m of markers" [latitude]="m.lat" [longitude]="m.lng" [label]="m.label" [markerDraggable]="m.draggable"></agm-marker>
             </agm-map>
           </div>
-          <div class="form-group text-center">
-            <button class="btn btn-primary-app text-white" type="submit" role="button">Agrega este evento</button>
+          <div formArrayName="locations_describe">
+            <div *ngFor="let locations_describe of locationsDescribes.controls; let i=index" [formGroupName]="i">
+              <h6 class="text-center"> {{i + 1}}° ubicación </h6>
+              <div class="form-group">
+                <label for="" class="sr-only"></label>
+                <input type="text" class="form-control" formControlName="person_name" placeholder="Nombre del responsable" required>
+              </div>
+              <div class="form-group">
+                <label for="" class="sr-only"></label>
+                <input type="text" class="form-control" formControlName="label" placeholder="Agrega un nombre a este lugar" required>
+              </div>
+              <div class="form-group">
+                <label for="" class="sr-only"></label>
+                <input type="text" class="form-control" formControlName="email" placeholder="Un email de contacto, Por favor" required>
+              </div>
+            </div>
           </div>
-
+          <div formArrayName="plusses">
+            <div *ngFor="let plus of plusses.controls; let i=index" [formGroupName]="i">
+              <div class="form-group">
+                <label for="" class="sr-only"></label>
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control" formControlName="plus_name" placeholder="¿Cual es tu plus?" required>
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-danger" type="button" (click)="deletePlusses()">
+                      <i class="fa fa-times-circle"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group text-right">
+            <a class="btn btn-secondary text-white" (click)="addPLusses()">Agregar un plus</a>
+          </div>
+          <div class="alert alert-danger" role="alert" *ngIf="error">
+              <strong>Lo sentimos</strong> {{error}}
+            </div>
+          <div class="form-group text-center">
+            <button class="btn btn-primary-app text-white" type="submit" role="button" [disabled]="!eventForm.valid">Agrega este evento</button>
+          </div>
         </form>
       </div>
     </div>
@@ -85,3 +127,4 @@
 
   </div>
 </div>
+

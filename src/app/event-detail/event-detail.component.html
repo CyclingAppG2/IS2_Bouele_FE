@@ -1,0 +1,78 @@
+<div class="full-height">
+    <div class="row container-fluid">
+        <div class="col-3">
+        </div>
+        <div class="col-6">
+            <div class="card my-3">
+                <div class="card-header font-lobster text-center fa-2x">
+                    Creemos tu evento
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="eventForm">
+                        <div class="form-group">
+                            <label for="" class="d-block mx-auto"></label>
+                            <input type="text" class="form-control" formControlName="name" placeholder="Agrega un nombre a tu evento" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="d-block mx-auto"></label>
+                            <textarea type="text" class="form-control" formControlName="description" placeholder="Agrega un nombre a tu evento" maxlength="200"
+                                rows="5" style="resize: none;" required></textarea>
+                        </div>
+X                       <!-- Dates -->
+                        <div class="form-group">
+                            <label for="" class="d-block mx-auto"></label>
+                            <input type="number" class="form-control" formControlName="max_voluntaries" placeholder="Maximo número de voluntarios" required>
+                        </div>
+                        <div class="form-group">
+                            <div class="row container-fluid d-flex align-items-center">
+                                <div class="col-6 pl-0">
+                                    <div class="form-group">
+                                        <label for="" class="d-block mx-auto"></label>
+                                        <input type="number" class="form-control" formControlName="duration" placeholder="Duración" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- images -->
+                        <div class="form-group">
+                            <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false"
+                                required>
+                                <agm-marker *ngFor="let m of markers" [latitude]="m.lat" [longitude]="m.lng" [label]="m.label" [markerDraggable]="m.draggable"></agm-marker>
+                            </agm-map>
+                        </div>
+                        <div formArrayName="locations_describe">
+                            <div *ngFor="let locations_describe of locationsDescribes.controls; let i=index" [formGroupName]="i">
+                                <h6 class="text-center"> {{i + 1}}° ubicación </h6>
+                                <div class="form-group">
+                                    <label for="" class="sr-only"></label>
+                                    <input type="text" class="form-control" formControlName="person_name" placeholder="Nombre del responsable" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="sr-only"></label>
+                                    <input type="text" class="form-control" formControlName="label" placeholder="Agrega un nombre a este lugar" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="sr-only"></label>
+                                    <input type="text" class="form-control" formControlName="email" placeholder="Un email de contacto, Por favor" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div formArrayName="plusses">
+                            <div *ngFor="let plus of plusses.controls; let i=index" [formGroupName]="i">
+                                <div class="form-group">
+                                    <label for="" class="sr-only"></label>
+                                    <input type="text" class="form-control" formControlName="plus_name" placeholder="¿Cual es tu plus?" required>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+
+        </div>
+    </div>
+
+
+</div>

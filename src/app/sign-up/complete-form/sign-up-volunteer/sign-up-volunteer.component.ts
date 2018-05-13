@@ -6,6 +6,7 @@ import { FileUploadService } from '../../../_services/file-upload.service';
 import { Router, RouterLink } from '@angular/router';
 import swal from 'sweetalert2';
 import { User } from '../../../_models';
+import { MunicipalityService } from '../../../_services/municipality.service';
 
 @Component({
   selector: 'app-sign-up-volunteer',
@@ -13,7 +14,7 @@ import { User } from '../../../_models';
   styleUrls: ['./sign-up-volunteer.component.css']
 })
 export class SignUpVolunteerComponent implements OnInit {
-  cities = CITIES;
+  cities;
   genders = GENDERS;
   voluntary = new Volunteer();
   minDate = { year: 1900, month: 1, day: 1 };
@@ -23,16 +24,29 @@ export class SignUpVolunteerComponent implements OnInit {
   loading = false;
   selectedFile: File = null;
   @ViewChild('fileInput') fileInput;
+  time = {hour: 13, minute: 30};
+
 
 
 
   constructor(
     private authService: AuthenticationService,
     private fileUpload: FileUploadService,
-    private router: Router
-  ) { }
+    private router: Router,
+    private municipalityService: MunicipalityService
+  ) {
 
-  ngOnInit() { }
+   }
+
+  ngOnInit() {
+    this.municipalityService.getMunicipalities()
+    .subscribe(
+      resp => {
+        this.cities = resp;
+        console.log(resp);
+      }
+    );
+  }
 
   onSubmit() {
     this.fileUpload.avatarUserUploader(this.selectedFile)
@@ -78,6 +92,7 @@ export class SignUpVolunteerComponent implements OnInit {
     if (event.target.files && event.target.files[0]) {
       const reader = new FileReader();
       this.selectedFile = <File>event.target.files[0];
+      console.log(this.selectedFile);
       // tslint:disable-next-line:no-shadowed-variable
       reader.onload = (event: any) => {
         this.localUrl = event.target.result;

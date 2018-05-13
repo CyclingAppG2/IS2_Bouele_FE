@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Observable';
 })
 export class FooterComponent implements OnInit {
 
-  now: Date;  
+  now: Date;
   fixedTimezone = '2015-06-15T09:03:01+0900';
 
   constructor() {}

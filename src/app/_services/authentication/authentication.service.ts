@@ -272,10 +272,11 @@ export class AuthenticationService implements AuthService {
 
 
   public signUpVoluntary(voluntary: Volunteer) {
-    // const birthday = voluntary.birthday;
+    const birthday = new Date(voluntary.birthday.year, voluntary.birthday.month - 1, voluntary.birthday.day).toString();
     const gender = voluntary.gender;
     const city = voluntary.city;
     const cellphone = voluntary.cellphone;
+    // console.log(birthday);
     // const interest = voluntary.theme_interest;
     const headers = this.getCurrentHeaders();
     return this.http.post(
@@ -283,7 +284,8 @@ export class AuthenticationService implements AuthService {
       {
         gender,
         city,
-        cellphone
+        cellphone,
+        birthday
       },
       {
         headers: headers
@@ -302,22 +304,22 @@ export class AuthenticationService implements AuthService {
   }
 
   public signUpOrganization(organization: Organization) {
-        // const birthday = voluntary.birthday;
         const nit = organization.nit;
         const category = organization.category;
         const city = organization.city;
         const address = organization.address;
         const organizationName = organization.name;
-        // const interest = voluntary.theme_interest;
         const headers = this.getCurrentHeaders();
         return this.http.post(
           API_URL + '/organizations',
           {
-            'NIT': nit,
-            'category': category,
-            'mainaddress': address,
-            'firm': organizationName,
-            'organization_score': 1
+              'organization': {
+              'NIT': nit,
+              'minicipality_id': city,
+              'organization_category_id': category,
+              'mainaddress': address,
+              'firm': organizationName
+            }
           },
           {
             headers: headers
@@ -411,7 +413,7 @@ export class AuthenticationService implements AuthService {
     return new HttpHeaders({
       'access-token': <string>localStorage.getItem('access-token'),
       'client': <string>localStorage.getItem('client'),
-      'uid': <string>localStorage.getItem('uid')
+      'uid': <string>localStorage.getItem('uid'),
     });
   }
 

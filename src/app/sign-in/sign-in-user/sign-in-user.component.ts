@@ -39,7 +39,7 @@ export class SignInUserComponent {
               timer: 1500
             });
           },
-          err =>  console.log(err.error.errors)
+          err =>  this.error = err.error.errors
         );
   }
 

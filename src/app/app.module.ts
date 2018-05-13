@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
@@ -13,9 +14,9 @@ import { EffectsModule } from '@ngrx/effects';
 import { AgmCoreModule } from '@agm/core';
 
 
-import { AdministratorGuard} from './_guards/administrator.guard';
-import { OrganizationGuard} from './_guards/organization.guard';
-import { VoluntaryGuard} from './_guards/voluntary.guard';
+import { AdministratorGuard } from './_guards/administrator.guard';
+import { OrganizationGuard } from './_guards/organization.guard';
+import { VoluntaryGuard } from './_guards/voluntary.guard';
 
 import { ConfirmEqualValidatorDirective } from './_validators/confirm-equal-validator.directive';
 
@@ -55,6 +56,10 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { VoluntaryProfileComponent } from './profile/voluntary-profile/voluntary-profile.component';
 import { FileUploadService } from './_services/file-upload.service';
 import { NgUploaderModule } from 'ngx-uploader';
+import { MunicipalityService } from './_services/municipality.service';
+import { CategoryService } from './_services/category.service';
+import { EventDetailComponent } from './event-detail/event-detail.component';
+
 
 @NgModule({
   declarations: [
@@ -78,13 +83,15 @@ import { NgUploaderModule } from 'ngx-uploader';
     VolunteerHomeComponent,
     AdministratorHomeComponent,
     NotFoundComponent,
-    VoluntaryProfileComponent
+    VoluntaryProfileComponent,
+    EventDetailComponent
   ],
   imports: [
     NgbModule.forRoot(),
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     AuthenticationModule,
     HttpClientModule,
     SweetAlert2Module.forRoot(),
@@ -93,13 +100,16 @@ import { NgUploaderModule } from 'ngx-uploader';
       apiKey: 'AIzaSyBODCemGB-zpXz27GtynA1i2SCfU-BdQlE'
     }),
     NgUploaderModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+
   ],
   providers: [
     UserService,
     EventService,
     ContactService,
     FileUploadService,
+    MunicipalityService,
+    CategoryService,
     {
       provide: AuthServiceConfig,
       useFactory: getAuthServiceConfigs
@@ -110,4 +120,4 @@ import { NgUploaderModule } from 'ngx-uploader';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

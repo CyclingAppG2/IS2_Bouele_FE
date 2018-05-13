@@ -16,8 +16,8 @@
     <label for="category" class="sr-only">Categoria</label>
     <select class="custom-select" required [(ngModel)]="organization.category" name="category" #category="ngModel">
       <option [ngValue]="undefined" disabled selected hidden> Categoria </option>
-      <option *ngFor="let category of categories" [value]="category.value">
-        {{ category.viewValue }}</option>
+      <option *ngFor="let category of categories" [value]="category.id">
+        {{ category.name }}</option>
     </select>
   </div>
   <!-- Número de celular -->
@@ -37,8 +37,8 @@
     <label for="gender" class="sr-only">Ciudad</label>
     <select class="custom-select" required [(ngModel)]="organization.city" name="city" #city="ngModel">
       <option [ngValue]="undefined" disabled selected hidden> Ciudad </option>
-      <option *ngFor="let city of cities" [value]="city.value">
-        {{ city.viewValue }}</option>
+      <option *ngFor="let city of cities" [value]="city.id">
+        {{ city.name }}</option>
     </select>
   </div>
   <!-- Dirección -->
