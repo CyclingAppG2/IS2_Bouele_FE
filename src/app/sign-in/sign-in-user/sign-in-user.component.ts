@@ -38,6 +38,10 @@ export class SignInUserComponent {
               showConfirmButton: false,
               timer: 1500
             });
+
+            if ( localStorage.getItem('userType') === null) {
+              this.router.navigateByUrl('complete-form');
+            }
           },
           err =>  this.error = err.error.errors
         );

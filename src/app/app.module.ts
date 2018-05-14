@@ -37,7 +37,7 @@ import { SignInComponent } from './sign-in/sign-in.component';
 import { SignInUserComponent } from './sign-in/sign-in-user/sign-in-user.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { HomeComponent } from './home/home.component';
-import { UserService } from './_services';
+import { UserService, GenderService } from './_services';
 import { SocialLinksComponent } from './social-links/social-links.component';
 import { FooterComponent } from './footer/footer.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -59,6 +59,7 @@ import { NgUploaderModule } from 'ngx-uploader';
 import { MunicipalityService } from './_services/municipality.service';
 import { CategoryService } from './_services/category.service';
 import { EventDetailComponent } from './event-detail/event-detail.component';
+import { InterestService } from './_services/interest.service';
 
 
 @NgModule({
@@ -100,7 +101,7 @@ import { EventDetailComponent } from './event-detail/event-detail.component';
       apiKey: 'AIzaSyBODCemGB-zpXz27GtynA1i2SCfU-BdQlE'
     }),
     NgUploaderModule,
-    InfiniteScrollModule,
+    InfiniteScrollModule
 
   ],
   providers: [
@@ -110,13 +111,15 @@ import { EventDetailComponent } from './event-detail/event-detail.component';
     FileUploadService,
     MunicipalityService,
     CategoryService,
+    GenderService,
     {
       provide: AuthServiceConfig,
       useFactory: getAuthServiceConfigs
     },
     AdministratorGuard,
     VoluntaryGuard,
-    OrganizationGuard
+    OrganizationGuard,
+    InterestService
   ],
   bootstrap: [AppComponent]
 })

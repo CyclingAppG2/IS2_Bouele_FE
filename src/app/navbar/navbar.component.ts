@@ -18,16 +18,18 @@ export class NavbarComponent implements OnInit {
   home_url: any;
   name: string;
   image_url: string;
-  @ViewChild('avatar') image: ElementRef;
 
   constructor(
     private router: Router,
     private dataService: UserService,
     private authService: AuthenticationService
-  ) {}
+  ) {
+    console.log('hOOA');
+
+    this.getImage();
+  }
 
   ngOnInit() {
-    this.getImage();
   }
 
   isLogged() {
@@ -36,17 +38,22 @@ export class NavbarComponent implements OnInit {
   }
 
   getImage() {
-    this.authService.getUser().subscribe(
-      data => {
-        if (data.data.image.url) {
-          this.image_url = 'http://localhost:3000' + data.data.image.url;
-        } else {
-          this.image_url = 'https://image.flaticon.com/icons/svg/149/149071.svg';
+    try {
+      this.authService.getUser().subscribe(
+        data => {
+          if (data.data.image.url) {
+            this.image_url = 'http://localhost:3000' + data.data.image.url;
+          } else {
+            this.image_url = 'https://image.flaticon.com/icons/svg/149/149071.svg';
+          }
+        }, err => {
+          console.log('No se encontró imagen del usuario');
         }
-      }, err => {
-        console.log('No se encontró imagen del usuario');
-      }
-    );
+      );
+    } catch (error) {
+
+    }
+
   }
 
   onLogout() {
@@ -61,8 +68,8 @@ export class NavbarComponent implements OnInit {
             timer: 2000
           });
           this.router.navigateByUrl('');
-      }
-    );
+        }
+      );
   }
 
   goHome() {

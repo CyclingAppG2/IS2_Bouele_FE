@@ -25,6 +25,10 @@ export class EventService {
     });
   }
 
+  getAvailableEvents() {
+    return this.http.get(API_URL + '/events/available', {headers: this.headers});
+  }
+
   newEvent(event): Observable<any> {
 
     return this.http.post(

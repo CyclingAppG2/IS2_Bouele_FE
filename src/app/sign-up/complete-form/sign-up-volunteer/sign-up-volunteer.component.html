@@ -1,8 +1,7 @@
-<form (ngSubmit)="onSubmit()" #signUpUserForm="ngForm" class="my-4 px-3 text-center">
-  <!-- Avatar -->
+<form [formGroup]="voluntaryForm" (ngSubmit)="onSubmit()">
   <div *ngIf="!localUrl" class="position-relative border border-primary rounded-circle d-block mx-auto d-flex align-items-center justify-content-center mb-3"
     style="width: 12rem; height: 12rem">
-    <input type="file" (change)="showPreviewImage($event)" class="image-uploader" [(ngModel)]="user.avatar" #avatar="ngModel">
+    <input type="file" (change)="showPreviewImage($event)" class="image-uploader" [(ngModel)]="avatar" formControlName="avatar">
     <i class="fa fa-user fa-7x"></i>
   </div>
   <img [src]="localUrl" *ngIf="localUrl" class="image-previewer d-flex align-items-center justify-content-center mb-3 mx-auto">
@@ -10,11 +9,17 @@
     <i class="fa fa-exchange-alt"></i>
     <span class="sr-only">Cambiar imagen</span>
   </a>
-  <!-- Cumpleaños -->
-  <div class="form-group" [class.has-error]="birthday.touched && birthday.invalid">
+  <div class="form-group">
+    <label for="" class="d-block mx-auto sr-only">Ciudad</label>
+    <select class="form-control" formControlName="municipality" [(ngModel)]="city" required>
+      <option [ngValue]="undefined" disabled selected hidden> Ciudad </option>
+      <option *ngFor="let city of cities" [value]="city.id">{{city.name}}</option>
+    </select>
+  </div>
+  <div class="form-group">
     <div class="input-group">
-      <input class="form-control" required [(ngModel)]="voluntary.birthday" [minDate]="minDate" [maxDate]="maxDate" placeholder="Fecha de nacimiento"
-        name="birthday" ngbDatepicker #d="ngbDatepicker" #birthday="ngModel">
+      <input class="form-control" formControlName="birthday" [minDate]="minDate" [maxDate]="maxDate" placeholder="Fecha de nacimiento"
+        name="date" ngbDatepicker #d="ngbDatepicker" required>
       <div class="input-group-append bg-primary-app ">
         <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
           <i class="fa fa-calendar text-white"></i>
@@ -22,35 +27,40 @@
       </div>
     </div>
   </div>
-  <!-- Genero -->
-  <div class="form-group" [class.has-error]="gender.touched && gender.invalid">
-    <label for="gender" class="sr-only">Genero</label>
-    <select class="custom-select" required [(ngModel)]="voluntary.gender" name="gender" #gender="ngModel">
+  <div class="form-group">
+    <label for="" class="d-block mx-auto sr-only">Genero</label>
+    <select class="form-control" formControlName="gender" [(ngModel)]="gender" required>
       <option [ngValue]="undefined" disabled selected hidden> Genero </option>
-      <option *ngFor="let gender of genders" [value]="gender.value">
-        {{ gender.viewValue }}</option>
+      <option *ngFor="let gender of genders" [value]="gender.id">{{gender.gender}}</option>
     </select>
   </div>
-  <!-- Número de celular -->
-  <div class="form-group" [class.has-error]="celPhone.touched && celPhone.invalid">
-    <label for="cel-phone" class="sr-only">Numero Celular</label>
-    <input type="text" class="form-control" id="cel-phone" required [(ngModel)]="voluntary.cellphone" name="celPhone" placeholder="Numero de celular"
-      #celPhone="ngModel">
+  <div class="form-group">
+    <label for="" class="d-block mx-auto sr-only">Número Celular</label>
+    <input type="number" class="form-control" formControlName="cellphone" placeholder="Número de celular" required>
   </div>
-  <!-- Ciudad -->
-  <div class="form-group" [class.has-error]="city.touched && city.invalid">
-    <label for="gender" class="sr-only">Ciudad</label>
-    <select class="custom-select" required [(ngModel)]="voluntary.city" name="city" #city="ngModel">
-      <option [ngValue]="undefined" disabled selected hidden> Ciudad </option>
-      <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
-    </select>
+  <div formArrayName="themes">
+    <div *ngFor="let interest_theme of themes.controls; let i=index" [formGroupName]="i">
+      <div class="form-group">
+        <label for="" class="sr-only"></label>
+        <div class="input-group mb-3">
+          <select class="form-control" formControlName="theme_name" [(ngModel)]="interesting[i]" required>
+            <option [ngValue]="undefined" disabled selected hidden> Temas de interés </option>
+            <option *ngFor="let interest of interests" [value]="interest.id">{{interest.themesinterest}}</option>
+          </select>
+          <div class="input-group-append">
+            <button class="btn btn-outline-danger" type="button" (click)="deleteTheme()">
+              <i class="fa fa-times-circle"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <ngb-timepicker [(ngModel)]="time"></ngb-timepicker>
-<hr>
-<pre>Selected time: {{time | json}}</pre>
-  <button type="submit" class="btn btn-primary-app" [disabled]="signUpUserForm.invalid || loading">Terminar</button>
-  <a href="#" class="text-danger text-right position-absolute" id="skip">Saltar
-    <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
-  </a>
+  <div class="form-group text-right">
+    <button type="button" class="btn btn-outline-info" (click)="addTheme()">Agrega un tema de interes</button>
+  </div>
+  <div class="form-group text-center">
+    <button type="submit" [disabled]="!voluntaryForm.valid &&  !(voluntaryForm.value.themes.length > 0)" class="btn btn-primary-app">Terminar</button>
+  </div>
 </form>
 

@@ -14,20 +14,21 @@ export class VolunteerHomeComponent implements OnInit {
   constructor(
     private eventService: EventService,
     private router: Router
-  ) { }
+  ) {
+    this.eventService.getAvailableEvents()
+      .subscribe(
+        events => {
+          this.events = events;
+        }
+      );
+  }
 
   onScroll() {
     console.log('scrolled!!');
   }
 
   ngOnInit() {
-    this.eventService.getEvents()
-      .subscribe(
-        events => {
-          this.events = events;
-          console.log(this.events);
-        }
-      );
+
   }
 
 }

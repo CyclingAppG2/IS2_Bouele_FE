@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { EventService } from '../_services';
+import { Event } from '../_models/';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
 @Component({
@@ -11,6 +12,7 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 })
 export class EventDetailComponent implements OnInit {
 
+  event_id = +this.route.snapshot.paramMap.get('id');
   event: any;
   eventForm: FormGroup;
   markers = [];
@@ -18,30 +20,34 @@ export class EventDetailComponent implements OnInit {
   lng: any;
   zoom: number;
 
+  name;
+
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private eventService: EventService
   ) {
-    const id = +this.route.snapshot.paramMap.get('id');
-    console.log(id);
-    this.eventService.getEventById(id)
-      .subscribe(
-        event => {
-          this.event = event;
-          console.log(this.event);
-        }, err => {
-          console.error(err);
-        }
-      );
-      console.log(this.event);
-
-    this.createForm();
-
+    console.log(this.getEventById());
+    console.log(this.name);
   }
 
   ngOnInit() {
+  }
+
+  public getEventById() {
+    this.eventService.getEventById(this.event_id)
+      .subscribe(
+        resp => {
+          this.event = resp;
+          console.log(resp);
+          console.log(this.event);
+          return resp;
+        }, err => {
+          console.log(err);
+        }
+      );
+    console.log(this.event);
   }
 
   createForm() {

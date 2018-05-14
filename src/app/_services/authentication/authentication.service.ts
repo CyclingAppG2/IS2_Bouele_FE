@@ -73,7 +73,7 @@ class AccessData {
   public getUsername(): string {
     return this.username;
   }
-  public  getEmail(): string {
+  public getEmail(): string {
     return this.email;
   }
   public getRole(): string {
@@ -91,7 +91,7 @@ export class AuthenticationService implements AuthService {
 
   private currentUser = new AccessData();
 
-  constructor(private http: HttpClient, private tokenStorage: TokenStorage) {}
+  constructor(private http: HttpClient, private tokenStorage: TokenStorage) { }
 
   /**
    * Check, if user already authorized.
@@ -170,7 +170,7 @@ export class AuthenticationService implements AuthService {
         resp => {
           let role: string;
           let user_data_id: string;
-           this.http.get(API_URL + '/userType', {headers: resp.headers})
+          this.http.get(API_URL + '/userType', { headers: resp.headers })
             .subscribe(
               data => {
                 role = JSON.parse(JSON.stringify(data)).data.user_data_type;
@@ -179,22 +179,22 @@ export class AuthenticationService implements AuthService {
                   'role', role
                 );
                 localStorage.setItem(
-                  'user_data_id', user_data_id
+                  'user-data-id', user_data_id
                 );
               }
             );
-            this.currentUser = new AccessData(
-              resp.headers.get('access-token'),
-              resp.headers.get('client'),
-              resp.headers.get('uid'),
-              resp.headers.get('expiry'),
-              resp.headers.get('token-type'),
-              JSON.parse(JSON.stringify(resp)).body.data.id,
-              JSON.parse(JSON.stringify(resp)).body.data.name,
-              JSON.parse(JSON.stringify(resp)).body.data.username,
-              JSON.parse(JSON.stringify(resp)).body.data.email,
-              role
-            );
+          this.currentUser = new AccessData(
+            resp.headers.get('access-token'),
+            resp.headers.get('client'),
+            resp.headers.get('uid'),
+            resp.headers.get('expiry'),
+            resp.headers.get('token-type'),
+            JSON.parse(JSON.stringify(resp)).body.data.id,
+            JSON.parse(JSON.stringify(resp)).body.data.name,
+            JSON.parse(JSON.stringify(resp)).body.data.username,
+            JSON.parse(JSON.stringify(resp)).body.data.email,
+            role
+          );
           this.saveAccessData();
         },
         err => {
@@ -207,33 +207,33 @@ export class AuthenticationService implements AuthService {
 
   public loginAdmin(email: string, password: string): any {
     return this.http
-    .post(
-      API_URL + '/auth_admin/sign_in',
-      { email, password },
-      { observe: 'response' }
-    )
-    .do(
-      resp => {
-        this.currentUser = new AccessData(
-          resp.headers.get('access-token'),
-          resp.headers.get('client'),
-          resp.headers.get('uid'),
-          resp.headers.get('expiry'),
-          resp.headers.get('token-type'),
-          JSON.parse(JSON.stringify(resp)).body.data.id,
-          JSON.parse(JSON.stringify(resp)).body.data.name,
-          JSON.parse(JSON.stringify(resp)).body.data.username,
-          JSON.parse(JSON.stringify(resp)).body.data.email,
-        );
-        this.tokenStorage.setRole('Administrator');
-        this.saveAccessData();
+      .post(
+        API_URL + '/auth_admin/sign_in',
+        { email, password },
+        { observe: 'response' }
+      )
+      .do(
+        resp => {
+          this.currentUser = new AccessData(
+            resp.headers.get('access-token'),
+            resp.headers.get('client'),
+            resp.headers.get('uid'),
+            resp.headers.get('expiry'),
+            resp.headers.get('token-type'),
+            JSON.parse(JSON.stringify(resp)).body.data.id,
+            JSON.parse(JSON.stringify(resp)).body.data.name,
+            JSON.parse(JSON.stringify(resp)).body.data.username,
+            JSON.parse(JSON.stringify(resp)).body.data.email,
+          );
+          this.tokenStorage.setRole('Administrator');
+          this.saveAccessData();
 
-      },
-      err => {
-        console.error(err);
-        this.tokenStorage.clear();
-      }
-    );
+        },
+        err => {
+          console.error(err);
+          this.tokenStorage.clear();
+        }
+      );
   }
 
   public signUpUser(user: User): Observable<any> {
@@ -271,70 +271,60 @@ export class AuthenticationService implements AuthService {
   }
 
 
-  public signUpVoluntary(voluntary: Volunteer) {
-    const birthday = new Date(voluntary.birthday.year, voluntary.birthday.month - 1, voluntary.birthday.day).toString();
-    const gender = voluntary.gender;
-    const city = voluntary.city;
-    const cellphone = voluntary.cellphone;
-    // console.log(birthday);
-    // const interest = voluntary.theme_interest;
+  public signUpVoluntary(voluntary) {
+
     const headers = this.getCurrentHeaders();
     return this.http.post(
       API_URL + '/voluntaries',
+      voluntary,
       {
-        gender,
-        city,
-        cellphone,
-        birthday
+        headers: headers
+      }
+    )
+      .do(
+        resp => {
+          this.currentUser.setRole('Voluntary');
+          this.tokenStorage.setRole('Voluntary');
+          localStorage.setItem('user-data-id', JSON.parse(JSON.stringify(resp)).id);
+        },
+        err => {
+          console.error(err.message);
+        }
+      );
+  }
+
+  public signUpOrganization(organization: Organization) {
+    const nit = organization.nit;
+    const category = organization.category;
+    const city = organization.city;
+    const address = organization.address;
+    const organizationName = organization.name;
+    const headers = this.getCurrentHeaders();
+    return this.http.post(
+      API_URL + '/organizations',
+      {
+        'organization': {
+          'NIT': nit,
+          'minicipality_id': city,
+          'organization_category_id': category,
+          'mainaddress': address,
+          'firm': organizationName
+        }
       },
       {
         headers: headers
       }
     )
-    .do(
-      resp => {
-        this.currentUser.setRole('Voluntary');
-        this.tokenStorage.setRole('Voluntary');
-        localStorage.setItem('user-data-id', JSON.parse(JSON.stringify(resp)).id);
-      },
-      err => {
-        console.error(err.message);
-      }
-    );
-  }
-
-  public signUpOrganization(organization: Organization) {
-        const nit = organization.nit;
-        const category = organization.category;
-        const city = organization.city;
-        const address = organization.address;
-        const organizationName = organization.name;
-        const headers = this.getCurrentHeaders();
-        return this.http.post(
-          API_URL + '/organizations',
-          {
-              'organization': {
-              'NIT': nit,
-              'minicipality_id': city,
-              'organization_category_id': category,
-              'mainaddress': address,
-              'firm': organizationName
-            }
-          },
-          {
-            headers: headers
-          }
-        )
-        .do(
-          resp => {
-            this.currentUser.setRole('Organization');
-            this.tokenStorage.setRole('Organization');
-            localStorage.setItem('user-data-id', JSON.parse(JSON.stringify(resp)).id);
-          },
-          err => {
-            console.error(err.message);
-          }
-        );
+      .do(
+        resp => {
+          this.currentUser.setRole('Organization');
+          this.tokenStorage.setRole('Organization');
+          localStorage.setItem('user-data-id', JSON.parse(JSON.stringify(resp)).id);
+        },
+        err => {
+          console.error(err.message);
+        }
+      );
   }
 
   public completeSignUp(userId, voluntaryId, userType) {
@@ -344,14 +334,14 @@ export class AuthenticationService implements AuthService {
       'user_data_id': voluntaryId,
       'user_data_type': userType
     },
-    {
-      headers: headers
-    });
+      {
+        headers: headers
+      });
   }
 
-/**
-   * Logout
-   */
+  /**
+     * Logout
+     */
   public logout() {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json; charset=utf-8',
@@ -405,7 +395,7 @@ export class AuthenticationService implements AuthService {
     this.tokenStorage.setTokenType(this.currentUser.getTokenType());
     this.tokenStorage.setUsername(this.currentUser.getUsername());
     this.tokenStorage.setEmail(this.currentUser.getEmail());
-    this.tokenStorage.setId( this.currentUser.getId());
+    this.tokenStorage.setId(this.currentUser.getId());
     this.tokenStorage.setName(this.currentUser.getName());
   }
 
@@ -419,17 +409,19 @@ export class AuthenticationService implements AuthService {
 
   public getRole(): string {
     const headers = this.getCurrentHeaders();
-    this.http.get(API_URL + '/userType', {headers: headers})
-    .subscribe(
-      data => {
-        return JSON.parse(JSON.stringify(data)).data.user_data_type;
-      }
-    );
+    this.http.get(API_URL + '/userType', { headers: headers })
+      .subscribe(
+        data => {
+          return JSON.parse(JSON.stringify(data)).data.user_data_type;
+        }
+      );
     return null;
   }
 
   public getUser(): Observable<any> {
-    return this.http.get(API_URL + '/auth_user/validate_token', {headers: this.getCurrentHeaders()});
+    const headers = this.getCurrentHeaders();
+    return this.http.get(API_URL + '/auth_user/validate_token', { headers: headers });
+
 
   }
 
