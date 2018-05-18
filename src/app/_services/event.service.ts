@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Http, ResponseContentType } from '@angular/http';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Observable } from 'rxjs/Observable';
 import { catchError, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
@@ -16,7 +18,8 @@ export class EventService {
 
   constructor(
     private http: HttpClient,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private sanitizer: DomSanitizer
   ) { }
 
   getEvents(): Observable<Event[]> {
@@ -64,7 +67,7 @@ export class EventService {
   }
 
   public getVoluntariesInEvent(id: number, format: string) {
-    return this.http.get(API_URL + '/voluntaries_in_event/' + id + '.' + format,  {headers: this.headers});
+    return this.http.get(API_URL + '/voluntaries_in_event/' + id + '.' + format,  {headers: this.headers, observe: 'response'});
   }
 
 }

@@ -8,6 +8,9 @@ import swal from 'sweetalert2';
 import { UNITS } from '../../_lists';
 import { NgbDatepickerConfig, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { MouseEvent } from '@agm/core';
+import { StatisticsService } from '../../_services/statistics.service';
+import { Chart } from 'chart.js';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 
 const now = new Date();
@@ -20,6 +23,7 @@ const now = new Date();
 })
 export class EventDetailComponent implements OnInit {
 
+  pdfResult: SafeResourceUrl;
   event_id = +this.route.snapshot.paramMap.get('id');
   event: any;
   eventDetailForm: FormGroup;
@@ -33,49 +37,53 @@ export class EventDetailComponent implements OnInit {
   maxDate = { year: 2029, month: 12, day: 31 };
   eventDate;
   markers: Marker[] = [];
+  chart = [];
 
-    // lineChart
-    public lineChartData: Array<any> = [
-      { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' }
-    ];
-    public lineChartLabels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-    public lineChartOptions: any = {
-      responsive: true
-    };
-    public lineChartColors: Array<any> = [
-      { // grey
-        backgroundColor: 'rgba(148,159,177,0.2)',
-        borderColor: 'rgba(148,159,177,1)',
-        pointBackgroundColor: 'rgba(148,159,177,1)',
-        pointBorderColor: '#fff',
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-      },
-      { // dark grey
-        backgroundColor: 'rgba(77,83,96,0.2)',
-        borderColor: 'rgba(77,83,96,1)',
-        pointBackgroundColor: 'rgba(77,83,96,1)',
-        pointBorderColor: '#fff',
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: 'rgba(77,83,96,1)'
-      },
-      { // grey
-        backgroundColor: 'rgba(148,159,177,0.2)',
-        borderColor: 'rgba(148,159,177,1)',
-        pointBackgroundColor: 'rgba(148,159,177,1)',
-        pointBorderColor: '#fff',
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-      }
-    ];
-    public lineChartLegend = true;
-    public lineChartType = 'line';
+  // lineChart
+  public lineChartData: Array<any> = [
+    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
+    { data: [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0], label: '2018' }
+  ];
+  public lineChartLabels: Array<any>;
+  public lineChartOptions: any = {
+    responsive: true
+  };
+  public lineChartColors: Array<any> = [
+    { // grey
+      backgroundColor: 'rgba(148,159,177,0.2)',
+      borderColor: 'rgba(148,159,177,1)',
+      pointBackgroundColor: 'rgba(148,159,177,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    },
+    { // dark grey
+      backgroundColor: 'rgba(77,83,96,0.2)',
+      borderColor: 'rgba(77,83,96,1)',
+      pointBackgroundColor: 'rgba(77,83,96,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(77,83,96,1)'
+    },
+    { // grey
+      backgroundColor: 'rgba(148,159,177,0.2)',
+      borderColor: 'rgba(148,159,177,1)',
+      pointBackgroundColor: 'rgba(148,159,177,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    }
+  ];
+  public lineChartLegend = true;
+  public lineChartType = 'line';
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private eventService: EventService,
+    private statisticService: StatisticsService,
     private _location: Location,
+    private domSanitizer: DomSanitizer
   ) {
     this.eventService.getEventById(this.event_id)
       .subscribe(
@@ -127,6 +135,7 @@ export class EventDetailComponent implements OnInit {
         this.lat = +pos.coords.latitude;
       });
     }
+    this.getStatisticsEventCreations();
 
   }
 
@@ -150,11 +159,14 @@ export class EventDetailComponent implements OnInit {
 
 
   getVoluntariesInEvent(format: string) {
-    this.eventService.getVoluntariesInEvent(this.event_id, format )
+    this.eventService.getVoluntariesInEvent(this.event_id, format)
       .subscribe(
         voluntaries => {
           this.voluntaries_in_event = voluntaries;
           console.log(voluntaries);
+          this.pdfResult = this.domSanitizer.bypassSecurityTrustResourceUrl(
+            URL.createObjectURL(voluntaries)
+        );
         }
       );
   }
@@ -223,6 +235,50 @@ export class EventDetailComponent implements OnInit {
 
   public chartHovered(e: any): void {
     console.log(e);
+  }
+
+  public getStatisticsEventCreations() {
+    this.statisticService.getStatisticsEventCreations(this.event_id).
+      subscribe(
+        resp => {
+          const statistic = JSON.parse(JSON.stringify(resp));
+          const statistic1 = JSON.parse(JSON.stringify(statistic['eventsStartInMonth']));
+          const datasets = [];
+          for (const key in statistic1) {
+
+            if (statistic1.hasOwnProperty(key)) {
+              const element = statistic1[key];
+              datasets.push(
+                {
+                  data: element,
+                  borderColor: '#3cba9f',
+                  fill: false,
+                  label: key
+                }
+              );
+            }
+          }
+          this.chart = new Chart('canvas', {
+            type: 'line',
+            data: {
+              labels: ['E', 'F', 'M', 'A', 'M', 'J', 'A', 'S', 'O', 'N', 'D'],
+              datasets: datasets,
+              options: {
+                legend: {
+                  display: false
+                },
+                scales: {
+                  xAxes: [{
+                    display: true
+                  }],
+                  yAxes: [{
+                    display: true
+                  }],
+                }
+              }
+            })
+        });
+    console.log(this.lineChartData);
   }
 
 

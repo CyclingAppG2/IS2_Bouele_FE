@@ -43,12 +43,16 @@
     "moment": "^2.22.1",
     "ng2-charts": "^1.6.0",
     "ng2-pdf-viewer": "^5.0.1",
+    "ngx-auth": "^4.0.0",
+    "ngx-infinite-scroll": "^0.8.4",
+    "ngx-uploader": "^4.3.0",
     "rxjs": "^5.5.6",
     "sweetalert2": "^7.20.5",
     "typescript": "~2.5.3",
     "zone.js": "^0.8.19"
   },
   "devDependencies": {
+    "@angular/cli": "^6.0.3",
     "@angular/language-service": "^5.2.0",
     "@types/jasmine": "~2.8.3",
     "@types/jasminewd2": "~2.0.2",

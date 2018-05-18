@@ -69,6 +69,7 @@ import localeEs from '@angular/common/locales/es';
 import { AmazingTimePickerModule } from 'amazing-time-picker'; // this line you need
 import { ChartsModule } from 'ng2-charts';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { StatisticsService } from './_services/statistics.service';
 
 
 // the second parameter 'fr' is optional
@@ -138,7 +139,8 @@ registerLocaleData(localeEs, 'es');
     OrganizationGuard,
     InterestService,
     UncompletedGuard,
-    { provide: LOCALE_ID, useValue: 'es' }
+    { provide: LOCALE_ID, useValue: 'es' },
+    StatisticsService
   ],
   bootstrap: [AppComponent]
 })

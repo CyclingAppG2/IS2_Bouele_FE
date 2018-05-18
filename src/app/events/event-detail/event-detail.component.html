@@ -1,25 +1,8 @@
 <div class="full-height">
     <div class="row container-fluid">
         <div class="col-lg-4 col-3">
-            <div class="row">
-                <div class="col-md-6">
-                    <div style="display: block;">
-                        <canvas baseChart width="400" height="400" [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
-                            [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)"
-                            (chartClick)="chartClicked($event)"></canvas>
-                    </div>
-                </div>
-                <div class="col-md-6" style="margin-bottom: 10px">
-                    <table class="table table-responsive table-condensed">
-                        <tr>
-                            <th *ngFor="let label of lineChartLabels">{{label}}</th>
-                        </tr>
-                        <tr *ngFor="let d of lineChartData">
-                            <td *ngFor="let label of lineChartLabels; let j=index">{{d && d.data[j]}}</td>
-                        </tr>
-                    </table>
-                    <button (click)="randomize()">CLICK</button>
-                </div>
+            <div *ngIf="chart">
+                <canvas id="canvas">{{ chart }}</canvas>
             </div>
         </div>
         <div class="col-lg-4 col-6">
@@ -139,7 +122,7 @@
                     </div>
                     <div class="card-body">
                         <div *ngFor="let user of voluntaries_in_event.users">
-                            <img src="/assets/images/user-default.svg" alt="" class="rounded-circle" width="30" height="30"> {{user.user.name}}
+                            <!-- <img src="/assets/images/user-default.svg" alt="" class="rounded-circle" width="30" height="30"> {{user.user.name}}
                             <ng-template #t let-fill="fill">
                                 <span class="star" [class.full]="fill === 100">
                                     <span class="half" [style.width.%]="fill">
@@ -148,14 +131,16 @@
                                     <i class="fas fa-star"></i>
                                 </span>
                             </ng-template>
-                            <ngb-rating [(rate)]="event.voluntary.voluntary_score" max="5" [starTemplate]="t" [readonly]="true"></ngb-rating>
-                               {{event.voluntary.voluntary_score}} 
+                            <ngb-rating [(rate)]="event.voluntary.voluntary_score" max="5" [starTemplate]="t" [readonly]="true"></ngb-rating> -->
+                            <!-- {{event.voluntary.voluntary_score}} -->
                         </div>
 
                     </div>
                 </div>
             </div>
-            <a class="btn bnt-primary" (click)="getVoluntariesInEvent('pdf')" href="http://localhost:3000/voluntaries_in_event/2.pdf">Obtener un PDF</a>
+
+            <a class="btn bnt-primary" (click)="getVoluntariesInEvent('pdf')" >Obtener un PDF</a>
+            <iframe [src]="pdfResult"></iframe>
 
         </div>
     </div>

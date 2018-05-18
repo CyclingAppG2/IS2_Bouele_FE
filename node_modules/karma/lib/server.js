@@ -27,10 +27,12 @@ var Browser = require('./browser')
 var BrowserCollection = require('./browser_collection')
 var EmitterWrapper = require('./emitter_wrapper')
 var processWrapper = new EmitterWrapper(process)
-var browserify = require('browserify')
 
 const karmaJsPath = path.join(__dirname, '/../static/karma.js')
 const contextJsPath = path.join(__dirname, '/../static/context.js')
+
+// Dynamic dependence on brwoserify
+var browserify = null;
 
 /**
  * Bundles a static resource using Browserify.
@@ -40,6 +42,7 @@ const contextJsPath = path.join(__dirname, '/../static/context.js')
  */
 function bundleResource (inPath, outPath) {
   return new Promise((resolve, reject) => {
+    browserify = browserify || require('browserify')
     var bundler = browserify(inPath)
     bundler.bundle().pipe(fs.createWriteStream(outPath))
       .once('finish', () => {
@@ -96,7 +99,7 @@ var Server = function (cliOptions, done) {
     // TODO(vojta): remove, once karma-dart does not rely on it
     customScriptTypes: ['value', []],
     reporter: ['factory', reporter.createReporters],
-    capturedBrowsers: ['type', BrowserCollection],
+    capturedBrowsers: ['factory', BrowserCollection.factory],
     args: ['value', {}],
     timer: ['value', {
       setTimeout: function () {
@@ -269,7 +272,7 @@ Server.prototype._start = function (config, launcher, preprocess, fileList,
         return logMap[m]
       })
       self.log.debug('Writing browser console line: %s', logString)
-      fs.write(browserLogFile, logString + '\n')
+      fs.writeSync(browserLogFile, logString + '\n')
     })
   }
 
@@ -304,7 +307,7 @@ Server.prototype._start = function (config, launcher, preprocess, fileList,
           id: ['value', info.id || null],
           fullName: ['value', (helper.isDefined(info.displayName) ? info.displayName : info.name)],
           socket: ['value', socket]
-        }]).instantiate(Browser)
+        }]).invoke(Browser.factory)
 
         newBrowser.init()
 
