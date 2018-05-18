@@ -1,0 +1,162 @@
+<div class="full-height">
+    <div class="row container-fluid">
+        <div class="col-lg-4 col-3">
+            <div class="row">
+                <div class="col-md-6">
+                    <div style="display: block;">
+                        <canvas baseChart width="400" height="400" [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+                            [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)"
+                            (chartClick)="chartClicked($event)"></canvas>
+                    </div>
+                </div>
+                <div class="col-md-6" style="margin-bottom: 10px">
+                    <table class="table table-responsive table-condensed">
+                        <tr>
+                            <th *ngFor="let label of lineChartLabels">{{label}}</th>
+                        </tr>
+                        <tr *ngFor="let d of lineChartData">
+                            <td *ngFor="let label of lineChartLabels; let j=index">{{d && d.data[j]}}</td>
+                        </tr>
+                    </table>
+                    <button (click)="randomize()">CLICK</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-6">
+            <div class="card my-3">
+                <div class="card-header font-lobster text-center fa-2x">
+                    Seguro te gustará
+                </div>
+                <div class="card-block">
+                    <form [formGroup]="eventDetailForm" class="p-2">
+                        <div class="form-group">
+                            <label class="sr-only"></label>
+                            <input class="form-control" formControlName="name" value="{{event.name}}" disabled="!editing">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only"></label>
+                            <textarea type="text" class="form-control" formControlName="description" placeholder="Agrega un nombre a tu evento" maxlength="200"
+                                rows="5" style="resize: none;" value="{{event.description}}" disabled="!editing"></textarea>
+                        </div>
+                        <div class="form-row m-0">
+                            <div class="col pl-0">
+                                <div class="form-group">
+                                    <label class="sr-only"></label>
+                                    <input type="number" class="form-control" formControlName="name" value="{{event.duration}}" disabled="!editing">
+                                </div>
+                            </div>
+                            <div class="col pr-0">
+                                <div class="form-group">
+                                    <label class="sr-only"></label>
+                                    <select class="form-control" formControlName="unidades" disabled>
+                                        <option value="null" disabled="true" [selected]="true">Minutos</option>
+                                        <option *ngFor="let unit of units" [value]="unit.value">{{unit.viewValue}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row m-0">
+                            <div class="row m-0">
+                                <div class="col-8 pl-0">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input class="form-control" [minDate]="minDate" [maxDate]="maxDate" placeholder="Fecha del evento" name="dp" ngbDatepicker
+                                                #d="ngbDatepicker" value="{{eventDate  | date:'EEEE, dd MMMM, yyyy':'':'es'}}"
+                                                disabled="!editing">
+                                            <div class="input-group-append bg-primary-app">
+                                                <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button" disabled="!editing">
+                                                    <i class="fa fa-calendar text-white"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4 pr-0">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input atp-time-picker value="{{eventDate  | date:'hh:mm':'':'es'}}" class="form-control" disabled="!editing" />
+                                            <div class="input-group-append bg-primary-app">
+                                                <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button" disabled="editing">
+                                                    <i class="far fa-clock text-white"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only"></label>
+                            <input type="number" class="form-control" formControlName="name" value="{{event.max_voluntaries}}" disabled="!editing">
+                        </div>
+                        <div class="form-group">
+                            <agm-map [latitude]="lat" [longitude]="lng" [zoom]="0" [disableDefaultUI]="false" [zoomControl]="false" (mapClick)="mapClicked($event)"
+                                disabled="!editing">
+
+                                <agm-marker *ngFor="let m of markers; let i = index" [latitude]="m.lat" [longitude]="m.lng" [label]="i">
+
+                                    <agm-info-window>
+                                        <strong>Referencia: </strong> {{event.locations[i].label}}
+                                        <br>
+                                        <strong>Encargado: </strong> {{event.locations[i].person_name}}
+                                        <br>
+                                        <strong>Correo: </strong> {{event.locations[i].email}}
+                                        <br>
+                                    </agm-info-window>
+
+                                </agm-marker>
+
+
+                            </agm-map>
+
+                        </div>
+                        <div>
+                            <span class="badge badge-secondary px-2" *ngFor="let plus of event.plus">{{plus.name}}</span>
+                        </div>
+
+                        <div class="alert alert-success float-right" role="alert">
+                            <strong>Organiza: </strong>{{event.organization.firm}}
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-outline-warning " (click)="applyToEvent()">
+                                <i class="fa fa-check-circle"></i> Quiero estar aquí</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-4 col-3">
+            <div>
+                <div class="card">
+                    <div class="card-header ">
+                        <h4 class="card-title font-lobster text-center">
+                            <h4>¡Genial!</h4>
+                            <i *ngIf="(event.voluntaries.length > 1)">Estos voluntarios se han unido a tu evento</i>
+                            <i *ngIf="!(event.voluntaries.length > 1)">Este voluntario se ha unido a tu evento</i>
+                            <i *ngIf="(event.voluntaries.length > 1)">{{event.voluntaries.length}}</i>
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div *ngFor="let user of voluntaries_in_event.users">
+                            <img src="/assets/images/user-default.svg" alt="" class="rounded-circle" width="30" height="30"> {{user.user.name}}
+                            <ng-template #t let-fill="fill">
+                                <span class="star" [class.full]="fill === 100">
+                                    <span class="half" [style.width.%]="fill">
+                                        <i class="fas fa-star"></i>
+                                    </span>
+                                    <i class="fas fa-star"></i>
+                                </span>
+                            </ng-template>
+                            <ngb-rating [(rate)]="event.voluntary.voluntary_score" max="5" [starTemplate]="t" [readonly]="true"></ngb-rating>
+                               {{event.voluntary.voluntary_score}} 
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <a class="btn bnt-primary" (click)="getVoluntariesInEvent('pdf')" href="http://localhost:3000/voluntaries_in_event/2.pdf">Obtener un PDF</a>
+
+        </div>
+    </div>
+</div>

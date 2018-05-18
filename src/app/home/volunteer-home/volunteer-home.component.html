@@ -17,27 +17,19 @@
         </div>
         <div class="col-lg-4 border-left text-center search-results" id="events" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
             (scrolled)="onScroll()" [scrollWindow]="false">
-            <div class="border border-warning rounded my-2" style="width: 100%" *ngFor="let event of events">
-                <div class="row container-fluid my-2" style="width: auto !important;">
-                    <div class="col-lg-3">
-                        <div class="event-fill border border-secondary rounded-circle my-2" style="background-image: url( {{event.image}} )"></div>
+            <div class="border border-warning rounded my-2" *ngFor="let event of events">
+                <div class="card text-center">
+                    <div class="card-header " routerLink="/event-detail/{{event.id}}">
+                        
+                        <h4 class="font-lobster text-ellipsis-1">{{event.name}}</h4>
                     </div>
-                    <div class="col-lg-9">
-                        <div class="event-description">
-                            <p class="event-name mb-1">{{event.name}}</p>
-                            <p class="event-content mb-1">
-                                {{event.description}}
-                            </p>
-                            <ul class="list-inline d-block ml-auto text-right mb-1">
-                                <li class="list-inline-item event-link">Comentar</li>
-                                <li class="list-inline-item event-link">Compartir</li>
-                                <li class="list-inline-item event-link">Ver más</li>
-                                <li class="list-inline-item event-link">
-                                    <i class="fa fa-paper-plane rounded-circle bg-primary-app p-2 text-white" aria-hidden="true"></i>
-                                    <span class="sr-only"> Aplicar</span>
-                                </li>
-                            </ul>
-                        </div>
+                    <div class="card-block" routerLink="/event-detail/{{event.id}}">
+                        <p class="align-middle text-ellipsis-5 vh-100 d-flex align-items-center justify-content-center text-grey">With supporting text below as a natural lead-in to additional content.</p>
+                        <small class="alert alert-info text-ellipsis-1 w-75 d-block mx-auto pb-3" > <strong>Organiza:</strong> {{event.organization.firm}} <br> <strong class="mt-1">Fecha:</strong> {{event.start_datetime | date: 'short'}} <br></small>
+
+                    </div>
+                    <div class="card-footer ">
+                        <button type="button" class="btn btn-primary-app" (click)="applyToEvent(events, event.id)"> <i class="fas fa-check"></i> Suscribirme</button>
                     </div>
                 </div>
             </div>

@@ -1,13 +1,59 @@
 <div class="full-height p-2">
-  <img src="{{user.avatar}}" alt="avatar" class="border border-secondary rounded-circle d-block mx-auto" height="200" width="200">
-  <div class="row px-0">
+
+
+  <div class="row container-fluid">
+
     <div class="col-6">
-      <label for="" class="sr-only">Nombre</label>
-      <input type="text" class="form-control" placeholder="{{user.firstname}}" name="firstname" disabled="!editing">
+
+      <img src="{{user.avatar}}" alt="avatar" class="border border-secondary rounded-circle d-block mx-auto" height="200" width="200">
+
+      <div class="row mt-3">
+        <div class="col-6">
+          <label for="" class="sr-only">Nombre</label>
+          <input type="text" class="form-control" placeholder="{{user.firstname}}" name="firstname" disabled="!editing">
+        </div>
+        <div class="col-6">
+          <label for="" class="sr-only">Nombre</label>
+          <input type="text" class="form-control" placeholder="{{user.lastname}}" name="lastname" disabled="!editing">
+        </div>
+      </div>
     </div>
     <div class="col-6">
-      <label for="" class="sr-only">Nombre</label>
-      <input type="text" class="form-control" placeholder="{{user.lastname}}" name="lastname" disabled="!editing">
+      <h1 class="text-center font-lobster">Mis eventos ({{my_events.length}})</h1>
+      <div class="card my-2" *ngFor="let my_event of my_events">
+        <a class="fas fa-times-circle position-absolute p-2 text-white
+          " style="top: 0; right: 0;" id="unapply" title="Ya no quiero estar aquí" (click)="leaveEvent(my_events, my_event)"> </a>
+        <img class="card-img-top" src="/assets/images/default-cap.svg" alt="Card image cap">
+        <div class="card-block p-2" routerLink="/event-detail/{{my_event.id}}">
+          <div class="row container-fluid d-flex align-items-center mx-auto">
+            <div class="col-8 border">
+              <h4 class="card-title font-lobster text-center bg-secondary text-white p-2 mt-1 rounded text-ellipsis-1">
+                {{my_event.name}}
+              </h4>
+              <p class="text-center-justified text-ellipsis-5">
+                {{my_event.description}}
+              </p>
+            </div>
+            <div class="col-4 text-center">
+              <ng-template #t let-fill="fill">
+                <span class="star" [class.full]="fill === 100">
+                  <span class="half" [style.width.%]="fill">
+                    <i class="fas fa-star"></i>
+                  </span>
+                  <i class="fas fa-star"></i>
+                </span>
+              </ng-template>
+              <ngb-rating [(rate)]="my_event.organization.organization_score" max="5" [starTemplate]="t" [readonly]="true"></ngb-rating>
+              <small class="text-ellipsis-1">
+                <strong class="text-info">Organiza: </strong>{{my_event.organization.firm}} </small>
+              <small class="text-ellipsis-1">
+                <strong class="text-info">Fecha: </strong>{{my_event.start_datetime | date: 'd MMMM y' }} </small>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
     </div>
   </div>
 </div>

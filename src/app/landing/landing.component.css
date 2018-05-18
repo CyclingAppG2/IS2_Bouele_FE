@@ -1,0 +1,17 @@
+#slider-carousel,
+#slider-carousel .carousel-inner,
+#slider-carousel .carousel-inner .fill {
+    height: 40vh;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    background-color: grey;
+}
+
+#slider-carousel .carousel-inner .fill {
+    -webkit-filter: grayscale(50%); /* Safari 6.0 - 9.0 */
+    filter: grayscale(50%);
+}

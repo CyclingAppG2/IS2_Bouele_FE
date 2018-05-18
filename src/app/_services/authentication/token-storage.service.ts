@@ -93,6 +93,17 @@ export class TokenStorage {
 
   }
 
+  public setImage(image: any): TokenStorage {
+    console.log(image);
+    localStorage.setItem('avatar', image);
+    return this;
+  }
+
+  public setDataId(data_id: any): TokenStorage {
+    localStorage.setItem('user-data-id', data_id);
+    return this;
+  }
+
    /**
    * Remove tokens
    */

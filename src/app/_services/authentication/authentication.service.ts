@@ -18,6 +18,7 @@ import { User } from '../../_models/user.model';
 import { Volunteer } from '../../_models/volunteer.model';
 import { CompileStylesheetMetadata } from '@angular/compiler';
 import { Organization } from '../../_models';
+import { Router } from '@angular/router';
 
 class AccessData {
   private accessToken: string;
@@ -30,9 +31,11 @@ class AccessData {
   private id: string;
   private username: string;
   private role: string;
+  private image: string;
+  private data_id: string;
 
 
-  constructor(accessToken?, client?, uid?, expiry?, tokenType?, id?, name?, username?, email?, role?) {
+  constructor(accessToken?, client?, uid?, expiry?, tokenType?, id?, name?, username?, email?, role?, image?, data_id?) {
     this.accessToken = accessToken;
     this.client = client;
     this.uid = uid;
@@ -43,6 +46,7 @@ class AccessData {
     this.username = username;
     this.role = role;
     this.email = email;
+    this.data_id = data_id;
   }
 
   public getAccessToken(): string {
@@ -82,6 +86,19 @@ class AccessData {
   public setRole(role: string) {
     this.role = role;
   }
+
+  public setImage(image: string) {
+    this.image = API_URL + image;
+  }
+
+  public getImage(): string {
+    console.log(this.image);
+    return this.image;
+  }
+
+  public getDataId(): string {
+    return this.data_id;
+  }
 }
 
 const API_URL = environment.apiUrl;
@@ -90,8 +107,13 @@ const API_URL = environment.apiUrl;
 export class AuthenticationService implements AuthService {
 
   private currentUser = new AccessData();
+  id;
 
-  constructor(private http: HttpClient, private tokenStorage: TokenStorage) { }
+  constructor(
+    private http: HttpClient,
+    private tokenStorage: TokenStorage,
+    private router: Router
+  ) { }
 
   /**
    * Check, if user already authorized.
@@ -168,34 +190,47 @@ export class AuthenticationService implements AuthService {
       )
       .do(
         resp => {
-          let role: string;
-          let user_data_id: string;
           this.http.get(API_URL + '/userType', { headers: resp.headers })
             .subscribe(
               data => {
-                role = JSON.parse(JSON.stringify(data)).data.user_data_type;
-                user_data_id = JSON.parse(JSON.stringify(data)).data.user_data_id;
-                localStorage.setItem(
-                  'role', role
+                this.currentUser = new AccessData(
+                  resp.headers.get('access-token'),
+                  resp.headers.get('client'),
+                  resp.headers.get('uid'),
+                  resp.headers.get('expiry'),
+                  resp.headers.get('token-type'),
+                  JSON.parse(JSON.stringify(resp)).body.data.id,
+                  JSON.parse(JSON.stringify(resp)).body.data.name,
+                  JSON.parse(JSON.stringify(resp)).body.data.username,
+                  JSON.parse(JSON.stringify(resp)).body.data.email,
+                  JSON.parse(JSON.stringify(data)).data.user_data_type,
+                  JSON.parse(JSON.stringify(resp)).body.data.image.url,
+                  JSON.parse(JSON.stringify(data)).data.user_data_id
                 );
-                localStorage.setItem(
-                  'user-data-id', user_data_id
+                this.saveAccessData();
+                this.router.navigateByUrl(this.goHome(JSON.parse(JSON.stringify(data)).data.user_data_type));
+              }, err => {
+                console.log(err);
+                console.log(resp);
+                this.currentUser = new AccessData(
+                  resp.headers.get('access-token'),
+                  resp.headers.get('client'),
+                  resp.headers.get('uid'),
+                  resp.headers.get('expiry'),
+                  resp.headers.get('token-type'),
+                  JSON.parse(JSON.stringify(resp)).body.data.id,
+                  JSON.parse(JSON.stringify(resp)).body.data.name,
+                  JSON.parse(JSON.stringify(resp)).body.data.username,
+                  JSON.parse(JSON.stringify(resp)).body.data.email,
+                  undefined,
+                  JSON.parse(JSON.stringify(resp)).body.data.image.url,
+                  undefined
                 );
+                this.saveAccessData();
+                this.router.navigateByUrl('complete-form');
+
               }
             );
-          this.currentUser = new AccessData(
-            resp.headers.get('access-token'),
-            resp.headers.get('client'),
-            resp.headers.get('uid'),
-            resp.headers.get('expiry'),
-            resp.headers.get('token-type'),
-            JSON.parse(JSON.stringify(resp)).body.data.id,
-            JSON.parse(JSON.stringify(resp)).body.data.name,
-            JSON.parse(JSON.stringify(resp)).body.data.username,
-            JSON.parse(JSON.stringify(resp)).body.data.email,
-            role
-          );
-          this.saveAccessData();
         },
         err => {
 
@@ -224,6 +259,8 @@ export class AuthenticationService implements AuthService {
             JSON.parse(JSON.stringify(resp)).body.data.name,
             JSON.parse(JSON.stringify(resp)).body.data.username,
             JSON.parse(JSON.stringify(resp)).body.data.email,
+            'Administrator',
+            JSON.parse(JSON.stringify(resp)).body.data.image.url,
           );
           this.tokenStorage.setRole('Administrator');
           this.saveAccessData();
@@ -397,6 +434,9 @@ export class AuthenticationService implements AuthService {
     this.tokenStorage.setEmail(this.currentUser.getEmail());
     this.tokenStorage.setId(this.currentUser.getId());
     this.tokenStorage.setName(this.currentUser.getName());
+    this.tokenStorage.setRole(this.currentUser.getRole());
+    this.tokenStorage.setImage(this.currentUser.getImage());
+    this.tokenStorage.setDataId(this.currentUser.getDataId());
   }
 
   public getCurrentHeaders(): HttpHeaders {
@@ -418,6 +458,12 @@ export class AuthenticationService implements AuthService {
     return null;
   }
 
+  public getDataId(): Observable<any> {
+    const headers = this.getCurrentHeaders();
+    return this.http.get(API_URL + '/userType', { headers: headers });
+
+  }
+
   public getUser(): Observable<any> {
     const headers = this.getCurrentHeaders();
     return this.http.get(API_URL + '/auth_user/validate_token', { headers: headers });
@@ -425,4 +471,18 @@ export class AuthenticationService implements AuthService {
 
   }
 
+  public goHome(role: String): string {
+    switch (role) {
+      case 'Voluntary':
+        return 'voluntary-home';
+      case 'Administrator':
+        return 'administrator-home';
+      case 'Organization':
+        return 'organization-home';
+      case null || 'undefinied':
+        return 'complete-form';
+    }
+  }
+
 }
+

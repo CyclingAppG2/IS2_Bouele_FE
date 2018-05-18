@@ -25,7 +25,11 @@ export class UserService {
                     const name = user.data.name.split(' ');
                     voluntary.lastname = name[name.length - 2] + ' ' + name[name.length - 1];
                     voluntary.firstname = name[0] + ' ' + name[1];
-                    voluntary.avatar = API_URL + user.data.image.url;
+                    if (user.data.image.url === null) {
+                        voluntary.avatar = '/assets/images/user-default.svg';
+                    } else {
+                        voluntary.avatar = API_URL + user.data.image.url;
+                    }
                     voluntary.email = user.data.email;
                     voluntary.username = user.data.username;
                 }
@@ -35,7 +39,6 @@ export class UserService {
 
     public goHome(): string {
         const role = localStorage.getItem('role');
-        console.log('HOldskfjaslk', role);
         switch (role) {
             case 'Voluntary':
                 return 'voluntary-home';
