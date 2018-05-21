@@ -5,6 +5,7 @@ import { UNITS } from '../../_lists';
 import { Event, Location as Loc } from '../../_models';
 import { EventService, AuthenticationService } from '../../_services';
 import { Router } from '@angular/router';
+import { AmazingTimePickerService } from 'amazing-time-picker';
 @Component({
   selector: 'app-event-form',
   templateUrl: './event-form.component.html',
@@ -28,6 +29,7 @@ export class EventFormComponent implements OnInit {
   public zoom = 15;
   public lng: any;
   public lat: any;
+  public selectedTime: any;
 
 
 
@@ -35,22 +37,33 @@ export class EventFormComponent implements OnInit {
     private formBuilder: FormBuilder,
     private eventService: EventService,
     private authService: AuthenticationService,
-    private router: Router
+    private router: Router,
+    private atp: AmazingTimePickerService
   ) {
     this.createForm();
+    this.authService.getDataId()
+    .subscribe(
+      data => {
+        this.organization_id = JSON.parse(JSON.stringify(data)).data.user_data_id;
+      }
+    );
   }
 
   ngOnInit() {
-    this.authService.getDataId()
-      .subscribe(
-        data => {
-          this.organization_id = JSON.parse(JSON.stringify(data)).data.user_data_id;
-          console.log(this.organization_id);
 
-        }
-      );
 
   }
+
+  open() {
+    const amazingTimePicker = this.atp.open({
+        time:  this.selectedTime,
+        theme: 'material-orange',
+
+    });
+    amazingTimePicker.afterClose().subscribe(time => {
+        this.selectedTime = time;
+    });
+}
 
   createForm() {
     if (navigator) {
@@ -206,7 +219,8 @@ export class EventFormComponent implements OnInit {
   }
 
   formatDate(fecha: any): number {
-    const date = new Date(fecha.year, fecha.month - 1, fecha.day).getTime();
+    const date = new Date(fecha.month +  '/' + fecha.day + '/' + fecha.year + ' ' + this.selectedTime).getTime();
+    console.log(date);
     return date;
   }
 

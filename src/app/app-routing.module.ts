@@ -18,6 +18,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { VoluntaryProfileComponent } from './profile/voluntary-profile/voluntary-profile.component';
 import { EventDetailComponent } from './events/event-detail/event-detail.component';
 import { UncompletedGuard } from './_guards/uncompleted.guard';
+import { OrganizationProfileComponent } from './profile/organization-profile/organization-profile.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/', pathMatch: 'full' },
@@ -31,7 +32,8 @@ const routes: Routes = [
   { path: 'admin-login', component: SignInAdminComponent, canActivate: [PublicGuard]},
   { path: 'contact', component: ContactComponent},
   { path: 'complete-form', component: CompleteFormComponent, canActivate: [ProtectedGuard]},
-  { path: 'profile', component: VoluntaryProfileComponent, canActivate: [UncompletedGuard] },
+  { path: 'voluntary-profile', component: VoluntaryProfileComponent, canActivate: [UncompletedGuard] },
+  { path: 'organization-profile', component: OrganizationProfileComponent, canActivate: [OrganizationGuard] },
   { path: 'event-detail/:id', component: EventDetailComponent },
   { path: '**', component: NotFoundComponent},
 

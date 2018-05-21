@@ -70,6 +70,8 @@ import { AmazingTimePickerModule } from 'amazing-time-picker'; // this line you 
 import { ChartsModule } from 'ng2-charts';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { StatisticsService } from './_services/statistics.service';
+import { OrganizationProfileComponent } from './profile/organization-profile/organization-profile.component';
+import { RateUsersComponent } from './rate-users/rate-users.component';
 
 
 // the second parameter 'fr' is optional
@@ -99,7 +101,9 @@ registerLocaleData(localeEs, 'es');
     AdministratorHomeComponent,
     NotFoundComponent,
     VoluntaryProfileComponent,
-    EventDetailComponent
+    EventDetailComponent,
+    OrganizationProfileComponent,
+    RateUsersComponent
   ],
   imports: [
     NgbModule.forRoot(),

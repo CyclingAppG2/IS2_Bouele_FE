@@ -231,6 +231,18 @@ body {
 }
 
 
+.vh-75{
+  height: 70vh !important;
+}
+
+.vh-90{
+  height: 90vh !important;
+}
+
+.overflow-scroll{
+  overflow: scroll !important;
+}
+
 #avatar-upload-btn input{
   opacity: 0;
   font-size: 200px !important;
@@ -240,4 +252,8 @@ body {
 
 .text-grey {
   color: gray !important;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }

@@ -4,13 +4,15 @@ import { Location } from '@angular/common';
 import { EventService } from '../../_services';
 import { Event } from '../../_models/';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
-import swal from 'sweetalert2';
+import swal from 'sweetalert2/dist/sweetalert2.all';
 import { UNITS } from '../../_lists';
 import { NgbDatepickerConfig, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { MouseEvent } from '@agm/core';
 import { StatisticsService } from '../../_services/statistics.service';
 import { Chart } from 'chart.js';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+
 
 
 const now = new Date();
@@ -23,7 +25,8 @@ const now = new Date();
 })
 export class EventDetailComponent implements OnInit {
 
-  pdfResult: SafeResourceUrl;
+  pdfResult: any;
+  pdfSrc = '/pdf-test.pdf';
   event_id = +this.route.snapshot.paramMap.get('id');
   event: any;
   eventDetailForm: FormGroup;
@@ -37,53 +40,16 @@ export class EventDetailComponent implements OnInit {
   maxDate = { year: 2029, month: 12, day: 31 };
   eventDate;
   markers: Marker[] = [];
-  chart = [];
+  closeResult: string;
 
-  // lineChart
-  public lineChartData: Array<any> = [
-    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
-    { data: [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0], label: '2018' }
-  ];
-  public lineChartLabels: Array<any>;
-  public lineChartOptions: any = {
-    responsive: true
-  };
-  public lineChartColors: Array<any> = [
-    { // grey
-      backgroundColor: 'rgba(148,159,177,0.2)',
-      borderColor: 'rgba(148,159,177,1)',
-      pointBackgroundColor: 'rgba(148,159,177,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-    },
-    { // dark grey
-      backgroundColor: 'rgba(77,83,96,0.2)',
-      borderColor: 'rgba(77,83,96,1)',
-      pointBackgroundColor: 'rgba(77,83,96,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(77,83,96,1)'
-    },
-    { // grey
-      backgroundColor: 'rgba(148,159,177,0.2)',
-      borderColor: 'rgba(148,159,177,1)',
-      pointBackgroundColor: 'rgba(148,159,177,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-    }
-  ];
-  public lineChartLegend = true;
-  public lineChartType = 'line';
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private eventService: EventService,
-    private statisticService: StatisticsService,
     private _location: Location,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer,
+    private modalService: NgbModal
   ) {
     this.eventService.getEventById(this.event_id)
       .subscribe(
@@ -135,7 +101,6 @@ export class EventDetailComponent implements OnInit {
         this.lat = +pos.coords.latitude;
       });
     }
-    this.getStatisticsEventCreations();
 
   }
 
@@ -166,7 +131,7 @@ export class EventDetailComponent implements OnInit {
           console.log(voluntaries);
           this.pdfResult = this.domSanitizer.bypassSecurityTrustResourceUrl(
             URL.createObjectURL(voluntaries)
-        );
+          );
         }
       );
   }
@@ -217,70 +182,86 @@ export class EventDetailComponent implements OnInit {
 
 
 
-  public randomize(): void {
-    const _lineChartData: Array<any> = new Array(this.lineChartData.length);
-    for (let i = 0; i < this.lineChartData.length; i++) {
-      _lineChartData[i] = { data: new Array(this.lineChartData[i].data.length), label: this.lineChartData[i].label };
-      for (let j = 0; j < this.lineChartData[i].data.length; j++) {
-        _lineChartData[i].data[j] = Math.floor((Math.random() * 100) + 1);
-      }
-    }
-    this.lineChartData = _lineChartData;
+  getVoluntariesInEventPDF(id) {
+    this.pdfResult = this.eventService.downloadPDF(id);
   }
 
-  // events
-  public chartClicked(e: any): void {
-    console.log(e);
+  getRole() {
+    return localStorage.getItem('role');
   }
 
-  public chartHovered(e: any): void {
-    console.log(e);
+  alreadyHappened(date) {
+    // tslint:disable-next-line:prefer-const
+    let today = new Date();
+    return today.getTime() > date;
   }
 
-  public getStatisticsEventCreations() {
-    this.statisticService.getStatisticsEventCreations(this.event_id).
-      subscribe(
-        resp => {
-          const statistic = JSON.parse(JSON.stringify(resp));
-          const statistic1 = JSON.parse(JSON.stringify(statistic['eventsStartInMonth']));
-          const datasets = [];
-          for (const key in statistic1) {
+  finishEvent(id) {
+    const swalWithBootstrapButtons = swal.mixin({
+      confirmButtonClass: 'btn btn-success',
+      cancelButtonClass: 'btn btn-danger',
+      buttonsStyling: false,
+    });
 
-            if (statistic1.hasOwnProperty(key)) {
-              const element = statistic1[key];
-              datasets.push(
-                {
-                  data: element,
-                  borderColor: '#3cba9f',
-                  fill: false,
-                  label: key
-                }
-              );
-            }
+    swalWithBootstrapButtons({
+      title: '¿Estás seguro?',
+      text: 'Si abandonas este evento probablemente hagas mucha falta',
+      type: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, estoy seguro!',
+      cancelButtonText: 'No, ¡No abandonar!',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.value) {
+        const index: number = eventArray.indexOf(event);
+        console.log(index);
+        if (index !== -1) {
+          eventArray.splice(index, 1);
+        }
+        this.eventService.finishEvent(id)
+        .subscribe(
+          resp => {
+            swalWithBootstrapButtons({
+              imageHeight: 100,
+              title: 'Esta bien',
+              text: 'Ahora este evento ha finalizado',
+              type: 'success',
+              imageUrl: 'https://image.flaticon.com/icons/svg/872/872607.svg'
+            });
           }
-          this.chart = new Chart('canvas', {
-            type: 'line',
-            data: {
-              labels: ['E', 'F', 'M', 'A', 'M', 'J', 'A', 'S', 'O', 'N', 'D'],
-              datasets: datasets,
-              options: {
-                legend: {
-                  display: false
-                },
-                scales: {
-                  xAxes: [{
-                    display: true
-                  }],
-                  yAxes: [{
-                    display: true
-                  }],
-                }
-              }
-            })
-        });
-    console.log(this.lineChartData);
+        );
+      } else if (
+      // Read more about handling dismissals
+      result.dismiss === swal.DismissReason.cancel
+    ) {
+      swalWithBootstrapButtons({
+        title: 'Cancelado',
+        text: 'Uff, seguro no te arrepentiras',
+        imageUrl: 'https://image.flaticon.com/icons/svg/42/42175.svg',
+        imageHeight: 100,
+        imageAlt: 'A tall image'
+      });
+    }
+    });
   }
 
+  open(content) {
+    this.modalService.open(content).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
+  }
 
 }
 

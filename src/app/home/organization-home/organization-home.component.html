@@ -1,3 +1,46 @@
 <div class="full-height">
-  <button type="button" class="btn btn-primary-outline float-right m-3" routerLink="/new-event">Agrega un nuevo evento</button>
+  <div class="row container-fluid">
+    <div class="col-4 border-rigth border-dark">
+
+      <div class="card vh-90 ">
+        <div class="card-header">
+          <h4 class="font-lobster text-center">Dashboard</h4>
+        </div>
+        <div class="card-body overflow-scroll vh-90 ">
+          <div *ngIf="chart" class="border border-warning rounded p-2 ">
+            <canvas id="canvas">{{ chart }}</canvas>
+          </div>
+        </div>
+        <div class="card-footer text-muted">
+          Footer
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="card vh-90">
+        <div class="card-header">
+          <h4 class="font-lobster text-center">Mis eventos</h4>
+        </div>
+        <div class="card-body">
+          <button type="button" class="btn btn-warning rounded-circle text-white position-absolute" routerLink="/new-event" style="bottom: 2rem; right: 1rem; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"><i class="fas fa-plus"></i></button>
+        </div>
+        <div class="card-footer text-muted">
+          Footer
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="card vh-90">
+        <div class="card-header">
+          <h4 class="font-lobster text-center">Voluntarios en mis eventoss</h4>
+        </div>
+        <div class="card-body">
+        </div>
+        <div class="card-footer text-muted">
+          Footer
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>

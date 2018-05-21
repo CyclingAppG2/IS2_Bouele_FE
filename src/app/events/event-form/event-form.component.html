@@ -19,25 +19,33 @@
           </div>
           <div class="form-group">
             <div class="row container-fluid d-flex align-items-center">
-              <div class="col-8 p-0">
-                <div class="form-group">
-                  <div class="input-group">
-                    <input class="form-control" formControlName="date" [minDate]="minDate" [maxDate]="maxDate" placeholder="Fecha del evento"
-                      name="date" ngbDatepicker #d="ngbDatepicker" required>
-                    <div class="input-group-append bg-primary-app ">
-                      <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
-                        <i class="fa fa-calendar text-white"></i>
-                      </button>
-                    </div>
+              <div class="col-8 pl-0">
+                <div class="input-group">
+                  <input class="form-control" formControlName="date" [minDate]="minDate" [maxDate]="maxDate" placeholder="Fecha del evento"
+                    name="date" ngbDatepicker #d="ngbDatepicker" required (click)="d.toggle()">
+                  <div class="input-group-append bg-primary-app ">
+                    <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                      <i class="fa fa-calendar text-white"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4 pr-0">
+                <div class="input-group">
+                  <input type="time" value="{{selectedTime}}" class="form-control text-center">
+                  <div class="input-group-append bg-primary-app">
+                    <button class="btn btn-outline-secondary" (click)="open()" type="button">
+                      <i class="far fa-clock text-white"></i>
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="form-group">
-              <label for="" class="d-block mx-auto"></label>
-              <input type="number" class="form-control" formControlName="max_voluntaries" placeholder="Maximo número de voluntarios" required>
-            </div>
+            <label for="" class="d-block mx-auto"></label>
+            <input type="number" class="form-control" formControlName="max_voluntaries" placeholder="Maximo número de voluntarios" required>
+          </div>
           <div class="form-group">
             <div class="row container-fluid d-flex align-items-center">
               <div class="col-6 pl-0">
@@ -114,8 +122,8 @@
             <a class="btn btn-secondary text-white" (click)="addPLusses()">Agregar un plus</a>
           </div>
           <div class="alert alert-danger" role="alert" *ngIf="error">
-              <strong>Lo sentimos</strong> {{error | json}}
-            </div>
+            <strong>Lo sentimos</strong> {{error | json}}
+          </div>
           <div class="form-group text-center">
             <button class="btn btn-primary-app text-white" type="submit" role="button" [disabled]="!eventForm.valid">Agrega este evento</button>
           </div>
@@ -127,4 +135,6 @@
 
   </div>
 </div>
+
+{{selectedTime  | json}}
 

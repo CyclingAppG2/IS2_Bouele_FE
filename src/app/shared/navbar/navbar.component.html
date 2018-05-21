@@ -7,18 +7,25 @@
     </li>
     <li class="nav-item" [hidden]="!isLogged()">
       <a href="" class="text-primary-app">
-        <i class="fa fa-bars fa-2x">
+        <i class="fas fa-bars fa-2x">
           <span class="sr-only">Menu</span>
+        </i>
+      </a>
+    </li>
+    <li class="nav-item ml-3" [hidden]="!isLogged()">
+      <a href="" class="text-primary-app">
+        <i class="far fa-comment fa-2x">
+          <span class="sr-only">Foros</span>
         </i>
       </a>
     </li>
   </ul>
   <a class="navbar-brand d-block mx-auto" (click)="goHome()">
-    <img src="\assets\images\logo.svg" height="50" class="d-block mx-auto" style="cursor: pointer"/>
+    <img src="\assets\images\logo.svg" height="50" class="d-block mx-auto" style="cursor: pointer" />
   </a>
   <ul class="navbar-nav ml-auto d-flex align-items-center text-center">
     <li class="nav-item px-2" [hidden]="!isLogged()">
-      <a routerLink="/profile">
+      <a (click)="goProfile()" class="btn">
         <img src="{{image_url}}" class="rounded-circle" width="35" height="35" title="{{name}}">
       </a>
     </li>

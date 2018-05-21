@@ -8,6 +8,8 @@ import { of } from 'rxjs/observable/of';
 import { Event } from '../_models/event.model';
 import { AuthenticationService } from './authentication';
 import { environment } from '../../environments/environment';
+import { saveAs } from 'file-saver/FileSaver';
+
 
 const API_URL = environment.apiUrl;
 
@@ -59,7 +61,6 @@ export class EventService {
   }
 
   public leaveEvent(id: number): Observable<any> {
-    console.log('holaaaaaaaaaaaaa 2' + id);
     const httpOptions = {
       headers: this.headers, body: { 'event': id }
     };
@@ -67,7 +68,59 @@ export class EventService {
   }
 
   public getVoluntariesInEvent(id: number, format: string) {
-    return this.http.get(API_URL + '/voluntaries_in_event/' + id + '.' + format,  {headers: this.headers, observe: 'response'});
+    return this.http.get(API_URL + '/voluntaries_in_event/' + id + '.' + format, { headers: this.headers, observe: 'response' });
   }
+
+  downloadPDF(id: number): any {
+    console.log('hola');
+    const file = '';
+    this.http.get(API_URL + '/voluntaries_in_event/' + id + '.pdf',
+      { headers: this.headers, responseType: 'blob' })
+      .subscribe(
+        (response) => {
+          console.log(response);
+          const mediaType = 'application/pdf';
+          const blob = new Blob([response], { type: mediaType });
+          const filename = 'tu_evento_' + id;
+          const url = window.URL.createObjectURL(blob, { oneTimeOnly: true });
+          const anchor = document.createElement('a');
+          anchor.href = url;
+          anchor.target = '_blank';
+          anchor.click();
+          // saveAs(blob, filename);
+          console.log(url);
+        }, err => {
+          console.log(err);
+        }
+      );
+
+    return file;
+
+  }
+
+  private saveToFileSystem(response) {
+    const contentDispositionHeader: string = response.headers.get('Content-Disposition');
+    const parts: string[] = contentDispositionHeader.split(';');
+    const filename = parts[1].split('=')[1];
+    const blob = new Blob([response._body], { type: 'text/plain' });
+    saveAs(blob, filename);
+  }
+
+  public deleteEvent(id) {
+    const httpOptions = {
+      headers: this.headers, body: { 'event': id }
+    };
+    return this.http.delete(API_URL + '/events/' + id, httpOptions);
+  }
+
+  public finishEvent(id) {
+    const httpOptions = {
+      headers: this.headers, body: { 'event': id }
+    };
+    return this.http.delete(API_URL + '/events/' + id, httpOptions);
+  }
+
+
+
 
 }

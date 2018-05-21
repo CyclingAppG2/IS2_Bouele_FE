@@ -1,16 +1,16 @@
 <div class="full-height">
     <div class="row container-fluid">
         <div class="col-lg-4 col-3">
-            <div *ngIf="chart">
-                <canvas id="canvas">{{ chart }}</canvas>
-            </div>
         </div>
         <div class="col-lg-4 col-6">
-            <div class="card my-3">
-                <div class="card-header font-lobster text-center fa-2x">
+            <div class="card vh-90">
+                <div class="card-header font-lobster text-center fa-2x" *ngIf="getRole() == 'Voluntary'">
                     Seguro te gustará
                 </div>
-                <div class="card-block">
+                <div class="card-header font-lobster text-center fa-2x" *ngIf="getRole() == 'Organization'">
+                    Así ven los voluntarios tu evento
+                </div>
+                <div class="card-block overflow-scroll">
                     <form [formGroup]="eventDetailForm" class="p-2">
                         <div class="form-group">
                             <label class="sr-only"></label>
@@ -57,7 +57,7 @@
                                 <div class="col-4 pr-0">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <input atp-time-picker value="{{eventDate  | date:'hh:mm':'':'es'}}" class="form-control" disabled="!editing" />
+                                            <input atp-time-picker value="{{eventDate  | date:'HH:mm':'':'es'}}" class="form-control" disabled="!editing" />
                                             <div class="input-group-append bg-primary-app">
                                                 <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button" disabled="editing">
                                                     <i class="far fa-clock text-white"></i>
@@ -100,24 +100,43 @@
                         <div class="alert alert-success float-right" role="alert">
                             <strong>Organiza: </strong>{{event.organization.firm}}
                         </div>
-                        <div class="text-center">
+                        <div class="text-center" *ngIf="getRole() == 'Voluntary'">
                             <button type="submit" class="btn btn-outline-warning " (click)="applyToEvent()">
                                 <i class="fa fa-check-circle"></i> Quiero estar aquí</button>
                         </div>
+                        <div class="text-center">
+                            <button *ngIf="getRole() == 'Organization' && !alreadyHappened(event.start_datetime)" class="btn btn-outline-danger" (click)="finishEvent(event.id)">
+                                <i class="fas fa-minus-circle"> Finalizar evento</i>
+                            </button>
+                        </div>
+                        <div class="modal fade" id="change_password" role="dialog">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body change_password">
+                                        Modal body
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </form>
                 </div>
             </div>
 
         </div>
         <div class="col-lg-4 col-3">
-            <div>
-                <div class="card">
+            <div *ngIf="getRole() == 'Organization'">
+                <div class="card vh-90">
                     <div class="card-header ">
                         <h4 class="card-title font-lobster text-center">
                             <h4>¡Genial!</h4>
                             <i *ngIf="(event.voluntaries.length > 1)">Estos voluntarios se han unido a tu evento</i>
-                            <i *ngIf="!(event.voluntaries.length > 1)">Este voluntario se ha unido a tu evento</i>
+                            <i *ngIf="(event.voluntaries.length == 1)">Este voluntario se ha unido a tu evento</i>
                             <i *ngIf="(event.voluntaries.length > 1)">{{event.voluntaries.length}}</i>
+                            <i *ngIf="(event.voluntaries.length == 0)">Empezemos, aún no se ha unido nadie</i>
                         </h4>
                     </div>
                     <div class="card-body">
@@ -136,12 +155,35 @@
                         </div>
 
                     </div>
+
+                    <button *ngIf="getRole() == 'Organization'" class="btn btn-secondary float-right ml-auto mx-1 mb-1" (click)="getVoluntariesInEventPDF(event.id)">
+                        <i class="fas fa-download"></i>
+                    </button>
+
                 </div>
             </div>
-
-            <a class="btn bnt-primary" (click)="getVoluntariesInEvent('pdf')" >Obtener un PDF</a>
-            <iframe [src]="pdfResult"></iframe>
 
         </div>
     </div>
 </div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Modal title</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>One fine body&hellip;</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Close</button>
+    </div>
+</ng-template>
+
+<button class="btn btn-lg btn-outline-primary" (click)="open(content)">Launch demo modal</button>
+
+<hr>
+
+<pre>{{closeResult}}</pre>

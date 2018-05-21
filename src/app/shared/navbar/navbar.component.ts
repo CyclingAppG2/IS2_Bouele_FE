@@ -79,4 +79,23 @@ export class NavbarComponent implements OnInit {
 
     }
   }
+
+  goProfile() {
+    const role = localStorage.getItem('role');
+    console.log(role);
+    switch (role) {
+      case 'Voluntary':
+        this.router.navigateByUrl('voluntary-profile');
+        break;
+      case 'Administrator':
+        this.router.navigateByUrl('administrator-profile');
+        break;
+      case 'Organization':
+        this.router.navigateByUrl('organization-profile');
+        break;
+      default:
+        break;
+
+    }
+  }
 }
