@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { EventService } from '../../_services';
 import { Event } from '../../_models/';
@@ -11,7 +11,7 @@ import { MouseEvent } from '@agm/core';
 import { StatisticsService } from '../../_services/statistics.service';
 import { Chart } from 'chart.js';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -49,7 +49,8 @@ export class EventDetailComponent implements OnInit {
     private eventService: EventService,
     private _location: Location,
     private domSanitizer: DomSanitizer,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private router: Router
   ) {
     this.eventService.getEventById(this.event_id)
       .subscribe(
@@ -213,35 +214,36 @@ export class EventDetailComponent implements OnInit {
       reverseButtons: true
     }).then((result) => {
       if (result.value) {
-        const index: number = eventArray.indexOf(event);
-        console.log(index);
-        if (index !== -1) {
-          eventArray.splice(index, 1);
-        }
         this.eventService.finishEvent(id)
-        .subscribe(
-          resp => {
-            swalWithBootstrapButtons({
-              imageHeight: 100,
-              title: 'Esta bien',
-              text: 'Ahora este evento ha finalizado',
-              type: 'success',
-              imageUrl: 'https://image.flaticon.com/icons/svg/872/872607.svg'
-            });
-          }
-        );
+          .subscribe(
+            resp => {
+              swalWithBootstrapButtons({
+                imageHeight: 100,
+                title: 'Esta bien',
+                text: 'Ahora este evento ha finalizado',
+                type: 'success',
+                imageUrl: 'https://image.flaticon.com/icons/svg/872/872607.svg'
+              }).then(
+                act => {
+                  // tslint:disable-next-line:prefer-const
+                  let elem: Element = document.getElementById('content');
+                  this.open(elem);
+                }
+              );
+            }
+          );
       } else if (
-      // Read more about handling dismissals
-      result.dismiss === swal.DismissReason.cancel
-    ) {
-      swalWithBootstrapButtons({
-        title: 'Cancelado',
-        text: 'Uff, seguro no te arrepentiras',
-        imageUrl: 'https://image.flaticon.com/icons/svg/42/42175.svg',
-        imageHeight: 100,
-        imageAlt: 'A tall image'
-      });
-    }
+        // Read more about handling dismissals
+        result.dismiss === swal.DismissReason.cancel
+      ) {
+        swalWithBootstrapButtons({
+          title: 'Cancelado',
+          text: 'Uff, seguro no te arrepentiras',
+          imageUrl: 'https://image.flaticon.com/icons/svg/42/42175.svg',
+          imageHeight: 100,
+          imageAlt: 'A tall image'
+        });
+      }
     });
   }
 
@@ -259,7 +261,7 @@ export class EventDetailComponent implements OnInit {
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
       return 'by clicking on a backdrop';
     } else {
-      return  `with: ${reason}`;
+      return `with: ${reason}`;
     }
   }
 

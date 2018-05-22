@@ -13,6 +13,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { AgmCoreModule } from '@agm/core';
 import { StarRatingModule } from 'angular-star-rating';
+import {BusyModule} from 'angular2-busy';
 
 
 
@@ -123,7 +124,9 @@ registerLocaleData(localeEs, 'es');
     StarRatingModule.forRoot(),
     AmazingTimePickerModule,
     ChartsModule,
-    PdfViewerModule
+    PdfViewerModule,
+    BusyModule,
+    BrowserAnimationsModule
 
   ],
   providers: [

@@ -114,10 +114,7 @@ export class EventService {
   }
 
   public finishEvent(id) {
-    const httpOptions = {
-      headers: this.headers, body: { 'event': id }
-    };
-    return this.http.delete(API_URL + '/events/' + id, httpOptions);
+    return this.http.delete(API_URL + '/events/' + id, {headers: this.headers});
   }
 
 

@@ -15,7 +15,7 @@ export class StatisticsService {
     private authService: AuthenticationService
   ) { }
 
-  public getStatisticsEventCreations(id: number) {
+  public getStatisticsEventCreations(id) {
     return this.http.get(API_URL + '/organizations/statistics/' + id, {headers: this.headers});
   }
 }

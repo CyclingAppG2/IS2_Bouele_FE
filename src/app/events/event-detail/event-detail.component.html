@@ -105,7 +105,7 @@
                                 <i class="fa fa-check-circle"></i> Quiero estar aquí</button>
                         </div>
                         <div class="text-center">
-                            <button *ngIf="getRole() == 'Organization' && !alreadyHappened(event.start_datetime)" class="btn btn-outline-danger" (click)="finishEvent(event.id)">
+                            <button *ngIf="getRole() == 'Organization' && alreadyHappened(event.start_datetime)" class="btn btn-outline-danger" (click)="finishEvent(event.id)">
                                 <i class="fas fa-minus-circle"> Finalizar evento</i>
                             </button>
                         </div>
@@ -167,7 +167,7 @@
     </div>
 </div>
 
-<ng-template #content let-c="close" let-d="dismiss">
+<ng-template #content let-c="close" let-d="dismiss" id="content">
     <div class="modal-header">
         <h4 class="modal-title">Modal title</h4>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
