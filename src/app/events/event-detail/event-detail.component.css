@@ -1,4 +1,18 @@
 agm-map {
     height: 10rem;
   }
-  
+.star {
+  position: relative;
+  display: inline-block;
+  font-size: 2vw;
+  color: #d3d3d3;
+}
+.full {
+  color: #ffd907;
+}
+.half {
+  position: absolute;
+  display: inline-block;
+  overflow: hidden;
+  color: #ffd907;
+}

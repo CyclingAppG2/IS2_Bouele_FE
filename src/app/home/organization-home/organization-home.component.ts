@@ -3,7 +3,6 @@ import { StatisticsService } from '../../_services/statistics.service';
 import { EventService } from '../../_services';
 import { Chart } from 'chart.js';
 import { Subscription } from 'rxjs/Subscription';
-import { HttpEventType, HttpEvent } from '@angular/common/http';
 
 @Component({
   selector: 'app-organization-home',
@@ -43,8 +42,11 @@ export class OrganizationHomeComponent implements OnInit {
           console.log(resp);
           const statistic = JSON.parse(JSON.stringify(resp));
           const statistic1 = JSON.parse(JSON.stringify(statistic['eventsStartInMonth']));
-          const statistic2 = JSON.parse(JSON.stringify(statistic['assistenceByEvent']));
-          const statistic3 = JSON.parse(JSON.stringify(statistic['scoreByEvent']));
+          const statistic2 = JSON.parse(JSON.stringify(statistic['scoreByEvent']));
+          const statistic3 = JSON.parse(JSON.stringify(statistic['assistenceByEvent']));
+
+          console.log(statistic1);
+          console.log(statistic2);
           const datasets1 = [];
           for (const key in statistic1) {
             if (statistic1.hasOwnProperty(key)) {
@@ -59,35 +61,36 @@ export class OrganizationHomeComponent implements OnInit {
               );
             }
           }
-          const datasets2 = [];
+          let datasets2 = [];
           for (const key in statistic2) {
-            if (statistic1.hasOwnProperty(key)) {
-              const element = statistic1[key];
+            if (statistic2.hasOwnProperty(key)) {
+              const element = statistic2[key];
+              console.log(element, key);
               datasets2.push(
                 {
                   data: element,
                   borderColor: OrganizationHomeComponent.getRandomColor(),
                   fill: false,
-                  label: key
                 }
-              );
+              )
             }
           }
-          const datasets3 = [];
+          let datasets3 = [];
           for (const key in statistic3) {
-            if (statistic1.hasOwnProperty(key)) {
-              const element = statistic1[key];
+            if (statistic3.hasOwnProperty(key)) {
+              const element = statistic3[key];
+              console.log(element, key);
               datasets3.push(
                 {
-                  data: element,
+                  data: (element.assistences / element.max_voluntaries) * 100,
+                  label: key,
                   borderColor: OrganizationHomeComponent.getRandomColor(),
                   fill: false,
-                  label: key
                 }
-              );
+              )
             }
           }
-          this.chart1 = new Chart('canvas', {
+          this.chart1 = new Chart('canvas1', {
             type: 'line',
             data: {
               labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
@@ -108,38 +111,31 @@ export class OrganizationHomeComponent implements OnInit {
               }
             }
           });
-          this.chart2 = new Chart('canvas1', {
-            type: 'pie',
-            data: {
-              datasets: [{
-                data: datasets3,
-                backgroundColor: [
-                  OrganizationHomeComponent.getRandomColor(),
-                  OrganizationHomeComponent.getRandomColor(),
-                  OrganizationHomeComponent.getRandomColor(),
-                  OrganizationHomeComponent.getRandomColor(),
-                  OrganizationHomeComponent.getRandomColor(),
-                ],
-                label: 'Dataset 1'
-              }],
-              labels: [
-                'Red',
-                'Orange',
-                'Yellow',
-                'Green',
-                'Blue'
-              ]
-            },
-            options: {
-              responsive: true
-            }
-          });
-          this.chart3 = new Chart('canvas2', {
+          this.chart2 = new Chart('canvas2', {
+              type: 'line',
+              data: {
+                datasets: datasets2,
+                options: {
+                  legend: {
+                    display: false
+                  },
+                  scales: {
+                    xAxes: [{
+                      display: true
+                    }],
+                    yAxes: [{
+                      display: true
+                    }],
+                  }
+                }
+              }
+            });
+          this.chart3 = new Chart('canvas3', {
             type: 'line',
             data: {
               labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
                 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-              datasets: datasets1,
+              datasets: datasets3,
               options: {
                 legend: {
                   display: false
@@ -158,7 +154,6 @@ export class OrganizationHomeComponent implements OnInit {
         });
   }
 
-
   getRandomColor() {
     let color = Math.floor(0x1000000 * Math.random()).toString(16);
     return '#' + ('000000' + color).slice(-6);
@@ -168,4 +163,5 @@ export class OrganizationHomeComponent implements OnInit {
     let color = Math.floor(0x1000000 * Math.random()).toString(16);
     return '#' + ('000000' + color).slice(-6);
   }
+6
 }

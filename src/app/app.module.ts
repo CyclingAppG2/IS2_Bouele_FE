@@ -73,6 +73,8 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { StatisticsService } from './_services/statistics.service';
 import { OrganizationProfileComponent } from './profile/organization-profile/organization-profile.component';
 import { RateUsersComponent } from './rate-users/rate-users.component';
+import { PaginationComponent } from './pagination/pagination.component';
+import { FilterComponent } from './filter/filter.component';
 
 
 // the second parameter 'fr' is optional
@@ -104,7 +106,9 @@ registerLocaleData(localeEs, 'es');
     VoluntaryProfileComponent,
     EventDetailComponent,
     OrganizationProfileComponent,
-    RateUsersComponent
+    RateUsersComponent,
+    PaginationComponent,
+    FilterComponent
   ],
   imports: [
     NgbModule.forRoot(),

@@ -1,0 +1,67 @@
+<button type="button" class="btn btn-outline-secondary mr-2" placement="bottom"
+        [ngbPopover]="popContent" popoverTitle="¿Qué estás buscando?">
+  Filtros
+</button>
+<ng-template #popTitle>
+  <h4 class="text-center font-lobster">¿Estás buscando algo?</h4>
+</ng-template>
+<ng-template #popContent>
+  <form [formGroup]="filterForm" id="filterForm">
+    <div class="form-group">
+      <label for="plus" class="sr-only">Atributo</label>
+      <input type="text" formControlName="plus" class="form-control" placeholder="¿Qué aspecto te gustaría?" id="plus">
+    </div>
+    <div class="form-group">
+      <div class="input-group">
+        <input class="form-control" [minDate]="minDate" [maxDate]="maxDate" placeholder="Fecha del evento"
+               name="dp" ngbDatepicker formControlName="date_min"
+               #d1="ngbDatepicker">
+        <div class="input-group-append bg-primary-app">
+          <button class="btn btn-outline-secondary" (click)="d1.toggle()" type="button">
+            <i class="fa fa-calendar text-white"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="input-group">
+        <input type="time" class="form-control text-center" formControlName="time_min">
+        <div class="input-group-append bg-primary-app">
+          <button class="btn btn-outline-secondary" (click)="open1()" type="button">
+            <i class="far fa-clock text-white"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="input-group">
+        <input class="form-control" [minDate]="minDate" [maxDate]="maxDate" placeholder="Fecha del evento"
+               name="dp" ngbDatepicker formControlName="date_max"
+               #d2="ngbDatepicker">
+        <div class="input-group-append bg-primary-app">
+          <button class="btn btn-outline-secondary" (click)="d2.toggle()" type="button">
+            <i class="fa fa-calendar text-white"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="input-group">
+        <input type="time" class="form-control text-center" formControlName="time_max">
+        <div class="input-group-append bg-primary-app">
+          <button class="btn btn-outline-secondary" (click)="open2()" type="button">
+            <i class="far fa-clock text-white"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="sr-only" for="name">Nombre</label>
+      <input type="text" formControlName="name" class="form-control" placeholder="¿Te suena algún nombre?" id="name">
+
+    </div>
+    <div class="text-center">
+      <button class="btn btn-outline-dark" (click)="filter()">Filtrar</button>
+    </div>
+  </form>
+</ng-template>

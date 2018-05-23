@@ -17,6 +17,9 @@ const API_URL = environment.apiUrl;
 export class EventService {
 
   private headers = this.authService.getCurrentHeaders();
+  public rowsOnPage = 5;
+  public sortBy = "email";
+  public sortOrder = "asc";
 
   constructor(
     private http: HttpClient,
@@ -115,6 +118,21 @@ export class EventService {
 
   public finishEvent(id) {
     return this.http.delete(API_URL + '/events/' + id, {headers: this.headers});
+  }
+
+  public orgRateUser(id, score, commentary, voluntary_id) {
+    return this.http.put(API_URL + '/event/scores/' + id, {
+      'score':
+        {
+          'scorevoluntary': <string>score,
+          'commentsvoluntary': <string>commentary,
+          'voluntary_id': <string>voluntary_id
+        }
+    }, {headers: this.headers})
+  }
+
+  public filter(request) {
+    return this.http.put(API_URL + '/events/filters', request, {headers: this.headers});
   }
 
 

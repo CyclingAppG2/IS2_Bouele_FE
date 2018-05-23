@@ -17,10 +17,12 @@
         </div>
         <div class="col-lg-4 border-left text-center search-results" id="events" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
             (scrolled)="onScroll()" [scrollWindow]="false">
-            <div class="border border-warning rounded my-2" *ngFor="let event of events">
+          <app-filter></app-filter>
+
+          <div class="border border-warning rounded my-2" *ngFor="let event of events">
                 <div class="card text-center">
                     <div class="card-header " routerLink="/event-detail/{{event.id}}">
-                        
+
                         <h4 class="font-lobster text-ellipsis-1">{{event.name}}</h4>
                     </div>
                     <div class="card-block" routerLink="/event-detail/{{event.id}}">
@@ -49,6 +51,7 @@
         </div>
     </div>
 </div>
+
 
 <script>
     var parent = document.getElementById('wrapper');

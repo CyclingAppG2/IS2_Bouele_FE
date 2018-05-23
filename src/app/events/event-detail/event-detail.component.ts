@@ -1,18 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Location } from '@angular/common';
-import { EventService } from '../../_services';
-import { Event } from '../../_models/';
-import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
+import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Location} from '@angular/common';
+import {EventService} from '../../_services';
+import {FormBuilder, FormGroup, Validators, FormArray} from '@angular/forms';
 import swal from 'sweetalert2/dist/sweetalert2.all';
-import { UNITS } from '../../_lists';
-import { NgbDatepickerConfig, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { MouseEvent } from '@agm/core';
-import { StatisticsService } from '../../_services/statistics.service';
-import { Chart } from 'chart.js';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-
+import {UNITS} from '../../_lists';
+import {MouseEvent} from '@agm/core';
+import {Chart} from 'chart.js';
+import {DomSanitizer} from '@angular/platform-browser';
+import {NgbModal, ModalDismissReasons, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 
 
 const now = new Date();
@@ -30,17 +26,19 @@ export class EventDetailComponent implements OnInit {
   event_id = +this.route.snapshot.paramMap.get('id');
   event: any;
   eventDetailForm: FormGroup;
+  ratingUserForm: FormGroup;
   voluntaries_in_event: any;
   units = UNITS;
   lat: number;
   lng: number;
   editing = false;
   unidades;
-  minDate = { year: 2018, month: 1, day: 1 };
-  maxDate = { year: 2029, month: 12, day: 31 };
+  minDate = {year: 2018, month: 1, day: 1};
+  maxDate = {year: 2029, month: 12, day: 31};
   eventDate;
   markers: Marker[] = [];
   closeResult: string;
+  modalReference: NgbModalRef;
 
 
   constructor(
@@ -50,7 +48,8 @@ export class EventDetailComponent implements OnInit {
     private _location: Location,
     private domSanitizer: DomSanitizer,
     private modalService: NgbModal,
-    private router: Router
+    private router: Router,
+    private ref: ChangeDetectorRef
   ) {
     this.eventService.getEventById(this.event_id)
       .subscribe(
@@ -137,11 +136,11 @@ export class EventDetailComponent implements OnInit {
       );
   }
 
-  createForm() {
-    console.log(this.event);
-    this.eventDetailForm = this.formBuilder.group({
-      name: ['', Validators.required],
-    });
+  public createRatingForm() {
+    this.ratingUserForm = this.formBuilder.group({
+      score: ['', Validators.required],
+      commentary: ['', Validators.required]
+    })
   }
 
   get locationsDescribes(): FormArray {
@@ -182,7 +181,6 @@ export class EventDetailComponent implements OnInit {
   }
 
 
-
   getVoluntariesInEventPDF(id) {
     this.pdfResult = this.eventService.downloadPDF(id);
   }
@@ -214,24 +212,19 @@ export class EventDetailComponent implements OnInit {
       reverseButtons: true
     }).then((result) => {
       if (result.value) {
-        this.eventService.finishEvent(id)
-          .subscribe(
-            resp => {
-              swalWithBootstrapButtons({
-                imageHeight: 100,
-                title: 'Esta bien',
-                text: 'Ahora este evento ha finalizado',
-                type: 'success',
-                imageUrl: 'https://image.flaticon.com/icons/svg/872/872607.svg'
-              }).then(
-                act => {
-                  // tslint:disable-next-line:prefer-const
-                  let elem: Element = document.getElementById('content');
-                  this.open(elem);
-                }
-              );
-            }
-          );
+        swalWithBootstrapButtons({
+          imageHeight: 100,
+          title: 'Esta bien',
+          text: 'Ahora este evento ha finalizado',
+          type: 'success',
+          imageUrl: 'https://image.flaticon.com/icons/svg/872/872607.svg'
+
+        }).then(
+          act => {
+            let elem: Element = document.getElementById('content');
+            this.open(elem);
+          }
+        );
       } else if (
         // Read more about handling dismissals
         result.dismiss === swal.DismissReason.cancel
@@ -248,7 +241,13 @@ export class EventDetailComponent implements OnInit {
   }
 
   open(content) {
-    this.modalService.open(content).result.then((result) => {
+    this.createRatingForm();
+    this.modalReference = this.modalService.open(content, {
+      centered: true,
+      windowClass: 'dark-modal',
+      backdropClass: 'light-blue-backdrop'
+    });
+    this.modalReference.result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -263,6 +262,25 @@ export class EventDetailComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  JoinAndClose() {
+    this.modalReference.close();
+  }
+
+  public rateUser(voluntary_id) {
+    this.eventService.orgRateUser(this.event_id, this.ratingUserForm.value.score, this.ratingUserForm.value.commentary, voluntary_id)
+      .subscribe(
+        resp => {
+          swal({
+            title: "Gracias",
+            text: 'Por calificar a nuestros voluntarios',
+            type: 'success'
+          });
+          this.JoinAndClose();
+          this.ref.markForCheck();
+        }
+      );
   }
 
 }
