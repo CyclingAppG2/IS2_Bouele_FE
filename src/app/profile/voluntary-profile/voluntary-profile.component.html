@@ -9,16 +9,16 @@
 
       <div class="row mt-3">
         <div class="col-6">
-          <label for="" class="sr-only">Nombre</label>
+          <label class="sr-only">Nombre</label>
           <input type="text" class="form-control" placeholder="{{user.firstname}}" name="firstname" disabled="!editing">
         </div>
         <div class="col-6">
-          <label for="" class="sr-only">Nombre</label>
+          <label  class="sr-only">Apellido</label>
           <input type="text" class="form-control" placeholder="{{user.lastname}}" name="lastname" disabled="!editing">
         </div>
       </div>
     </div>
-    <div class="col-6">
+    <div class="col-6 overflow-scroll vh-90">
       <h1 class="text-center font-lobster">Mis eventos ({{my_events.length}})</h1>
       <div class="card my-2" *ngFor="let my_event of my_events">
         <a class="fas fa-times-circle position-absolute p-2 text-white

@@ -283,6 +283,10 @@ export class EventDetailComponent implements OnInit {
       );
   }
 
+  public rateOrganization(){
+
+  }
+
 }
 
 interface Marker {

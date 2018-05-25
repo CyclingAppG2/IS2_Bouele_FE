@@ -18,6 +18,7 @@ export class NavbarComponent implements OnInit {
   home_url: any;
   name: string;
   image_url: string;
+  islogged: boolean = false;
 
   constructor(
     private router: Router,

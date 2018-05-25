@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormGroup, FormBuilder, Validators, FormArray} from "@angular/forms";
+import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 import {AmazingTimePickerService} from "amazing-time-picker";
 import {EventService} from "../_services";
 
@@ -60,33 +60,55 @@ export class FilterComponent implements OnInit {
   }
 
   public filter() {
+
     let request = {
-      "filters": [
+      "filters": []
+    };
+
+
+    if (this.filterForm.controls['plus'].value) {
+      request.filters.push(
         {
           "type": "plus",
           "data": this.filterForm.controls['plus'].value
-        },
+        }
+      );
+    }
+    if (this.filterForm.controls['date_min'].value) {
+      request.filters.push(
         {
           "type": "date_min",
           "data": new Date(this.filterForm.controls['date_min'].value.month + ' ' + this.filterForm.controls['date_min'].value.day + ', ' + this.filterForm.controls['date_min'].value.year + ' ' + this.filterForm.controls['time_min'].value).getTime() || ''
-        },
+        }
+      );
+    }
+    if (this.filterForm.controls['date_max'].value) {
+      request.filters.push(
         {
           "type": "date_max",
           "data": new Date(this.filterForm.controls['date_max'].value.month + ' ' + this.filterForm.controls['date_max'].value.day + ', ' + this.filterForm.controls['date_max'].value.year + ' ' + this.filterForm.controls['time_max'].value).getTime() || ''
-        },
+        }
+      );
+    }
+    if (this.filterForm.controls['name'].value) {
+      request.filters.push(
         {
           "type": "name",
           "data": this.filterForm.controls['name'].value
         }
-      ]
-    }
-    console.log(request);
-    this.eventService.filter(request)
-      .subscribe(
-        resp => {
-          console.log(resp);
-        }
       );
+    }
+
+    console.log(request.filters.length);
+
+    if(request.filters.length >= 1) {
+      this.eventService.filter(request)
+        .subscribe(
+          resp => {
+            console.log(resp);
+          }
+        );
+    }
   }
 
 }

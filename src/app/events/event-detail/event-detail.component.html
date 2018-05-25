@@ -103,8 +103,35 @@
             <div>
               <span class="badge badge-secondary px-2" *ngFor="let plus of event.plus">{{plus.name}}</span>
             </div>
+            <ng-template #ratingOrganization let-c="close" let-d="dismiss" id="content1">
+              <div class="modal-header text-center">
+                <h4 class="modal-title d-block mx-auto font-lobster">Califica a {{event.organization.firm}}</h4>
+              </div>
+              <div class="modal-body">
+                <form [formGroup]="ratingUserForm">
+                  <p class="text-center">
+                    <ng-template #t let-fill="fill">
+                <span class="star" [class.full]="fill === 100" style="font-size: 5vw;">
+                  <span class="half" [style.width.%]="fill">
+                    <i class="fas fa-star"></i>
+                  </span>
+                  <i class="fas fa-star"></i>
+                </span>
+                    </ng-template>
+                    <ngb-rating  max="5" [starTemplate]="t"
+                                 [readonly]="false" formControlName="score"></ngb-rating>
+                  </p>
+                  <b>Comenta algo acerca sobre {{event.organization.firm}}:</b>
+                  <textarea rows="4" cols="50" maxlength="180" required style="resize: none;" placeholder="Agrega un comentario" formControlName="commentary"></textarea>
+                </form>
+              </div>
+              <div class="modal-footer text-center">
+                <button type="submit" class="btn btn-outline-success" (click)="rateOrganization(event.organization.id)">Calificar</button>
+                <button type="button" class="btn btn-outline-secondary" (click)="JoinAndClose()">Ahora no</button>
+              </div>
+            </ng-template>
 
-            <div class="alert alert-success float-right" role="alert">
+            <div class="alert alert-success float-right" role="alert" (click)="open(ratingOrganization)">
               <strong>Organiza: </strong>{{event.organization.firm}}
             </div>
             <div class="text-center" *ngIf="getRole() == 'Voluntary'">
@@ -137,7 +164,7 @@
           </div>
           <div class="card-body overflow-scroll vh-90">
             <div *ngFor="let user of voluntaries_in_event.body.users; let i = index" [attr.data-index]="i">
-              <div class="alert alert-secondary d-flex justify-content-center" (click)="open(content)">
+              <div class="alert alert-secondary d-flex justify-content-center" (click)="open(ratingVoluntary)">
                 <div class="mr-auto text-dark pt-2">
                   {{user.user.name }}
                 </div>
@@ -156,7 +183,7 @@
                 </div>
 
               </div>
-              <ng-template #content let-c="close" let-d="dismiss" id="content">
+              <ng-template #ratingVoluntary let-c="close" let-d="dismiss" id="content">
                 <div class="modal-header text-center">
                   <h4 class="modal-title d-block mx-auto font-lobster">Califica a {{user.user.name }}</h4>
                 </div>

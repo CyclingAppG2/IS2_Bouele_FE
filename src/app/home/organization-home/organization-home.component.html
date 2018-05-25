@@ -7,9 +7,6 @@
             <h4 class="font-lobster text-center">Dashboard</h4>
           </div>
           <div class="card-body overflow-scroll vh-90">
-            <div class="text-center" [ngBusy]="{busy: busy, message: 'cargando...', backdrop: false, delay: 200, minDuration: 600}">
-              <i *ngIf="showSpinner" class="fas fa-spinner fa-pulse"></i>
-            </div>
             <div *ngIf="chart1" class="border border-warning rounded p-2 my-2" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
               <canvas id="canvas1">{{ chart1 }}</canvas>
             </div>
