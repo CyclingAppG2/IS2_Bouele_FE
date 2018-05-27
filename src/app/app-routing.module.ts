@@ -19,6 +19,7 @@ import { VoluntaryProfileComponent } from './profile/voluntary-profile/voluntary
 import { EventDetailComponent } from './events/event-detail/event-detail.component';
 import { UncompletedGuard } from './_guards/uncompleted.guard';
 import { OrganizationProfileComponent } from './profile/organization-profile/organization-profile.component';
+import {ForumFormComponent} from "./forum/forum-form/forum-form.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/', pathMatch: 'full' },
@@ -35,6 +36,7 @@ const routes: Routes = [
   { path: 'voluntary-profile', component: VoluntaryProfileComponent, canActivate: [UncompletedGuard] },
   { path: 'organization-profile', component: OrganizationProfileComponent, canActivate: [OrganizationGuard] },
   { path: 'event-detail/:id', component: EventDetailComponent },
+  { path: 'new-forum', component: ForumFormComponent },
   { path: '**', component: NotFoundComponent},
 
 ];

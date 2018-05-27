@@ -12,6 +12,9 @@ export class VolunteerHomeComponent implements OnInit {
 
   public events: any;
   default_cap_circle = '/assets/images/default-image-cap.png';
+  max_pages = 1;
+  current_page;
+  htmlContent;
 
   constructor(
     private eventService: EventService,
@@ -61,5 +64,15 @@ export class VolunteerHomeComponent implements OnInit {
         }
       );
   }
+
+  public receiveEvents($event) {
+    this.events = $event;
+  }
+
+  public getPage() {
+
+  }
+
+
 
 }

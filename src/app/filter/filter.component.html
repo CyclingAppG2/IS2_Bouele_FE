@@ -1,11 +1,17 @@
-<button type="button" class="btn btn-outline-secondary mr-2" placement="bottom"
-        [ngbPopover]="popContent" popoverTitle="¿Qué estás buscando?">
-  Filtros
+<button type="button" class="btn btn-outline-secondary mr-2  text-right " placement="bottom"
+        [ngbPopover]="popContent" #p="ngbPopover" popover-trigger="'outsideClick'">
+  <i class="fas fa-filter"></i>Filtrar
 </button>
-<ng-template #popTitle>
-  <h4 class="text-center font-lobster">¿Estás buscando algo?</h4>
-</ng-template>
+
 <ng-template #popContent>
+  <div class="my-4">
+    <button type="button" class="close text-danger" aria-label="Close" (click)="p.close(); filterForm.reset()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="text-center font-lobster">¿Estás buscando algo?</h4>
+  </div>
+
+
   <form [formGroup]="filterForm" id="filterForm">
     <div class="form-group">
       <label for="plus" class="sr-only">Atributo</label>
@@ -13,7 +19,7 @@
     </div>
     <div class="form-group">
       <div class="input-group">
-        <input class="form-control" [minDate]="minDate" [maxDate]="maxDate" placeholder="Fecha del evento"
+        <input class="form-control" [minDate]="minDate" [maxDate]="maxDate" placeholder="Minima fecha de inicio del evento"
                name="dp" ngbDatepicker formControlName="date_min"
                #d1="ngbDatepicker">
         <div class="input-group-append bg-primary-app">
@@ -35,7 +41,7 @@
     </div>
     <div class="form-group">
       <div class="input-group">
-        <input class="form-control" [minDate]="minDate" [maxDate]="maxDate" placeholder="Fecha del evento"
+        <input class="form-control" [minDate]="minDate" [maxDate]="maxDate" placeholder="Máxima fecha de inicio del evento"
                name="dp" ngbDatepicker formControlName="date_max"
                #d2="ngbDatepicker">
         <div class="input-group-append bg-primary-app">
@@ -58,13 +64,10 @@
     <div class="form-group">
       <label class="sr-only" for="name">Nombre</label>
       <input type="text" formControlName="name" class="form-control" placeholder="¿Te suena algún nombre?" id="name">
-
     </div>
     <div class="text-center">
-      <button class="btn btn-outline-dark" (click)="filter()">Filtrar</button>
-    </div>
-    <div class="text-center">
-      <button class="btn btn-outline-dark" (click)="filter()">Borrar</button>
+      <button class="btn btn-outline-dark" (click)="filter(); p.close(); filterForm.reset()">Filtrar</button>
+      <button class="btn btn-outline-danger" (click)="filterForm.reset()">Borrar</button>
     </div>
   </form>
 </ng-template>

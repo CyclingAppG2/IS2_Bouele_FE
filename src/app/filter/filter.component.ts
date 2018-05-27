@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Output, EventEmitter} from '@angular/core';
 import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 import {AmazingTimePickerService} from "amazing-time-picker";
 import {EventService} from "../_services";
@@ -14,6 +14,7 @@ export class FilterComponent implements OnInit {
   filterForm: FormGroup;
   minDate = {year: 2018, month: 1, day: 1};
   maxDate = {year: 2029, month: 12, day: 31};
+  @Output() filteredEvents = new EventEmitter();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -28,12 +29,12 @@ export class FilterComponent implements OnInit {
 
   private createFilterForm() {
     this.filterForm = this.formBuilder.group({
-      plus: ['', Validators.required],
-      date_min: ['', Validators.required],
-      time_min: ['00:00'],
-      date_max: ['', Validators.required],
-      time_max: ['00:00'],
-      name: ['', Validators.required]
+      plus: [''],
+      date_min: [''],
+      time_min: [''],
+      date_max: [''],
+      time_max: [''],
+      name: ['']
     });
   }
 
@@ -105,6 +106,7 @@ export class FilterComponent implements OnInit {
       this.eventService.filter(request)
         .subscribe(
           resp => {
+            this.filteredEvents.emit(resp);
             console.log(resp);
           }
         );

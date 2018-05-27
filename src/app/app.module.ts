@@ -14,6 +14,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { AgmCoreModule } from '@agm/core';
 import { StarRatingModule } from 'angular-star-rating';
 import {BusyModule} from 'angular2-busy';
+import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 
 
 
@@ -73,8 +74,9 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { StatisticsService } from './_services/statistics.service';
 import { OrganizationProfileComponent } from './profile/organization-profile/organization-profile.component';
 import { RateUsersComponent } from './rate-users/rate-users.component';
-import { PaginationComponent } from './pagination/pagination.component';
 import { FilterComponent } from './filter/filter.component';
+import { ForumComponent } from './forum/forum.component';
+import { ForumFormComponent } from './forum/forum-form/forum-form.component';
 
 
 // the second parameter 'fr' is optional
@@ -107,8 +109,9 @@ registerLocaleData(localeEs, 'es');
     EventDetailComponent,
     OrganizationProfileComponent,
     RateUsersComponent,
-    PaginationComponent,
-    FilterComponent
+    FilterComponent,
+    ForumComponent,
+    ForumFormComponent
   ],
   imports: [
     NgbModule.forRoot(),
@@ -130,7 +133,9 @@ registerLocaleData(localeEs, 'es');
     ChartsModule,
     PdfViewerModule,
     BusyModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FroalaEditorModule.forRoot(),
+    FroalaViewModule.forRoot()
 
   ],
   providers: [

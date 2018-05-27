@@ -1,60 +1,61 @@
 <div class="full-height text-center ">
-    <div class="row container-fluid full-height my-3" id="wrapper">
-        <div class="col-lg-8" id="posts">
-            <nav aria-label="Page navigation" class="position-absolute d-flex justify-content-center" style="bottom: 0; left: 0; right: 0;">
-                <ul class="pagination ">
-                    <li class="page-item">
-                        <a class="page-link" href="#">Previous</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">1</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-        <div class="col-lg-4 border-left text-center search-results" id="events" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
-            (scrolled)="onScroll()" [scrollWindow]="false">
-          <app-filter></app-filter>
-
-          <div class="border border-warning rounded my-2" *ngFor="let event of events">
-                <div class="card text-center">
-                    <div class="card-header " routerLink="/event-detail/{{event.id}}">
-
-                        <h4 class="font-lobster text-ellipsis-1">{{event.name}}</h4>
-                    </div>
-                    <div class="card-block" routerLink="/event-detail/{{event.id}}">
-                        <p class="align-middle text-ellipsis-5 vh-100 d-flex align-items-center justify-content-center text-grey">With supporting text below as a natural lead-in to additional content.</p>
-                        <small class="alert alert-info text-ellipsis-1 w-75 d-block mx-auto pb-3" > <strong>Organiza:</strong> {{event.organization.firm}} <br> <strong class="mt-1">Fecha:</strong> {{event.start_datetime | date: 'short'}} <br></small>
-
-                    </div>
-                    <div class="card-footer ">
-                        <button type="button" class="btn btn-primary-app" (click)="applyToEvent(events, event.id)"> <i class="fas fa-check"></i> Suscribirme</button>
-                    </div>
-                </div>
-            </div>
-            <!--             <nav aria-label="Page navigation" class="position-absolute d-flex justify-content-center" style="bottom: 0; left: 0; right: 0;">
-                <ul class="pagination">
-                    <li class="page-item">
-                        <a class="page-link" href="#">Previous</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">1</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-            </nav> -->
-        </div>
+  <div class="row container-fluid full-height my-3" id="wrapper">
+    <div class="col-lg-8" id="posts">
+      <nav aria-label="Page navigation" class="position-absolute d-flex justify-content-center"
+           style="bottom: 0; left: 0; right: 0;">
+        <ul class="pagination ">
+          <li class="page-item">
+            <a class="page-link" href="#">Previous</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">1</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">Next</a>
+          </li>
+        </ul>
+      </nav>
     </div>
+    <div class="col-lg-4 border-left text-center search-results" id="events" infiniteScroll [infiniteScrollDistance]="2"
+         [infiniteScrollThrottle]="50"
+         (scrolled)="onScroll()" [scrollWindow]="false">
+      <app-filter (filteredEvents)="receiveEvents($event)"></app-filter>
+      <h2 class="font-lobster my-3 text-warning">Estos son los eventos existentes disponibles</h2>
+      <div *ngIf="!events" class="alert alert-info"> <i class="fas fa-info-circle"></i> No se han encontrado eventos disponibles</div>
+      <div class="border border-warning rounded my-2" *ngFor="let event of events">
+        <div class="card text-center">
+          <div class="card-header " routerLink="/event-detail/{{event.id}}">
+
+            <h4 class="font-lobster text-ellipsis-1">{{event.name}}</h4>
+          </div>
+          <div class="card-block" routerLink="/event-detail/{{event.id}}">
+            <p class="align-middle text-ellipsis-5 vh-100 d-flex align-items-center justify-content-center text-grey">
+              With supporting text below as a natural lead-in to additional content.</p>
+            <small class="alert alert-info text-ellipsis-1 w-75 d-block mx-auto pb-3"><strong>Organiza:</strong>
+              {{event.organization.firm}} <br> <strong class="mt-1">Fecha:</strong> {{event.start_datetime | date:
+              'short'}} <br></small>
+
+          </div>
+          <div class="card-footer ">
+            <button type="button" class="btn btn-primary-app" (click)="applyToEvent(events, event.id)"><i
+              class="fas fa-check"></i> Suscribirme
+            </button>
+          </div>
+        </div>
+      </div>
+      <ngb-pagination [collectionSize]="max_pages*10" [(page)]="current_page" (click)="getPage()" class="position-absolute" style="bottom: 0; right: 0; left: 0; margin: auto; width: 7rem;"></ngb-pagination>
+    </div>
+  </div>
 </div>
 
 
 <script>
-    var parent = document.getElementById('wrapper');
-    var child = document.getElementById('events');
-    child.style.paddingRight = child.offsetWidth - child.clientWidth + "px";
+  var parent = document.getElementById('wrapper');
+  var child = document.getElementById('events');
+  child.style.paddingRight = child.offsetWidth - child.clientWidth + "px";
 </script>
+
+
+
+
+

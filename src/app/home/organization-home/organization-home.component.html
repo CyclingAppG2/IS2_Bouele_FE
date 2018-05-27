@@ -17,7 +17,9 @@
               <canvas id="canvas3">{{ chart3 }}</canvas>
             </div>
           </div>
-          <div class="card-footer text-muted">
+          <button type="button" class="btn btn-warning rounded-circle text-white position-absolute" (click)="downloadStatisticPDF()" style="bottom: 2rem; right: 1rem; box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+            <i class="fas fa-download"></i>
+          </button>          <div class="card-footer text-muted">
             Footer
           </div>
         </div>

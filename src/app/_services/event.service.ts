@@ -18,8 +18,8 @@ export class EventService {
 
   private headers = this.authService.getCurrentHeaders();
   public rowsOnPage = 5;
-  public sortBy = "email";
-  public sortOrder = "asc";
+  public sortBy = 'email';
+  public sortOrder = 'asc';
 
   constructor(
     private http: HttpClient,
@@ -101,6 +101,7 @@ export class EventService {
 
   }
 
+
   private saveToFileSystem(response) {
     const contentDispositionHeader: string = response.headers.get('Content-Disposition');
     const parts: string[] = contentDispositionHeader.split(';');
@@ -128,14 +129,20 @@ export class EventService {
           'commentsvoluntary': <string>commentary,
           'voluntary_id': <string>voluntary_id
         }
-    }, {headers: this.headers})
+    }, {headers: this.headers});
   }
 
   public filter(request) {
     return this.http.put(API_URL + '/events/filters', request, {headers: this.headers});
   }
 
+  public getPaginationMaxPage() {
+    return this.http.get(API_URL + '/events/my_events?count=1', {headers: this.headers})
+  }
 
+  public getPage(page) {
+    return this.http.get(API_URL + '/events/my_events?page=' + page, {headers: this.headers})
+  }
 
 
 }

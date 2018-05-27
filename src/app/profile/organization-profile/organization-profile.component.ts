@@ -13,6 +13,8 @@ export class OrganizationProfileComponent implements OnInit {
 
   user: User;
   my_events: any;
+  max_pages = 1;
+  current_page = 1;
 
   constructor(
     private userService: UserService,
@@ -26,6 +28,12 @@ export class OrganizationProfileComponent implements OnInit {
         this.my_events = data;
       }
     );
+    this.eventService.getPaginationMaxPage()
+      .subscribe(
+        resp => {
+          this.max_pages = <number>resp;
+        }
+      );
   }
 
   ngOnInit() {
@@ -80,6 +88,15 @@ export class OrganizationProfileComponent implements OnInit {
       }
     });
     /*     */
+  }
+
+  public getPage() {
+    this.eventService.getPage(this.current_page)
+      .subscribe(
+        resp => {
+          this.my_events = resp;
+        }
+      );
   }
 
 }

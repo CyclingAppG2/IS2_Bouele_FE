@@ -147,5 +147,10 @@ export class OrganizationHomeComponent implements OnInit {
     return '#' + ('000000' + color).slice(-6);
   }
 
+  downloadStatisticPDF() {
+    this.statisticService.downloadPDF(this.organization_id);
+  }
+
+
 
 }
