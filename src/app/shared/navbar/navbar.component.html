@@ -31,14 +31,14 @@
     </li>
     <li class="nav-item px-2" [hidden]="!isLogged()">
       <a routerLink="/" (click)="onLogout()" title="Cerrar Sesión">
-        <i class="fa fa-sign-out-alt fa-2x text-primary-app my-2 pt-1">
+        <i class="fas fa-sign-out-alt fa-2x text-primary-app my-2 pt-1">
           <span class="sr-only">Salir</span>
         </i>
       </a>
     </li>
     <li class="nav-item px-2" [hidden]="isLogged()">
       <a routerLink="/sign-in">
-        <i class="fa fa-sign-in-alt text-primary-app my-2 pt-1"> Iniciar Sesión</i>
+        <i class="fas fa-sign-in-alt text-primary-app my-2 pt-1"> Iniciar Sesión</i>
       </a>
     </li>
   </ul>

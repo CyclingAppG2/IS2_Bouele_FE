@@ -1,27 +1,109 @@
-<div class="full-height text-center ">
+<div class="full-height ">
   <div class="row container-fluid full-height my-3" id="wrapper">
     <div class="col-lg-8" id="posts">
-      <nav aria-label="Page navigation" class="position-absolute d-flex justify-content-center"
-           style="bottom: 0; left: 0; right: 0;">
-        <ul class="pagination ">
-          <li class="page-item">
-            <a class="page-link" href="#">Previous</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="#">1</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="#">Next</a>
-          </li>
-        </ul>
-      </nav>
+      <div class="accordion" id="accordionExample">
+        <div class="card">
+          <div class="card-header bg-info" id="headingOne" data-toggle="collapse" data-target="#collapseOne"
+               aria-expanded="true" aria-controls="collapseOne">
+            <h5 class="mb-0">
+              <b class="float-left mt-2 text-white">
+                <i class="fas fa-bullhorn"></i> Anuncios
+              </b>
+              <button class="btn btn-info float-right" data-toggle="collapse" data-target="#collapseOne"
+                      aria-expanded="true" aria-controls="collapseOne">
+                <i class="fas fa-minus-circle float-right"></i>
+              </button>
+            </h5>
+          </div>
+          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body">
+              <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <strong>Echa un vistazo!</strong> Hay nuevos eventos.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="alert alert-dark alert-dismissible fade show" role="alert">
+                <strong>Echa un vistazo!</strong> Hay nuevos foros.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header bg-warning" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo"
+               aria-expanded="true" aria-controls="collapseOne">
+            <h5 class="mb-0">
+              <b class="float-left mt-2">
+                <i class="far fa-file-alt"></i> Foros
+              </b>
+              <button class="btn btn-warning float-right" data-toggle="collapse" data-target="#collapseTwo"
+                      aria-expanded="true" aria-controls="collapseOne">
+                <i class="fas fa-minus-circle float-right"></i>
+              </button>
+            </h5>
+          </div>
+          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+            <div class="card-body">
+              <ul class="list-group">
+                <li class="list-group-item d-inline">
+
+                </li>
+              </ul>
+              <table class="table table-hover">
+                <thead>
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col"></th>
+                  <th scope="col">Last</th>
+                  <th scope="col">Handle</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>
+                    <div class="float-left"
+                         style="background-image: url(https://cdn0.iconfinder.com/data/icons/computer-web/512/18-256.png); height: 3rem; width: 3rem; background-position: center center; background-size: contain">
+                    </div>
+                  </td>
+                  <td>
+                    <div class="">
+                      <h6><b>Titulo del foro</b></h6>
+                    </div>
+                  </td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                </tr>
+                <tr>
+                  <th scope="row">2</th>
+                  <td>Jacob</td>
+                  <td>Thornton</td>
+                  <td>@fat</td>
+                </tr>
+                <tr>
+                  <th scope="row">3</th>
+                  <td colspan="2">Larry the Bird</td>
+                  <td>@twitter</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="col-lg-4 border-left text-center search-results" id="events" infiniteScroll [infiniteScrollDistance]="2"
          [infiniteScrollThrottle]="50"
          (scrolled)="onScroll()" [scrollWindow]="false">
       <app-filter (filteredEvents)="receiveEvents($event)"></app-filter>
       <h2 class="font-lobster my-3 text-warning">Estos son los eventos existentes disponibles</h2>
-      <div *ngIf="!events" class="alert alert-info"> <i class="fas fa-info-circle"></i> No se han encontrado eventos disponibles</div>
+      <div *ngIf="events.length < 1" class="alert alert-danger"><i class="fas fa-info-circle"></i> No se han encontrado
+        eventos
+        disponibles
+      </div>
       <div class="border border-warning rounded my-2" *ngFor="let event of events">
         <div class="card text-center">
           <div class="card-header " routerLink="/event-detail/{{event.id}}">
@@ -43,7 +125,9 @@
           </div>
         </div>
       </div>
-      <ngb-pagination [collectionSize]="max_pages*10" [(page)]="current_page" (click)="getPage()" class="position-absolute" style="bottom: 0; right: 0; left: 0; margin: auto; width: 7rem;"></ngb-pagination>
+      <ngb-pagination [collectionSize]="max_pages*10" [(page)]="current_page" (click)="getPage()"
+                      class="position-absolute"
+                      style="bottom: 0; right: 0; left: 0; margin: auto; width: 7rem;"></ngb-pagination>
     </div>
   </div>
 </div>

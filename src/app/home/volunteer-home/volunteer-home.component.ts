@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UserService, EventService } from '../../_services';
 import { Router } from '@angular/router';
 import swal from 'sweetalert2';
+import {NgbAccordionConfig} from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: 'app-volunteer-home',
@@ -18,8 +20,10 @@ export class VolunteerHomeComponent implements OnInit {
 
   constructor(
     private eventService: EventService,
-    private router: Router
+    private router: Router,
+    private config: NgbAccordionConfig
   ) {
+    config.type = 'info';
     this.eventService.getAvailableEvents()
       .subscribe(
         events => {

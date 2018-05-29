@@ -19,9 +19,15 @@ export class FileUploadService {
 
   public avatarUserUploader(avatar: File): Observable<any> {
     this.headers.append('content-type', 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW');
-    console.log(this.headers);
     const formData = new FormData();
     formData.append('image', avatar, avatar.name);
     return this.http.patch(API_URL + '/auth_user', formData, { headers: this.headers });
+  }
+
+  public uploadPreviewForum(image: File, id): Observable<any> {
+    this.headers.append('content-type', 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW');
+    const formData = new FormData();
+    formData.append('img_prev', image, image.name);
+    return this.http.patch(API_URL + '/forum_threads/' + id,  formData , { headers: this.headers });
   }
 }

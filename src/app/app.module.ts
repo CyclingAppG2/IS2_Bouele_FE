@@ -77,6 +77,8 @@ import { RateUsersComponent } from './rate-users/rate-users.component';
 import { FilterComponent } from './filter/filter.component';
 import { ForumComponent } from './forum/forum.component';
 import { ForumFormComponent } from './forum/forum-form/forum-form.component';
+import { ForumsComponent } from './forum/forums/forums.component';
+import { ForumService } from './_services/forum.service';
 
 
 // the second parameter 'fr' is optional
@@ -111,7 +113,8 @@ registerLocaleData(localeEs, 'es');
     RateUsersComponent,
     FilterComponent,
     ForumComponent,
-    ForumFormComponent
+    ForumFormComponent,
+    ForumsComponent
   ],
   imports: [
     NgbModule.forRoot(),
@@ -146,6 +149,7 @@ registerLocaleData(localeEs, 'es');
     MunicipalityService,
     CategoryService,
     GenderService,
+    ForumService,
     {
       provide: AuthServiceConfig,
       useFactory: getAuthServiceConfigs

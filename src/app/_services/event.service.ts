@@ -144,5 +144,9 @@ export class EventService {
     return this.http.get(API_URL + '/events/my_events?page=' + page, {headers: this.headers})
   }
 
+  public getEventsCategory() {
+    return this.http.get(API_URL + '/events', {headers: this.headers});
+  }
+
 
 }
