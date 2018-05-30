@@ -79,6 +79,7 @@ import { ForumComponent } from './forum/forum.component';
 import { ForumFormComponent } from './forum/forum-form/forum-form.component';
 import { ForumsComponent } from './forum/forums/forums.component';
 import { ForumService } from './_services/forum.service';
+import { ForumDetailComponent } from './forum/forum-detail/forum-detail.component';
 
 
 // the second parameter 'fr' is optional
@@ -114,7 +115,8 @@ registerLocaleData(localeEs, 'es');
     FilterComponent,
     ForumComponent,
     ForumFormComponent,
-    ForumsComponent
+    ForumsComponent,
+    ForumDetailComponent
   ],
   imports: [
     NgbModule.forRoot(),

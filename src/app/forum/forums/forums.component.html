@@ -1,3 +1,37 @@
-<p>
-  forums works!
-</p>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col" class="text-center">Etiquetas</th>
+      <th scope="col" class="text-center">Puntuación</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let forum of forums">
+
+      <td routerLink="/forum-detail/{{forum.id}}" style="cursor:pointer">
+        <div class="float-left rounded-circle" [style.background-image]="getBackground(forum.img_prev.url)"
+          style="height: 3rem; width: 3rem; background-position: center center; background-size: contain">
+        </div>
+        <div class="ml-5 pl-3">
+          <h6>
+            <b class="text-ellipsis-1" style="max-width: 18vw;">{{forum.title}}</b>
+            <small>{{forum.user.name}}</small>
+            <br>
+            <small>Actualizado por ultima vez: {{forum.updated_at | date:'dd MMMM yyyy \'a las\' HH:mm'  }}</small>
+          </h6>
+        </div>
+      </td>
+      <td>
+        <ul>
+          <li *ngFor="let tag of forum.tags" [title]="tag.title" class="text-ellipsis-1 px-1 text-center" style="max-width: 5vw;" >
+            <small class="badge badge-secondary" >{{tag.title}}</small>
+          </li>
+        </ul>
+      </td>
+      <td class="text-center">{{forum.points}}</td>
+    </tr>
+  </tbody>
+</table>
+<ngb-pagination [collectionSize]="total_forum_pages * 10" [(page)]="page" aria-label="Default pagination" (pageChange)="getForumByCreation(page)"
+  class="fixed-bottom-" style="bottom: 0; right: 0; left: 0; margin: auto; width: 7rem;"></ngb-pagination>

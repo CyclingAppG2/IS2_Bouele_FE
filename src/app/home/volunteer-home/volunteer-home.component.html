@@ -47,49 +47,8 @@
             </h5>
           </div>
           <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-            <div class="card-body">
-              <ul class="list-group">
-                <li class="list-group-item d-inline">
-
-                </li>
-              </ul>
-              <table class="table table-hover">
-                <thead>
-                <tr>
-                  <th scope="col"></th>
-                  <th scope="col"></th>
-                  <th scope="col">Last</th>
-                  <th scope="col">Handle</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <td>
-                    <div class="float-left"
-                         style="background-image: url(https://cdn0.iconfinder.com/data/icons/computer-web/512/18-256.png); height: 3rem; width: 3rem; background-position: center center; background-size: contain">
-                    </div>
-                  </td>
-                  <td>
-                    <div class="">
-                      <h6><b>Titulo del foro</b></h6>
-                    </div>
-                  </td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>Jacob</td>
-                  <td>Thornton</td>
-                  <td>@fat</td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td colspan="2">Larry the Bird</td>
-                  <td>@twitter</td>
-                </tr>
-                </tbody>
-              </table>
+            <div class="card-body vh-90 overflow-scroll">
+              <app-forums></app-forums>
             </div>
           </div>
         </div>
@@ -100,7 +59,7 @@
          (scrolled)="onScroll()" [scrollWindow]="false">
       <app-filter (filteredEvents)="receiveEvents($event)"></app-filter>
       <h2 class="font-lobster my-3 text-warning">Estos son los eventos existentes disponibles</h2>
-      <div *ngIf="events.length < 1" class="alert alert-danger"><i class="fas fa-info-circle"></i> No se han encontrado
+      <div *ngIf="events && events.length < 1" class="alert alert-danger"><i class="fas fa-info-circle"></i> No se han encontrado
         eventos
         disponibles
       </div>

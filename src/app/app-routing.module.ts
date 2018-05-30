@@ -19,25 +19,27 @@ import { VoluntaryProfileComponent } from './profile/voluntary-profile/voluntary
 import { EventDetailComponent } from './events/event-detail/event-detail.component';
 import { UncompletedGuard } from './_guards/uncompleted.guard';
 import { OrganizationProfileComponent } from './profile/organization-profile/organization-profile.component';
-import {ForumFormComponent} from "./forum/forum-form/forum-form.component";
+import { ForumFormComponent } from './forum/forum-form/forum-form.component';
+import { ForumDetailComponent } from './forum/forum-detail/forum-detail.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/', pathMatch: 'full' },
   { path: '', component: LandingComponent, canActivate: [PublicGuard] },
-  { path: 'sign-in', component: SignInComponent, canActivate: [ PublicGuard ] },
-  { path: 'sign-up', component: SignUpComponent, canActivate: [ PublicGuard ] },
-  { path: 'voluntary-home', component: VolunteerHomeComponent, canActivate: [ VoluntaryGuard, UncompletedGuard ]},
-  { path: 'organization-home', component: OrganizationHomeComponent, canActivate: [ OrganizationGuard, UncompletedGuard ]},
-  { path: 'administrator-home', component: AdministratorHomeComponent, canActivate: [ AdministratorGuard, UncompletedGuard ]},
-  { path: 'new-event', component: EventFormComponent, canActivate: [OrganizationGuard]},
-  { path: 'admin-login', component: SignInAdminComponent, canActivate: [PublicGuard]},
-  { path: 'contact', component: ContactComponent},
-  { path: 'complete-form', component: CompleteFormComponent, canActivate: [ProtectedGuard]},
+  { path: 'sign-in', component: SignInComponent, canActivate: [PublicGuard] },
+  { path: 'sign-up', component: SignUpComponent, canActivate: [PublicGuard] },
+  { path: 'voluntary-home', component: VolunteerHomeComponent, canActivate: [VoluntaryGuard, UncompletedGuard] },
+  { path: 'organization-home', component: OrganizationHomeComponent, canActivate: [OrganizationGuard, UncompletedGuard] },
+  { path: 'administrator-home', component: AdministratorHomeComponent, canActivate: [AdministratorGuard, UncompletedGuard] },
+  { path: 'new-event', component: EventFormComponent, canActivate: [OrganizationGuard] },
+  { path: 'admin-login', component: SignInAdminComponent, canActivate: [PublicGuard] },
+  { path: 'contact', component: ContactComponent },
+  { path: 'complete-form', component: CompleteFormComponent, canActivate: [ProtectedGuard] },
   { path: 'voluntary-profile', component: VoluntaryProfileComponent, canActivate: [UncompletedGuard] },
   { path: 'organization-profile', component: OrganizationProfileComponent, canActivate: [OrganizationGuard] },
   { path: 'event-detail/:id', component: EventDetailComponent },
   { path: 'new-forum', component: ForumFormComponent },
-  { path: '**', component: NotFoundComponent},
+  { path: 'forum-detail/:id', component: ForumDetailComponent },
+  { path: '**', component: NotFoundComponent },
 
 ];
 
@@ -45,4 +47,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
