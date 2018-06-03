@@ -16,27 +16,6 @@ export class UserService {
         private router: Router
     ) { }
 
-
-    public initUser(): User {
-        const voluntary = new User();
-        this.authService.getUser()
-            .subscribe(
-                user => {
-                    const name = user.data.name.split(' ');
-                    voluntary.lastname = name[name.length - 2] + ' ' + name[name.length - 1];
-                    voluntary.firstname = name[0] + ' ' + name[1];
-                    if (user.data.image.url === null) {
-                        voluntary.avatar = '/assets/images/user-default.svg';
-                    } else {
-                        voluntary.avatar = API_URL + user.data.image.url;
-                    }
-                    voluntary.email = user.data.email;
-                    voluntary.username = user.data.username;
-                }
-            );
-        return voluntary;
-    }
-
     public goHome(): string {
         const role = localStorage.getItem('role');
         switch (role) {

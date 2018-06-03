@@ -1,59 +1,100 @@
 <div class="full-height p-2">
-
-
   <div class="row container-fluid">
-
-    <div class="col-6">
-
-      <img src="{{user.avatar}}" alt="avatar" class="border border-secondary rounded-circle d-block mx-auto" height="200" width="200">
-
-      <div class="row mt-3">
-        <div class="col-6">
-          <label class="sr-only">Nombre</label>
-          <input type="text" class="form-control" placeholder="{{user.firstname}}" name="firstname" disabled="!editing">
-        </div>
-        <div class="col-6">
-          <label  class="sr-only">Apellido</label>
-          <input type="text" class="form-control" placeholder="{{user.lastname}}" name="lastname" disabled="!editing">
-        </div>
+    <div class="col-6 py-3">
+      <img src="{{getAvatar(user.user.image.url)}}" alt="avatar" class="border border-secondary rounded-circle d-block mx-auto mb-3"
+        height="200" width="200">
+      <h3 class="text-center">
+        <b class="font-lobster">{{user.user.username | titlecase}}</b>
+        <br>
+        <ng-template #t let-fill="fill">
+          <span class="star" [class.full]="fill === 100">
+            <span class="half" [style.width.%]="fill">
+              <i class="fas fa-star"></i>
+            </span>
+            <i class="fas fa-star"></i>
+          </span>
+        </ng-template>
+        <ngb-rating [(rate)]="user.data.voluntary_score" max="5" [starTemplate]="t" [readonly]="!editing"></ngb-rating>
+      </h3>
+      <small class="font-lobster text-center d-block mx-auto mb-2">Tienes disponibles {{user.user.points_day}} puntos hoy</small>
+      <div class="form-group">
+        <label for="" class="sr-only">Nombres</label>
+        <input type="text" class="form-control text-center" placeholder="{{user.user.name}}" name="firstname" disabled="!editing">
       </div>
+      <div class="form-group">
+        <label for="" class="sr-only">Correo</label>
+        <input type="text" class="form-control text-center" placeholder="{{user.user.email}}" name="email" disabled="!editing">
+      </div>
+      <div class="form-group">
+        <label for="" class="sr-only">Cumpleaños</label>
+        <input type="text" class="form-control text-center" placeholder="{{user.data.birthday | date:'EEEE, dd MMMM yyyy'}}" name="birthday"
+          disabled="!editing">
+      </div>
+      <div class="form-group">
+        <label for="" class="sr-only">Genero</label>
+        <input type="text" class="form-control text-center" placeholder="{{user.data.gender.gender}}" name="gender" disabled="!editing">
+      </div>
+      <div class="form-group">
+        <label for="" class="sr-only">Numero de celular</label>
+        <input type="number" class="form-control text-center" placeholder="{{user.data.cellphone}}" name="cellphone" disabled="!editing">
+      </div>
+      <h5 class="font-lobster text-center text-secondary">Mis temas de interés</h5>
+      <ul class="list-inline text-center">
+        <li class="list-inline-item" *ngFor="let interest_theme of user.data.theme_interests"><span class="badge badge-pill badge-warning">{{interest_theme.themesinterest}}</span></li>
+      </ul>
+
     </div>
     <div class="col-6 overflow-scroll vh-90">
       <h1 class="text-center font-lobster">Mis eventos ({{my_events.length}})</h1>
+      <div *ngIf="loading" class="continer-fluid text-center text-secondary">
+        <i class="fas fa-spinner fa-pulse fa-5x"></i>
+        <br>
+        <h4 class="font-lobster">Cargando...</h4>
+      </div>
       <div class="card my-2" *ngFor="let my_event of my_events">
         <a class="fas fa-times-circle position-absolute p-2 text-white
-          " style="top: 0; right: 0;" id="unapply" title="Ya no quiero estar aquí" (click)="leaveEvent(my_events, my_event)"> </a>
-        <img class="card-img-top" src="/assets/images/default-cap.svg" alt="Card image cap">
-        <div class="card-block p-2" routerLink="/event-detail/{{my_event.id}}">
-          <div class="row container-fluid d-flex align-items-center mx-auto">
-            <div class="col-8 border">
-              <h4 class="card-title font-lobster text-center bg-secondary text-white p-2 mt-1 rounded text-ellipsis-1">
-                {{my_event.name}}
-              </h4>
-              <p class="text-center-justified text-ellipsis-5">
-                {{my_event.description}}
-              </p>
-            </div>
-            <div class="col-4 text-center">
-              <ng-template #t let-fill="fill">
-                <span class="star" [class.full]="fill === 100">
-                  <span class="half" [style.width.%]="fill">
+          " style="top: 0; right: 0; z-index: 1000;" id="unapply" title="Ya no quiero estar aquí" (click)="leaveEvent(my_events, my_event)">
+        </a>
+        <div class="card-img-top">
+          <ngb-carousel *ngIf="getImages( my_event.files[0].url )">
+            <ng-template ngbSlide *ngFor="let image of getImages( my_event.files[0].url )">
+              <div class="carousel-fill" [style.background-image]="getBackground(image)"></div>
+              <div class="carousel-caption rounded shadow-outside" style="background-color: rgba(248, 249, 250, 0.3); filter:alpha(opacity=20);">
+                <h3 class="font-lobster text-center text-dark"> {{my_event.name}}</h3>
+                <ng-template #t let-fill="fill">
+                  <span class="star" [class.full]="fill === 100">
+                    <span class="half" [style.width.%]="fill">
+                      <i class="fas fa-star"></i>
+                    </span>
                     <i class="fas fa-star"></i>
                   </span>
-                  <i class="fas fa-star"></i>
-                </span>
-              </ng-template>
-              <ngb-rating [(rate)]="my_event.organization.organization_score" max="5" [starTemplate]="t" [readonly]="true"></ngb-rating>
-              <small class="text-ellipsis-1">
-                <strong class="text-info">Organiza: </strong>{{my_event.organization.firm}} </small>
-              <small class="text-ellipsis-1">
-                <strong class="text-info">Fecha: </strong>{{my_event.start_datetime | date: 'd MMMM y' }} </small>
+                </ng-template>
+                <ngb-rating [(rate)]="my_event.organization.organization_score" max="5" [starTemplate]="t" [readonly]="true"></ngb-rating>
+                <small class="text-ellipsis-1 text-dark text-center d-block mx-auto" style="width: 15vw">
+                  <strong class="text-info">Organiza: </strong>{{my_event.organization.firm}} </small>
+                <small class="text-ellipsis-1 text-dark">
+                  <strong class="text-info">Fecha: </strong>
+                  <strong>{{my_event.start_datetime | date: 'd MMMM y' }}</strong>
+                </small>
+              </div>
+            </ng-template>
+          </ngb-carousel>
+        </div>
+        <div class="card-block p-2 bg-dark" routerLink="/event-detail/{{my_event.id}}">
+          <div class="row container fluid">
+            <div class="col-3"></div>
+            <div class="col-6">
+              <h6 class="text-center text-white text-ellipsis-1 font-lobster bg-dark">Descripción</h6>
+              <small class="text-muted text-ellipsis-5 text-center">{{my_event.description}}</small>
             </div>
-
+            <div class="col-3"></div>
           </div>
-
         </div>
       </div>
+      <div class="col-12 justify-content-center">
+        <ngb-pagination [collectionSize]="max_pages*10" [(page)]="current_page" (pageChange)="getPage()"></ngb-pagination>
+      </div>
     </div>
+
   </div>
 </div>

@@ -7,6 +7,7 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/takeWhile';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-navbar',
@@ -15,35 +16,49 @@ import 'rxjs/add/operator/takeWhile';
 })
 export class NavbarComponent implements OnInit {
 
+  API_URL = environment.apiUrl;
   home_url: any;
   name: string;
   image_url: string;
-  islogged: boolean = false;
+  isLogged = false;
 
   constructor(
     private router: Router,
     private dataService: UserService,
     private authService: AuthenticationService
   ) {
-    this.getImage();
+    if (localStorage.getItem('access-token') !== null && localStorage.getItem('access-token') !== undefined) {
+      this.authService.validateToken()
+        .subscribe(
+          resp => {
+            this.isLogged = true;
+            this.image_url = JSON.parse(JSON.stringify(resp)).data.image.url;
+            this.name = JSON.parse(JSON.stringify(resp)).data.name;
+          }, err => {
+            this.isLogged = false;
+            this.authService.logout().subscribe(() => console.log('Has cerrado sesión'));
+          }
+        );
+    } else {
+      this.isLogged = false;
+    }
   }
 
   ngOnInit() {
+    this.utcTime();
   }
 
-  isLogged() {
-    this.name = localStorage.getItem('name');
-    return !!localStorage.getItem('access-token');
-  }
 
   getImage() {
-    console.log(localStorage.getItem('avatar'));
-    if (!localStorage.getItem('avatar') || localStorage.getItem('avatar') === 'undefined') {
-      this.image_url = '/assets/images/user-default.svg';
-    } else {
-      this.image_url = localStorage.getItem('avatar');
+    if (localStorage.getItem('access-token') !== null || localStorage.getItem('access-token') !== undefined) {
+      this.authService.validateToken()
+        .subscribe(
+          resp => {
+            this.image_url = JSON.parse(JSON.stringify(resp)).data.image.url;
+          }
+        );
     }
-    console.log(this.image_url);
+
   }
 
   onLogout() {
@@ -98,5 +113,29 @@ export class NavbarComponent implements OnInit {
         break;
 
     }
+  }
+
+  public getAvatar() {
+    return this.image_url ? (this.API_URL + this.image_url) : '/assets/images/user-default.svg';
+  }
+
+  utcTime(): void {
+    setInterval(() => {
+      if (localStorage.getItem('access-token') !== null && localStorage.getItem('access-token') !== undefined) {
+        this.authService.validateToken()
+          .subscribe(
+            resp => {
+              this.isLogged = true;
+              this.image_url = JSON.parse(JSON.stringify(resp)).data.image.url;
+              this.name = JSON.parse(JSON.stringify(resp)).data.name;
+            }, err => {
+              this.isLogged = false;
+              this.authService.logout().subscribe(() => console.log('Has cerrado sesión'));
+            }
+          );
+      } else {
+        this.isLogged = false;
+      }
+    }, 30000);
   }
 }

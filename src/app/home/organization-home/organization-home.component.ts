@@ -11,6 +11,8 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class OrganizationHomeComponent implements OnInit {
 
+  current_page = 1;
+  loading = false;
   showSpinner: boolean;
   private organization_id = localStorage.getItem('user-data-id');
   public chart1 = [];
@@ -83,7 +85,6 @@ export class OrganizationHomeComponent implements OnInit {
           for (const key in statistic3) {
             if (statistic3.hasOwnProperty(key)) {
               const element = statistic3[key];
-              console.log(key, element);
               datasets3.push(
                 [{
                   data: [(element.assistences * 100) / element.max_voluntaries,
@@ -149,6 +150,20 @@ export class OrganizationHomeComponent implements OnInit {
 
   downloadStatisticPDF() {
     this.statisticService.downloadPDF(this.organization_id);
+  }
+
+  public onScrollDown() {
+    console.log('scrolled!!');
+    this.loading = true;
+    this.current_page = this.current_page + 1;
+    this.eventService.getPage(this.current_page)
+      .subscribe(
+        resp => {
+          for (const iterator of JSON.parse(JSON.stringify(resp))) {
+            this.my_events.push(iterator);
+          }
+        }
+      );
   }
 
 

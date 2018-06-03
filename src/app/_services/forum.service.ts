@@ -36,6 +36,20 @@ export class ForumService {
     return this.http.get(API_URL + '/forum_threads/' + id, {headers: this.headers} );
   }
 
+  public responseForum(response) {
+    return this.http.post(API_URL + '/forum_posts', response, {headers: this.headers});
+  }
 
+  public rateForum(id, rate) {
+    return this.http.patch(API_URL + '/forums/points/' + id, rate, {headers: this.headers});
+  }
+
+  public responsesForum(id) {
+    return this.http.get(API_URL + '/forum_post/forum/' + id, {headers: this.headers});
+  }
+
+  public likeResponse(like) {
+    return this.http.post(API_URL + '/boards', like, {headers: this.headers});
+  }
 
 }

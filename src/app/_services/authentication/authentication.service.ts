@@ -1,24 +1,24 @@
-import {Injectable, InjectionToken} from '@angular/core';
+import { Injectable, InjectionToken } from '@angular/core';
 import {
   HttpClient,
   HttpErrorResponse,
   HttpHeaders
 } from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
-import {AuthService} from 'ngx-auth';
-import {environment} from '../../../environments/environment';
+import { Observable } from 'rxjs/Observable';
+import { AuthService } from 'ngx-auth';
+import { environment } from '../../../environments/environment';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
 
-import {TokenStorage} from './token-storage.service';
-import {User} from '../../_models/user.model';
-import {Volunteer} from '../../_models/volunteer.model';
-import {CompileStylesheetMetadata} from '@angular/compiler';
-import {Organization} from '../../_models';
-import {Router} from '@angular/router';
+import { TokenStorage } from './token-storage.service';
+import { User } from '../../_models/user.model';
+import { Volunteer } from '../../_models/volunteer.model';
+import { CompileStylesheetMetadata } from '@angular/compiler';
+import { Organization } from '../../_models';
+import { Router } from '@angular/router';
 
 class AccessData {
   private accessToken: string;
@@ -192,12 +192,12 @@ export class AuthenticationService implements AuthService {
     return this.http
       .post(
         API_URL + '/auth_user/sign_in',
-        {email, password},
-        {observe: 'response'}
+        { email, password },
+        { observe: 'response' }
       )
       .do(
         resp => {
-          this.http.get(API_URL + '/userType', {headers: resp.headers})
+          this.http.get(API_URL + '/userType', { headers: resp.headers })
             .subscribe(
               data => {
                 this.currentUser = new AccessData(
@@ -251,8 +251,8 @@ export class AuthenticationService implements AuthService {
     return this.http
       .post(
         API_URL + '/auth_admin/sign_in',
-        {email, password},
-        {observe: 'response'}
+        { email, password },
+        { observe: 'response' }
       )
       .do(
         resp => {
@@ -289,8 +289,8 @@ export class AuthenticationService implements AuthService {
     return this.http
       .post(
         API_URL + '/auth_user',
-        {name, username, email, password, password_confirmation},
-        {observe: 'response'}
+        { name, username, email, password, password_confirmation },
+        { observe: 'response' }
       )
       .do(
         resp => {
@@ -374,10 +374,10 @@ export class AuthenticationService implements AuthService {
   public completeSignUp(userId, voluntaryId, userType) {
     const headers = this.getCurrentHeaders();
     return this.http.post(API_URL + '/user_polymorphisms', {
-        'user_id': userId,
-        'user_data_id': voluntaryId,
-        'user_data_type': userType
-      },
+      'user_id': userId,
+      'user_data_id': voluntaryId,
+      'user_data_type': userType
+    },
       {
         headers: headers
       });
@@ -395,15 +395,13 @@ export class AuthenticationService implements AuthService {
     });
 
     return this.http
-      .delete(API_URL + '/auth_user/sign_out', {headers: headers})
+      .delete(API_URL + '/auth_user/sign_out', { headers: headers })
       .do(
         data => {
           this.tokenStorage.clear();
-          location.reload(true);
         },
         err => {
           this.tokenStorage.clear();
-          location.reload(true);
         }
       );
   }
@@ -411,7 +409,7 @@ export class AuthenticationService implements AuthService {
   public validateToken() {
     const headers = this.getCurrentHeaders();
     return this.http
-      .get(API_URL + '/auth_user/validate_token', {headers: headers});
+      .get(API_URL + '/auth_user/validate_token', { headers: headers });
   }
 
   /**
@@ -445,7 +443,7 @@ export class AuthenticationService implements AuthService {
 
   public getRole(): string {
     const headers = this.getCurrentHeaders();
-    this.http.get(API_URL + '/userType', {headers: headers})
+    this.http.get(API_URL + '/userType', { headers: headers })
       .subscribe(
         data => {
           return JSON.parse(JSON.stringify(data)).data.user_data_type;
@@ -456,17 +454,32 @@ export class AuthenticationService implements AuthService {
 
   public getDataId(): Observable<any> {
     const headers = this.getCurrentHeaders();
-    return this.http.get(API_URL + '/userType', {headers: headers});
+    return this.http.get(API_URL + '/userType', { headers: headers });
 
   }
 
-  public getUser(): Observable<any> {
-    const headers = this.getCurrentHeaders();
-    return this.http.get(API_URL + '/auth_user/validate_token', {headers: headers});
-
-
+  public getTypeOfUser() {
+    // tslint:disable-next-line:prefer-const
+    let headers = this.getCurrentHeaders();
+    return this.http.get(API_URL + '/userType', { headers: headers });
   }
 
+  public getUserInfo() {
+    // tslint:disable-next-line:prefer-const
+    let headers = this.getCurrentHeaders();
+    return this.http.get(API_URL + '/auth_user/validate_token', { headers: headers });
+  }
+
+  public getUserDataInfo(type_of_user, user_data_id) {
+    // tslint:disable-next-line:prefer-const
+    let headers = this.getCurrentHeaders();
+    switch (type_of_user) {
+      case 'Organization':
+        return this.http.get(API_URL + '/organizations/' + user_data_id, { headers: headers });
+      case 'Voluntary':
+        return this.http.get(API_URL + '/voluntaries/' + user_data_id, { headers: headers });
+    }
+  }
   public goHome(role: String): string {
     switch (role) {
       case 'Voluntary':

@@ -18,12 +18,10 @@ export class ForumFormComponent implements OnInit {
   public categories: any;
   public options: Object = {
     placeholderText: 'Agrega aquí tu contenido',
+    pluginsEnabled: ['table', 'lists']
   };
   public files: any;
   public url: any;
-
-
-
 
   constructor(
     private formBuilder: FormBuilder,

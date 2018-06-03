@@ -1,10 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+
 @import url("https://fonts.googleapis.com/css?family=Lobster");
-
-
-
-html,
-body {
+@import "~nouislider/distribute/nouislider.min.css";
+html, body {
   height: 100%;
 }
 
@@ -20,6 +18,7 @@ body {
   border: 1px solid #f4c500 !important;
   background-color: transparent;
 }
+
 .btn-primary-app {
   background-color: #ffbb33;
   color: white;
@@ -67,15 +66,13 @@ body {
 
 .full-height {
   min-height: 85vh !important;
-
 }
 
 .bg-white {
   background-color: white;
 }
 
-#sign-up,
-#login {
+#sign-up, #login {
   background-image: url(/assets/images/doe-gold-award.jpg);
   background-position: center center;
   background-repeat: no-repeat;
@@ -112,10 +109,14 @@ body {
 }
 
 .unselectable {
-  -webkit-user-select: none; /* Safari */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* IE10+/Edge */
-  user-select: none; /* Standard */
+  -webkit-user-select: none;
+  /* Safari */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* IE10+/Edge */
+  user-select: none;
+  /* Standard */
 }
 
 .text-muted {
@@ -150,7 +151,7 @@ body {
   background-color: transparent !important;
 }
 
-.bg-secondary-transparency{
+.bg-secondary-transparency {
   background-color: rgba(0, 0, 0, 0.4);
 }
 
@@ -182,7 +183,7 @@ body {
   margin: auto;
 }
 
-.text-ellipsis-5{
+.text-ellipsis-5 {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -193,7 +194,7 @@ body {
   max-height: 5rem;
 }
 
-.text-ellipsis-1{
+.text-ellipsis-1 {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -217,33 +218,36 @@ body {
   background-size: cover;
 }
 
-.event{
+.event {
   cursor: pointer;
   border-radius: 0.5rem;
 }
 
-.h-80{
+.h-80 {
   height: 80% !important;
 }
 
-.vh-100{
+.vh-100 {
   height: 100vh !important;
 }
 
-
-.vh-75{
+.vh-75 {
   height: 70vh !important;
 }
 
-.vh-90{
+.vh-90 {
   height: 90vh !important;
 }
 
-.overflow-scroll{
+.w-90 {
+  width: 90% !important;
+}
+
+.overflow-scroll {
   overflow: scroll !important;
 }
 
-#avatar-upload-btn input{
+#avatar-upload-btn input {
   opacity: 0;
   font-size: 200px !important;
   direction: ltr;
@@ -256,4 +260,62 @@ body {
 
 ::-webkit-scrollbar {
   display: none;
+}
+
+.shadow {
+  box-shadow: inset 1px 1px 20px 0px;
+}
+
+.shadow-outside {
+  box-shadow: 3px 3px 9px 0px;
+}
+
+.nav-link.active {
+  color: black !important;
+  background-color: #F4C500 !important;
+}
+
+.nav-link {
+  color: gray !important;
+}
+
+.vh-50 {
+  height: 50vh !important;
+}
+
+.pointer {
+  cursor: pointer !important;
+}
+
+.carousel-fill {
+  height: 25vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  -webkit-filter: sepia(100%);
+  filter: sepia(100%);
+}
+
+.pagination{
+  justify-content: center !important;
+}
+
+.page-item.active .page-link {
+  z-index: 1;
+  color: #000;
+  background-color: #ffc107;
+  border-color: white;
+  border-radius: 50%;
+  margin-left: 0.2rem;
+  margin-right: 0.2rem;
+  font-family: 'Lobster';
+}
+
+.page-item .page-link {
+  z-index: 1;
+  color: #000;
+  border-radius: 50%;
+  margin-left: 0.2rem;
+  margin-right: 0.2rem;
+  font-family: 'Lobster';
 }

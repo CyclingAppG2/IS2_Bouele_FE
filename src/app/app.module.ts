@@ -80,6 +80,7 @@ import { ForumFormComponent } from './forum/forum-form/forum-form.component';
 import { ForumsComponent } from './forum/forums/forums.component';
 import { ForumService } from './_services/forum.service';
 import { ForumDetailComponent } from './forum/forum-detail/forum-detail.component';
+import { NouisliderModule } from 'ng2-nouislider';
 
 
 // the second parameter 'fr' is optional
@@ -140,7 +141,8 @@ registerLocaleData(localeEs, 'es');
     BusyModule,
     BrowserAnimationsModule,
     FroalaEditorModule.forRoot(),
-    FroalaViewModule.forRoot()
+    FroalaViewModule.forRoot(),
+    NouisliderModule
 
   ],
   providers: [
