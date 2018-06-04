@@ -40,7 +40,6 @@ export class OrganizationGuard implements CanActivate {
   }
 
   private navigate(url: string): void {
-    console.log(url);
     if (url.startsWith('http')) {
       window.location.href = url;
     } else {

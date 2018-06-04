@@ -1,31 +1,5 @@
 <div class="full-height">
   <div class="row container-fluid">
-    <div class="col-4 border-rigth border-dark">
-
-      <div class="card vh-90 ">
-        <div class="card-header">
-          <h4 class="font-lobster text-center">Dashboard</h4>
-        </div>
-        <div class="card-body overflow-scroll vh-90">
-          <div *ngIf="chart1" class="border border-warning rounded p-2 my-2" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
-            <canvas id="canvas1">{{ chart1 }}</canvas>
-          </div>
-          <div *ngIf="chart2" class="border border-warning rounded p-2 my-2" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
-            <canvas id="canvas2">{{ chart2 }}</canvas>
-          </div>
-          <div *ngIf="chart3" class="border border-warning rounded p-2 my-2" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
-            <canvas id="canvas3">{{ chart3 }}</canvas>
-          </div>
-        </div>
-        <button type="button" class="btn btn-warning rounded-circle text-white position-absolute" (click)="downloadStatisticPDF()"
-          style="bottom: 2rem; right: 1rem; box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
-          <i class="fas fa-download"></i>
-        </button>
-        <div class="card-footer text-muted">
-          Footer
-        </div>
-      </div>
-    </div>
     <div class="col-4">
       <div class="card  vh-90">
         <div class="card-header">
@@ -33,7 +7,7 @@
         </div>
         <div class="card-body card-body overflow-scroll vh-90">
           <ul class="list-group" *ngFor="let event of my_events">
-            <li class="list-group-item my-1 alert alert-warning border-right-0 border-left-0" routerLink="/event-detail/{{event.id}}"
+            <li class="list-group-item my-1 alert alert-dark border-right-0 border-left-0" routerLink="/event-detail/{{event.id}}"
               style="cursor: pointer;">{{event.name}}
               <button type="button" class="btn btn-outline-warning ml-auto float-right">
                 <i class="fas fa-eye"></i>
@@ -49,28 +23,79 @@
         </div>
       </div>
     </div>
-    <div class="col-4">
-      <div class="card vh-90">
-        <div class="card-header">
-          <h4 class="font-lobster text-center">Voluntarios en mis eventoss</h4>
-        </div>
-        <div class="card-body vh-90 overflow-scroll">
-          <div class="search-results" infinite-scroll  (scrolled)="onScrollDown() ">
-            <ul class="list-group" *ngFor="let event of my_events">
-              <li class="list-group-item my-1 alert alert-warning border-right-0 border-left-0" routerLink="/event-detail/{{event.id}}"
-                style="cursor: pointer;">{{event.name}}
-                <button type="button" class="btn btn-outline-warning ml-auto float-right">
-                  <i class="fas fa-eye"></i>
+
+    <div class="col-8 border-rigth border-dark">
+      <div class="accordion" id="accordionExample">
+        <div class="card">
+          <div class="card-header bg-info" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            <h5 class="mb-0">
+              <b class="float-left mt-2 text-white">
+                <i class="fas fa-bullhorn"></i> Dashboard
+              </b>
+              <button class="btn btn-info float-right" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <i class="fas fa-minus-circle float-right"></i>
+              </button>
+            </h5>
+          </div>
+          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body">
+              <div class="card">
+                <div class="card-header">
+                  <h4 class="font-lobster text-center">Dashboard</h4>
+                </div>
+                <div class="card-body overflow-scroll vh-50">
+                  <div class="row container-fluid">
+                    <div class="col-6">
+                      <div *ngIf="chart1" class="border border-warning rounded p-2 my-2" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                        <canvas id="canvas1">{{ chart1 }}</canvas>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div *ngIf="chart2" class="border border-warning rounded p-2 my-2" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                        <canvas id="canvas2">{{ chart2 }}</canvas>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div *ngIf="chart3" class="border border-warning rounded p-2 my-2" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                        <canvas id="canvas3">{{ chart3 }}</canvas>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+                </div>
+                <button type="button" class="btn btn-warning rounded-circle text-white position-absolute" (click)="downloadStatisticPDF()"
+                  style="bottom: 2rem; right: 1rem; box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                  <i class="fas fa-download"></i>
                 </button>
-              </li>
-            </ul>
+                <div class="card-footer text-muted">
+                  Footer
+                </div>
+              </div>
+
+            </div>
           </div>
         </div>
-        <div class="card-footer text-muted">
-          Footer
+        <div class="card">
+          <div class="card-header bg-warning" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+            aria-controls="collapseOne">
+            <h5 class="mb-0">
+              <b class="float-left mt-2">
+                <i class="far fa-file-alt"></i> Foros
+              </b>
+              <button class="btn btn-warning float-right" routerLink="/new-forum">
+                <i class="fas fa-plus-circle float-right"> Crear un foro </i>
+              </button>
+            </h5>
+          </div>
+          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+            <div class="card-body vh-90 overflow-scroll">
+              <app-forums></app-forums>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
 </div>

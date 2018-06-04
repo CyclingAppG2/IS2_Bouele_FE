@@ -34,7 +34,6 @@ export class ForumsComponent implements OnInit {
     this.forumService.getForumsByCreation(page)
       .subscribe(
         resp => {
-          console.log(resp);
           this.forums = resp;
         }
       );

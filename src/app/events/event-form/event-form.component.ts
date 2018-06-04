@@ -104,11 +104,9 @@ export class EventFormComponent implements OnInit {
 
 
   toEmptyUrls(array: Array<string>) {
-    console.log(array);
     array.forEach(element => {
       array.splice(element.indexOf(element));
     });
-    console.log(array);
   }
 
   mapClicked($event: MouseEvent) {
@@ -220,7 +218,6 @@ export class EventFormComponent implements OnInit {
 
   formatDate(fecha: any): number {
     const date = new Date(fecha.month +  '/' + fecha.day + '/' + fecha.year + ' ' + this.selectedTime).getTime();
-    console.log(date);
     return date;
   }
 
@@ -248,98 +245,6 @@ export class EventFormComponent implements OnInit {
     );
 
   }
-
-
-
-
-
-  /* public myForm: FormGroup;
-  model = new Event();
-  minDate = { year: 2018, month: 1, day: 1 };
-  maxDate = { year: 2029, month: 12, day: 31 };
-  markers = [];
-  zoom = 15;
-  lng: any;
-  lat: any;
-  urls = new Array<string>();
-  metrics: string;
-
-  locationForm: FormGroup;
-
-  constructor(private eventService: EventService, private router: Router,  private formBuilder: FormBuilder) {
-    if (navigator) {
-    navigator.geolocation.getCurrentPosition( pos => {
-        this.lng = +pos.coords.longitude;
-        this.lat = +pos.coords.latitude;
-      });
-    }
-  }
-
-  ngOnInit() {
-
-  }
-
-
-
-
-
-  onSubmit() {
-    this.model.location = this.markers;
-    let duration = 0;
-    switch (this.metrics) {
-      case 'M':
-        duration = this.model.duration;
-        break;
-      case 'H':
-        duration = this.model.duration * 60;
-        break;
-      case 'D':
-        duration = this.model.duration * 1440;
-        break;
-      default:
-        break;
-    }
-    this.model.duration = duration;
-      this.eventService.newEvent(this.model).subscribe(
-      resp => {
-        console.log(resp);
-      },
-      err => {
-        console.log(err);
-      }
-    );
-
-  }
-
-
-  mapClicked($event: MouseEvent) {
-      this.markers.push({
-        lat: $event.coords.lat,
-        lng: $event.coords.lng,
-        draggable: true
-      });
-  }
-
-
-
-  showerPreviewImages(event) {
-    const files = event.target.files;
-    if (files) {
-      for (const file of files) {
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          this.urls.push(e.target.result);
-        };
-        reader.readAsDataURL(file);
-      }
-    }
-  }
-
-  toEmptyUrls(array: Array<string>) {
-    array.forEach(element => {
-      array.splice(element.indexOf(element));
-    });
-  } */
 }
 
 

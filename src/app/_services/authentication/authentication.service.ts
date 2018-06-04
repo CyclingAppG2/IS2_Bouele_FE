@@ -47,6 +47,7 @@ class AccessData {
     this.role = role;
     this.email = email;
     this.data_id = data_id;
+    this.image = API_URL + image;
   }
 
   public getAccessToken(): string {
@@ -98,7 +99,6 @@ class AccessData {
   }
 
   public getImage(): string {
-    console.log(this.image);
     return this.image;
   }
 
@@ -113,7 +113,6 @@ const API_URL = environment.apiUrl;
 export class AuthenticationService implements AuthService {
 
   private currentUser = new AccessData();
-  id;
 
   constructor(
     private http: HttpClient,
@@ -148,19 +147,9 @@ export class AuthenticationService implements AuthService {
    * can execute pending requests or retry original one
    * @returns {Observable<any>}
    */
-  public refreshToken(): Observable<AccessData> {
-    return this.tokenStorage
-      .getRefreshToken()
-      .switchMap((refreshToken: string) => {
-        return this.http.post(API_URL + '/auth_user/validate_token', {
-          refreshToken
-        });
-      })
-      .do(this.saveAccessData.bind(this))
-      .catch(err => {
-        this.logout();
-        return Observable.throw(err);
-      });
+
+  public refreshToken(): Observable<any> {
+    return new Observable<boolean>();
   }
 
   /**
@@ -216,9 +205,8 @@ export class AuthenticationService implements AuthService {
                 );
                 this.saveAccessData();
                 this.router.navigateByUrl(this.goHome(JSON.parse(JSON.stringify(data)).data.user_data_type));
+                location.reload();
               }, err => {
-                console.log(err);
-                console.log(resp);
                 this.currentUser = new AccessData(
                   resp.headers.get('access-token'),
                   resp.headers.get('client'),

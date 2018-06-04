@@ -24,7 +24,7 @@ export class ContactComponent implements OnInit {
     this.contactService.getContactTypes()
       .subscribe(
         data => this.contact_types = data,
-        err => console.log(err.status, err.message)
+        err => console.error(err.status, err.message)
       );
 
   }
@@ -40,7 +40,7 @@ export class ContactComponent implements OnInit {
         timer: 1500
       });
     },
-      err => console.log(err)
+      err => console.error(err)
     );
   }
 

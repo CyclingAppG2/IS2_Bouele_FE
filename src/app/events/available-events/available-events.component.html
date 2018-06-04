@@ -1,0 +1,28 @@
+<app-filter (filteredEvents)="receiveEvents($event)"></app-filter>
+<h2 *ngIf="available_events && available_events.length > 1" class="font-lobster my-3 text-warning">Estos son los eventos existentes disponibles</h2>
+<div *ngIf="available_events && available_events.length < 1" class="alert alert-danger">
+  <i class="fas fa-info-circle"></i> No se han encontrado eventos disponibles
+</div>
+<app-loading [loading]="loading"></app-loading>
+<ul class="list-group mt-3 table-hover"> 
+  <li class="list-group-item bg-light mb-2 border-top-0 border-right-0 border-left-0 border-bottom border-warning pointer" *ngFor="let event of available_events" routerLink="/event-detail/{{event.id}}">
+    <div class="row mx-0 d-flex align-items-center">
+      <div class="col-2">
+        <div class="float-left rounded-circle" [style.background-image]="getBackground(getImages( event.files[0].url)[0])" style="height: 3rem; width: 3rem; background-position: center center; background-size: contain">
+        </div>
+      </div>
+      <div class="col-8 text-left">
+        <h6>
+          <b class="text-ellipsis-1" style="max-width: 18vw;">{{event.name}}</b>
+          <small class="text-ellipsis-1">{{event.organization.firm}}</small>
+          <small>El: {{event.start_datetime | date:'dd MMMM yyyy \'a las\' HH:mm' }}</small>
+        </h6>
+      </div>
+      <div class="col-2 text-right">
+        <div class="btn btn-warning rounded-circle py-2 pointer" (click)="applyToEvent(available_events, event.id)" title="Quiero estar aquí">
+            <i class="fas fa-check-circle text-white"></i>
+        </div>
+      </div>
+    </div>
+  </li>
+</ul>

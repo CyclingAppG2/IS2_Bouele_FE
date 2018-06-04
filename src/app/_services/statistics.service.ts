@@ -25,7 +25,6 @@ export class StatisticsService {
       { headers: this.headers, responseType: 'blob' })
       .subscribe(
         (response) => {
-          console.log(response);
           const mediaType = 'application/pdf';
           const blob = new Blob([response], { type: mediaType });
           const filename = 'tu_evento_' + id;
@@ -35,9 +34,8 @@ export class StatisticsService {
           anchor.target = '_blank';
           anchor.click();
           // saveAs(blob, filename);
-          console.log(url);
         }, err => {
-          console.log(err);
+          console.error(err);
         }
       );
 

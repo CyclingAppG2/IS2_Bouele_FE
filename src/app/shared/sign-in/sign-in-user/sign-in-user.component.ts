@@ -10,6 +10,7 @@ import { UserService } from '../../../_services';
   templateUrl: './sign-in-user.component.html',
   styleUrls: ['./sign-in-user.component.css']
 })
+
 export class SignInUserComponent {
 
   socialAuthService: any;
@@ -21,25 +22,36 @@ export class SignInUserComponent {
     private router: Router,
     private authService: AuthenticationService,
     private userService: UserService
-  ) {}
+  ) { }
 
 
   public login() {
     this.authService
       .loginUser(this.model.email, this.model.password)
-        .subscribe(
-          () => {
-            console.log('Has iniciado sesión');
+      .subscribe(
+        resp => {
+          swal({
+            title: '¡Bienvenido!',
+            text: localStorage.getItem('name'),
+            type: 'success',
+            showConfirmButton: false,
+            timer: 1500
+          });
+        },
+        (err: HttpErrorResponse) => {
+          if (JSON.parse(JSON.stringify(err)).errors !== undefined || JSON.parse(JSON.stringify(err)).errors !== null) {
+            console.error('An error occurred:', JSON.parse(JSON.stringify(err)).errors);
+            this.error = JSON.parse(JSON.stringify(err)).errors;
+          } else {
+            console.error(`Backend returned code ${err.status}, body was: ${err.error}`);
             swal({
-              title: '¡Bienvenido!',
-              text: localStorage.getItem('name'),
-              type: 'success',
-              showConfirmButton: false,
-              timer: 1500
+              type: 'error',
+              title: 'Sin conexión',
+              text: 'No hemos podido establecer conexión con el servidor, intenta más tarde'
             });
-          },
-          err =>  this.error = err.error.errors
-        );
+          }
+
+        });
   }
 
   onSubmit() {

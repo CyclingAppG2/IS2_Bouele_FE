@@ -94,7 +94,6 @@ export class TokenStorage {
   }
 
   public setImage(image: any): TokenStorage {
-    console.log(image);
     localStorage.setItem('avatar', image);
     return this;
   }

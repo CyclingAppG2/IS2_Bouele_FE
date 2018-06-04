@@ -16,7 +16,6 @@ export class CategoryService {
 
   public getCategories(): Observable<any> {
     const headers = this.authService.getCurrentHeaders();
-    console.log(headers);
     return this.http.get(API_URL + '/organization_categories', {headers: headers});
   }
 }

@@ -1,4 +1,4 @@
-<div class="full-height">
+<!-- <div class="full-height">
   <div class="row container-fluid my-3">
     <div class="col-lg-4 col-3">
     </div>
@@ -103,33 +103,7 @@
             <div>
               <span class="badge badge-secondary px-2" *ngFor="let plus of event.plus">{{plus.name}}</span>
             </div>
-            <ng-template #ratingOrganization let-c="close" let-d="dismiss" id="content1">
-              <div class="modal-header text-center">
-                <h4 class="modal-title d-block mx-auto font-lobster">Califica a {{event.organization.firm}}</h4>
-              </div>
-              <div class="modal-body">
-                <form [formGroup]="ratingUserForm">
-                  <p class="text-center">
-                    <ng-template #t let-fill="fill">
-                <span class="star" [class.full]="fill === 100" style="font-size: 5vw;">
-                  <span class="half" [style.width.%]="fill">
-                    <i class="fas fa-star"></i>
-                  </span>
-                  <i class="fas fa-star"></i>
-                </span>
-                    </ng-template>
-                    <ngb-rating  max="5" [starTemplate]="t"
-                                 [readonly]="false" formControlName="score"></ngb-rating>
-                  </p>
-                  <b>Comenta algo acerca sobre {{event.organization.firm}}:</b>
-                  <textarea rows="4" cols="50" maxlength="180" required style="resize: none;" placeholder="Agrega un comentario" formControlName="commentary"></textarea>
-                </form>
-              </div>
-              <div class="modal-footer text-center">
-                <button type="submit" class="btn btn-outline-success" (click)="rateOrganization(event.organization.id)">Calificar</button>
-                <button type="button" class="btn btn-outline-secondary" (click)="JoinAndClose()">Ahora no</button>
-              </div>
-            </ng-template>
+            
 
             <div class="alert alert-success float-right" role="alert" (click)="open(ratingOrganization)">
               <strong>Organiza: </strong>{{event.organization.firm}}
@@ -183,33 +157,7 @@
                 </div>
 
               </div>
-              <ng-template #ratingVoluntary let-c="close" let-d="dismiss" id="content">
-                <div class="modal-header text-center">
-                  <h4 class="modal-title d-block mx-auto font-lobster">Califica a {{user.user.name }}</h4>
-                </div>
-                <div class="modal-body">
-                  <form [formGroup]="ratingUserForm">
-                    <p class="text-center">
-                      <ng-template #t let-fill="fill">
-                <span class="star" [class.full]="fill === 100" style="font-size: 5vw;">
-                  <span class="half" [style.width.%]="fill">
-                    <i class="fas fa-star"></i>
-                  </span>
-                  <i class="fas fa-star"></i>
-                </span>
-                      </ng-template>
-                      <ngb-rating  max="5" [starTemplate]="t"
-                                  [readonly]="false" formControlName="score"></ngb-rating>
-                    </p>
-                    <b>Comenta algo acerca sobre {{user.user.name}}:</b>
-                    <textarea rows="4" cols="50" maxlength="180" required style="resize: none;" placeholder="Agrega un comentario" formControlName="commentary"></textarea>
-                  </form>
-                </div>
-                <div class="modal-footer text-center">
-                  <button type="submit" class="btn btn-outline-success" (click)="rateUser(user.voluntary.id)">Calificar</button>
-                  <button type="button" class="btn btn-outline-secondary" (click)="JoinAndClose()">Ahora no</button>
-                </div>
-              </ng-template>
+              
 
             </div>
 
@@ -227,6 +175,276 @@
     </div>
   </div>
 </div>
+ -->
 
+<div class="full-height">
+  <div class="row container-fluid mt-3">
+    <div class="col-lg-4 vh-90 overflow-scroll border-right">
+      <h2 class="font-lobster text-center">{{event.name}}</h2>
+      <hr>
+      <p class="text-center-justified">{{event.description}}</p>
+      <h3 class="font-lobster text-center">Ubicaciones</h3>
 
+      <div class="m-1">
+        <agm-map [latitude]="lat" [longitude]="lng" [zoom]="0" [disableDefaultUI]="false" [zoomControl]="false" (mapClick)="mapClicked($event)"
+          disabled="!editing">
+          <agm-marker *ngFor="let m of markers; let i = index" [latitude]="m.lat" [longitude]="m.lng" [label]="i">
+            <agm-info-window>
+              <strong>Referencia: </strong> {{event.locations[i].label}}
+              <br>
+              <strong>Encargado: </strong> {{event.locations[i].person_name}}
+              <br>
+              <strong>Correo: </strong> {{event.locations[i].email}}
+              <br>
+            </agm-info-window>
+          </agm-marker>
+        </agm-map>
+      </div>
+      <h3 class="font-lobster text-center">Galeria</h3>
 
+      <ul class="list-inline text-center my-2">
+        <li class="list-inline-item border-0" *ngFor="let image of getImages(event.files[0].url)">
+          <div class="rounded border border-warning shadow-outside" style="width: 10vw; height: 10vw; background-size: cover; background-repeat: no-repeat"
+            [style.background-image]="getBackground(image)"></div>
+        </li>
+      </ul>
+      <h3 class="font-lobster text-center">Fecha y duración</h3>
+
+      <div class="text-center m-1 ">
+        <ngb-datepicker #dp [(ngModel)]="model" [startDate]="model"></ngb-datepicker>
+      </div>
+      <div class="text-middle d-flex align-items-center text-center justify-content-center">
+        <i class="far fa-clock fa-2x"> </i>
+        <strong class="ml-2 text-middle"> {{event.start_datetime | date:'HH:mm'}} y dura {{event.duration}} Minutos</strong>
+      </div>
+      <h3 class="font-lobster text-center">Cuenta con:</h3>
+      <div class="text-center my-2" *ngFor="let plus of event.plus">
+        <span class="badge badge-pill badge-info">{{plus.name}}</span>
+      </div>
+      <small *ngIf="eventHappened" class="alert alert-info text-center my-2 d-block" role="alert">
+        <i class="fas fa-info-circle"></i> Este evento ha finalizado
+      </small>
+
+      <small *ngIf="(role === 'Voluntary') && imInEvent" class="alert alert-success text-center my-2 text-center d-block" role="alert">
+        <i class="fas fa-check-circle"></i> Ya estás en este evento
+        <br>
+      </small>
+      <div *ngIf="eventHappened && imInEvent && !wasPresent" class="alert alert-danger">
+        <i class="fas fa-frown fa-5x"></i>
+        El evento ya pasó y no asististe
+        <small *ngIf="!eventHappened">¡Quizá más tarde!</small>
+      </div>
+      <div *ngIf="(role === 'Voluntary') && imInEvent && !eventHappened" class="text-center">
+        <button class="btn btn-outline-danger ">
+          <i class="fas fa-minus-circle" routerLink="/new-forum"></i> ¿Deseas salir?
+        </button>
+      </div>
+      <div *ngIf="(role === 'Voluntary') && !imInEvent && !eventHappened && (event.event_voluntaries.length < event.max_voluntaries)"
+        class="text-center m-2 ">
+        <button class="btn btn-outline-warning ">
+          <i class="fas fa-smile" routerLink="/new-forum"></i> Quiero estar aquí
+        </button>
+      </div>
+      <div *ngIf="(role === 'Organization') && event.organization.id === my_id && !eventHappened" class="text-center my-2">
+        <button class="btn btn-outline-danger">
+          <strong>
+            <i class="fas fa-check-circle" routerLink="/new-forum"></i> Eliminar evento</strong>
+        </button>
+      </div>
+      <div *ngIf="role === 'Voluntary' && imInEvent && eventHappened && wasPresent" class="my-2 text-center">
+        <button type="button" class="btn btn-outline-success" (click)="downloadCertificate()">
+          <i class="fas fa-download">Certificado de participación</i>
+        </button>
+      </div>
+
+      <div *ngIf="role === 'Voluntary' && imInEvent && eventHappened" class=" my-2 text-center">
+        <button type="button" class="btn btn-outline-primary" (click)="open(ratingOrganization)">
+          <i class="fas fa-star">Calificar</i>
+        </button>
+      </div>
+      <small class="text-info text-center d-block mx-auto">
+        <i class="text-ellipsis-1">
+          <b>Organiza: </b> {{event.organization.firm}}</i>
+        <ngb-rating max="5" [(rate)]="event.organization.organization_score" [readonly]="true"></ngb-rating>
+      </small>
+    </div>
+    <div *ngIf="role === 'Organization'" class="col-lg-4 vh-90 overflow-scroll border-right">
+      <button *ngIf="role == 'Organization'" class="btn btn-secondary position-absolute mx-1 mb-1" (click)="getVoluntariesInEventPDF(event.id)"
+        style=" z-index: 1000;  top: 4rem; right: 1rem; box-shadow: 3px 5px 8px 0px #000;">
+        <i class="fas fa-download"></i>
+      </button>
+      <h3 *ngIf="event.event_voluntaries.length >= 1" class="font-lobster text-center text-dark">¡Estos voluntarios se han unido!</h3>
+      <hr>
+      <div *ngIf="!imInEvent && !eventHappened && (event.event_voluntaries.length < event.max_voluntaries)" class="text-center">
+        <small class="alert alert-info d-block text-center my-2" role="alert">
+          <i class="far fa-smile"></i> Aún hay espacio en este evento
+        </small>
+      </div>
+      <div *ngIf=" (event.event_voluntaries.length === event.max_voluntaries)" class="text-center">
+        <small class="alert alert-dark d-block text-center my-2" role="alert">
+          <i class="fas fa-meh"></i> Este evento se llenó
+        </small>
+      </div>
+      <div *ngIf="event.event_voluntaries.length < 1" class="alert alert-danger">
+        <i class="fas fa-frown fa-5x"></i>
+        No se unieron voluntarios
+        <small *ngIf="!eventHappened">¡Quizá más tarde!</small>
+      </div>
+
+      <table *ngIf="role === 'Organization'" class="table table-hover">
+        <tbody>
+          <tr *ngFor="let voluntary of voluntaries_in_event.users">
+            <th scope="row">
+              <div class="row mx-0 d-flex align-items-center ">
+                <div class="col-2">
+                  <div class="float-left rounded-circle" [style.background-image]="getBackground('http://localhost:3000' + voluntary.user.image.url)"
+                    style="height: 3rem; width: 3rem; background-position: center center; background-size: contain">
+                  </div>
+                </div>
+                <div class="col-7 text-center">
+                  <small>
+                    <h6 class="mb-0">{{voluntary.user.name}}</h6>
+                    <ngb-rating max="5" [(rate)]="voluntary.voluntary.voluntary_score" [readonly]="true"></ngb-rating>
+                    <br> {{voluntary.user.email}}
+                    <br> {{voluntary.voluntary.cellphone}}
+                  </small>
+                </div>
+                <div class="col-2">
+                  <div class="text-center">
+                    <button *ngIf="eventHappened" class="btn btn-outline-success" (click)="open(ratingOrganization)">
+                      Calificalo
+                    </button>
+                  </div>
+                  <div class="text-center">
+                    <button *ngIf="!eventHappened" class="btn btn-outline-danger">
+                      Eliminalo
+                    </button>
+                    <small *ngIf="!eventHappened" class="d-block ml-auto text-secondary">*Disponible pronto</small>
+                  </div>
+                </div>
+                <ng-template #ratingVoluntary let-c="close" let-d="dismiss" id="content">
+                  <div class="modal-header text-center">
+                    <h4 class="modal-title d-block mx-auto font-lobster">Califica a {{voluntary.user.name }}</h4>
+                  </div>
+                  <div class="modal-body">
+                    <form [formGroup]="ratingUserForm">
+                      <p class="text-center">
+                        <ng-template #t let-fill="fill">
+                          <span class="star" [class.full]="fill === 100" style="font-size: 5vw;">
+                            <span class="half" [style.width.%]="fill">
+                              <i class="fas fa-star"></i>
+                            </span>
+                            <i class="fas fa-star"></i>
+                          </span>
+                        </ng-template>
+                        <ngb-rating max="5" [starTemplate]="t" [readonly]="false" formControlName="score"></ngb-rating>
+                      </p>
+                      <b>Comenta algo acerca sobre {{voluntary.user.name}}:</b>
+                      <textarea rows="4" cols="50" maxlength="180" required style="resize: none;" placeholder="Agrega un comentario" formControlName="commentary"></textarea>
+                    </form>
+                  </div>
+                  <div class="modal-footer text-center">
+                    <button type="submit" class="btn btn-outline-success" (click)="rateUser(voluntary.voluntary.id)">Calificar</button>
+                    <button type="button" class="btn btn-outline-secondary" (click)="JoinAndClose()">Ahora no</button>
+                  </div>
+                </ng-template>
+              </div>
+            </th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-lg-4 vh-90 overflow-scroll border-right">
+      <h3 class="font-lobster text-center text-dark">¡Foros asociados!</h3>
+      <hr>
+      <small *ngIf="event.forum_threads.length < 1" class="alert alert-warning my-2 d-block text-center" role="alert">
+        <i class="fas fa-minus-circle"></i> No se han hecho foros respecto a este evento
+      </small>
+      <table class="table table-hover">
+        <tbody>
+          <tr *ngFor="let forum of event.forum_threads" class="pointer my-2" routerLink="/forum-detail/{{forum.id}}">
+            <th scope="row">
+              <div class="row mx-0 d-flex align-items-center ">
+                <div class="col-2">
+                  <div class="float-left rounded-circle" [style.background-image]="getBackground('http://localhost:3000' + forum.img_prev.url)"
+                    style="height: 3rem; width: 3rem; background-position: center center; background-size: contain">
+                  </div>
+                </div>
+                <div class="col-7 text-center">
+                  <small>
+                    <h6 class="mb-0">{{forum.title}}</h6>
+                    <b>Ultima Actualización </b>
+                    <br> {{forum.updated_at}}
+                  </small>
+                </div>
+                <div class="col-2">
+                  <div class="text-center">
+                    <h1 class="font-lobster">{{forum.points}}</h1>
+                    Puntos
+                  </div>
+                </div>
+              </div>
+            </th>
+          </tr>
+        </tbody>
+      </table>
+      <div class="text-center">
+        <button class="btn btn-outline-dark">
+          <i class="fas fa-plus-circle" routerLink="/new-forum"></i> Crea un foro</button>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <h5 class="font-lobster text-center">Esto se ha comentado</h5>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Organización a voluntarion</th>
+            <th>Voluntarios a organización</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let voluntary of event.event_voluntaries" [title]="voluntary.voluntary_id" >
+            <td scope="row" class="text-center" *ngIf="voluntary.commentsvoluntary" >
+              {{voluntary.commentsvoluntary}}
+              <br>
+              <ngb-rating max="5" [(rate)]="voluntary.scorevoluntary" [readonly]="true"></ngb-rating>
+            </td>
+            <td scope="row" class="text-center" *ngIf="voluntary.commentsorganization">
+                {{voluntary.commentsvoluntary}}
+                <br>
+                <ngb-rating max="5" [(rate)]="voluntary.scoreorganization" [readonly]="true"></ngb-rating>
+              </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<ng-template #ratingOrganization let-c="close" let-d="dismiss" id="content1">
+  <div class="modal-header text-center">
+    <h4 class="modal-title d-block mx-auto font-lobster">Califica a {{event.organization.firm}}</h4>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="ratingUserForm">
+      <p class="text-center">
+        <ng-template #t let-fill="fill">
+          <span class="star" [class.full]="fill === 100" style="font-size: 5vw;">
+            <span class="half" [style.width.%]="fill">
+              <i class="fas fa-star"></i>
+            </span>
+            <i class="fas fa-star"></i>
+          </span>
+        </ng-template>
+        <ngb-rating max="5" [starTemplate]="t" [readonly]="false" formControlName="score"></ngb-rating>
+      </p>
+      <b>Comenta algo acerca sobre {{event.organization.firm}}:</b>
+      <textarea rows="4" cols="50" maxlength="180" required style="resize: none;" placeholder="Agrega un comentario" formControlName="commentary"></textarea>
+    </form>
+  </div>
+  <div class="modal-footer text-center">
+    <button type="submit" class="btn btn-outline-success" (click)="rateOrganization(event.organization.id)">Calificar</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="JoinAndClose()">Ahora no</button>
+  </div>
+</ng-template>

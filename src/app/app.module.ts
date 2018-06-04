@@ -81,6 +81,11 @@ import { ForumsComponent } from './forum/forums/forums.component';
 import { ForumService } from './_services/forum.service';
 import { ForumDetailComponent } from './forum/forum-detail/forum-detail.component';
 import { NouisliderModule } from 'ng2-nouislider';
+import { MyEventsComponent } from './events/my-events/my-events.component';
+import { LoadingComponent } from './shared/loading/loading.component';
+import { AvailableEventsComponent } from './events/available-events/available-events.component';
+import { ResponsesComponent } from './forum/responses/responses.component';
+import { ResponseComponent } from './forum/response/response.component';
 
 
 // the second parameter 'fr' is optional
@@ -117,7 +122,12 @@ registerLocaleData(localeEs, 'es');
     ForumComponent,
     ForumFormComponent,
     ForumsComponent,
-    ForumDetailComponent
+    ForumDetailComponent,
+    MyEventsComponent,
+    LoadingComponent,
+    AvailableEventsComponent,
+    ResponsesComponent,
+    ResponseComponent
   ],
   imports: [
     NgbModule.forRoot(),

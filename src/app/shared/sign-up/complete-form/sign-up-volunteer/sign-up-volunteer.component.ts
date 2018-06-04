@@ -53,7 +53,7 @@ export class SignUpVolunteerComponent implements OnInit {
         genders => {
           this.genders = genders;
         }, err => {
-          console.log(err);
+          console.error(err);
         }
       );
   }
@@ -64,7 +64,7 @@ export class SignUpVolunteerComponent implements OnInit {
         cities => {
           this.cities = Array.from(cities);
         }, err => {
-          console.log(err);
+          console.error(err);
         }
       );
   }
@@ -75,7 +75,7 @@ export class SignUpVolunteerComponent implements OnInit {
         interests => {
           this.interests = interests;
         }, err => {
-          console.log(err);
+          console.error(err);
         }
       );
   }
@@ -115,7 +115,6 @@ export class SignUpVolunteerComponent implements OnInit {
     if (event.target.files && event.target.files[0]) {
       const reader = new FileReader();
       this.selectedFile = <File>event.target.files[0];
-      console.log(this.selectedFile);
       // tslint:disable-next-line:no-shadowed-variable
       reader.onload = (event: any) => {
         this.localUrl = event.target.result;
@@ -157,7 +156,6 @@ export class SignUpVolunteerComponent implements OnInit {
   }
 
   public onSubmit() {
-    console.log(this.formattedRequest());
     this.fileUploadService.avatarUserUploader(this.selectedFile)
       .subscribe(
         data => {
@@ -191,7 +189,6 @@ export class SignUpVolunteerComponent implements OnInit {
             title: 'Opsss...',
             text: 'Algo ha salido mal ' + err.message
           });
-          console.log(err);
         }
       );
   }

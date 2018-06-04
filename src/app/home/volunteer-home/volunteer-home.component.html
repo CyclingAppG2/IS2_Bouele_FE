@@ -38,8 +38,8 @@
               <b class="float-left mt-2">
                 <i class="far fa-file-alt"></i> Foros
               </b>
-              <button class="btn btn-warning float-right" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseOne">
-                <i class="fas fa-minus-circle float-right"></i>
+              <button class="btn btn-warning float-right" routerLink="/new-forum">
+                <i class="fas fa-plus-circle float-right"> Crear un foro </i>
               </button>
             </h5>
           </div>
@@ -53,37 +53,7 @@
     </div>
     <div class="col-lg-4 border-left text-center search-results" id="events" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
       (scrolled)="onScroll()" [scrollWindow]="false">
-      <app-filter (filteredEvents)="receiveEvents($event)"></app-filter>
-      <h2 class="font-lobster my-3 text-warning">Estos son los eventos existentes disponibles</h2>
-      <div *ngIf="events && events.length < 1" class="alert alert-danger">
-        <i class="fas fa-info-circle"></i> No se han encontrado eventos disponibles
-      </div>
-      <div class="border border-warning rounded my-2" *ngFor="let event of events">
-        <div class="card text-center">
-          <div class="card-header " routerLink="/event-detail/{{event.id}}">
-
-            <h4 class="font-lobster text-ellipsis-1">{{event.name}}</h4>
-          </div>
-          <div class="card-block" routerLink="/event-detail/{{event.id}}">
-            <p class="align-middle text-ellipsis-5 vh-100 d-flex align-items-center justify-content-center text-grey">
-              With supporting text below as a natural lead-in to additional content.</p>
-            <small class="alert alert-info text-ellipsis-1 w-75 d-block mx-auto pb-3">
-              <strong>Organiza:</strong>
-              {{event.organization.firm}}
-              <br>
-              <strong class="mt-1">Fecha:</strong> {{event.start_datetime | date: 'short'}}
-              <br>
-            </small>
-
-          </div>
-          <div class="card-footer ">
-            <button type="button" class="btn btn-primary-app" (click)="applyToEvent(events, event.id)">
-              <i class="fas fa-check"></i> Suscribirme
-            </button>
-          </div>
-        </div>
-      </div>
-      <ngb-pagination [collectionSize]="max_pages*10" [(page)]="current_page" (click)="getPage()"></ngb-pagination>
+      <app-available-events></app-available-events>
     </div>
   </div>
 </div>

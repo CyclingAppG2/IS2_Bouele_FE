@@ -20,4 +20,7 @@ export class MunicipalityService {
     return this.http.get(API_URL + '/minicipalities');
   }
 
+  public getMunicipalityById(municipality_id) {
+    return this.http.get(API_URL + '/minicipalities/' + municipality_id);
+  }
 }

@@ -1,47 +1,65 @@
 <div class="full-height bg-light">
-    <div class="row container-fluid">
-        <div class="col-4 vh-90 overflow-scroll">
-            <ul class="list-group">
-                <li class="list-group-item list-group-item-secondary my-1" *ngFor="let response of responses">
-                    <div class="float-left rounded-circle" [title]="response.user.name" [style.background-image]="getBackground(response.user.image.url)"
-                        style="height: 4rem; width: 4rem; background-position: center center; background-size: contain">
-                    </div>
-                    <div class="ml-5 pl-5">
-                        <h6>
-                            <b class="text-ellipsis-1" style="max-width: 18vw;">{{response.user.name}}</b>
-                        </h6>
-                        <div [innerHTML]="transform(response.text)"></div>
-                        <br>
-                        <ul class="list-inline text-right">
-                            <li class="list-inline-item" [title]="response.likes" (click)=" like(response.id)">
-                                <i class="far fa-hand-peace fa-2x"></i> Me gusta
-                            </li>
-                            <li class="list-inline-item" [title]="response.dislikes" (click)="dislike(response.id)">
-                                <i class="far fa-hand-rock fa-2x"></i> No me gusta
-                            </li>
+    <div class="row container-fluid my-2 ">
+        <div class="col-7 border-right border-secondary">
+            <div class="text-right">
+                <button type="button" name="" id="" class="btn btn-outline-info text-right" routerLink="/event-detail/{{forum.event_id}}">
+                    <i class="fas fa-chevron-circle-right"></i> Ir al evento
+                </button>
+            </div>
+            <h2 class="card-title text-center font-lobster"> {{forum.title}} </h2>
+            <hr>
+            <h4 class="text-center text-dark font-lobster">
+                <i class="fas fa-plus"></i>
+                <b>{{forum.points}} Puntos</b>
+            </h4>
+            <small class="text-secondary text-center d-block mx-auto">
+                <b>Creado el</b> {{forum.created_at}}
+                <br>
+                <b>Por</b> {{forum.user.name}}
+            </small>
+            <hr>
+            <div class="rounded border border-secondary mx-4 my-3" [style.background-image]="getBackground(forum.img_prev.url)" style="background-size: cover; background-repeat: no-repeat; background-position: center center; height: 20vh;">
 
-                        </ul>
-                        <small>Actualizado por ultima vez: {{response.updated_at | date:'dd MMMM yyyy \'a las\' HH:mm' }}</small>
+            </div>
+            <div class="px-5 text-center-justified" [innerHTML]="transform(forum.body)"></div>
+
+
+        </div>
+        <div class="col-5">
+            <h4 class="font-lobster text-center">Comentarios</h4>
+            <ul class="list-group vh-40 overflow-scroll border border-light px-2 rounded">
+                <li class="list-group-item list-group-item-secondary my-1" *ngFor="let response of responses">
+                    <div class="row mx-0 d-flex align-items-center">
+                        <div class="col-2">
+                            <div class="float-left rounded-circle" [title]="response.user.name" [style.background-image]="getBackground(response.user.image.url)"
+                                style="height: 4rem; width: 4rem; background-position: center center; background-size: contain">
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <h6>
+                                <b class="text-ellipsis-1" style="max-width: 18vw;">{{response.user.name}}</b>
+                            </h6>
+                            <div class="text-left" [innerHTML]="transform(response.text)"></div>
+                            <hr class="info">
+                            <small class="text-right d-block ml-auto">Actualizado por ultima vez: {{response.updated_at | date:'dd MMMM yyyy \'a las\' HH:mm' }}</small>
+                        </div>
+                        <div class="col-2">
+                            <ul class="list-group text-center">
+                                <li class="list-group-item list-group-item-primary border-0" style="background: transparent !important" [title]="response.likes"
+                                    (click)=" like(response.id)">
+                                    <i class="far fa-hand-peace fa-2x"></i>
+                                </li>
+                                <li class="list-group-item list-group-item-danger border-0" style="background: transparent !important" [title]="response.dislikes"
+                                    (click)="dislike(response.id)">
+                                    <i class="far fa-hand-rock fa-2x"></i>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </li>
             </ul>
-        </div>
-        <div class="col-4">
-            <div class="card shadow-outside">
-                <div class="card-header">
-                    <h4 class="card-title text-center font-lobster"> {{forum.title}} </h4>
-                </div>
-                <div class="card-body vh-75 overflow-scroll">
-                    <div [innerHTML]="transform(forum.body)"></div>
-                </div>
-                <div class="card-footer">
-                    <h4 class="text-center text-info font-lobster">{{forum.points}} Puntos</h4>
-                </div>
-            </div>
 
-        </div>
-        <div class="col-4">
-            <form [formGroup]="interactionForm" class="my-3">
+            <form [formGroup]="interactionForm" class="my-3 vh-40 overflow-scroll border border-light p-2 rounded">
                 <h4 class="font-lobster text-center">Califica este foro</h4>
                 <div class="input-group mb-3 w-100 mx-auto" *ngIf="points_day > 0">
                     <nouislider [connect]="true" [min]="0" [max]="points_day" [step]="1" [formControl]="interactionForm.controls.slider" class="form-control mt-0  pt-3"></nouislider>
@@ -88,5 +106,6 @@
                 </div>
             </form>
         </div>
+
     </div>
 </div>

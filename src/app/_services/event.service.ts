@@ -9,6 +9,7 @@ import { Event } from '../_models/event.model';
 import { AuthenticationService } from './authentication';
 import { environment } from '../../environments/environment';
 import { saveAs } from 'file-saver/FileSaver';
+import swal from 'sweetalert2';
 
 
 const API_URL = environment.apiUrl;
@@ -38,15 +39,12 @@ export class EventService {
   }
 
   newEvent(event): Observable<any> {
-    console.log(this.headers);
-
     return this.http.post(
       API_URL + '/events',
       event,
       { headers: this.headers }
     ).do(
       resp => {
-        console.log(resp);
       }
     );
   }
@@ -75,13 +73,11 @@ export class EventService {
   }
 
   downloadPDF(id: number): any {
-    console.log('hola');
     const file = '';
     this.http.get(API_URL + '/voluntaries_in_event/' + id + '.pdf',
       { headers: this.headers, responseType: 'blob' })
       .subscribe(
         (response) => {
-          console.log(response);
           const mediaType = 'application/pdf';
           const blob = new Blob([response], { type: mediaType });
           const filename = 'tu_evento_' + id;
@@ -91,9 +87,8 @@ export class EventService {
           anchor.target = '_blank';
           anchor.click();
           // saveAs(blob, filename);
-          console.log(url);
         }, err => {
-          console.log(err);
+          console.error(err);
         }
       );
 
@@ -148,5 +143,34 @@ export class EventService {
     return this.http.get(API_URL + '/events', {headers: this.headers});
   }
 
+  public getCertificationAssistence(id) {
+    const file = '';
+    this.http.get(API_URL + '/events/certificate/' + id + '.pdf',
+      { headers: this.headers, responseType: 'blob' })
+      .subscribe(
+        (response) => {
+          console.log(response);
+          const mediaType = 'application/pdf';
+          const blob = new Blob([response], { type: mediaType });
+          const filename = 'tu_evento_' + id;
+          const url = window.URL.createObjectURL(blob, { oneTimeOnly: true });
+          const anchor = document.createElement('a');
+          anchor.href = url;
+          anchor.target = '_blank';
+          anchor.click();
+          // saveAs(blob, filename);
+        }, err => {
+          console.log(err);
+          swal({
+            title: 'Error',
+            text: 'No pertenece al evento o no asistio',
+            type: 'error'
+          });
+        }
+      );
+
+    return file;
+
+  }
 
 }

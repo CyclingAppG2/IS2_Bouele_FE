@@ -43,7 +43,6 @@ export class SignUpOrganizationComponent implements OnInit {
       .subscribe(
         resp => {
           this.categories = resp;
-          console.log(this.categories);
         }
       );
   }
@@ -83,7 +82,7 @@ export class SignUpOrganizationComponent implements OnInit {
             title: 'Opsss...',
             text: 'Algo ha salido mal ' + err.message
           });
-          console.log(err);
+          console.error(err);
         }
       );
   }

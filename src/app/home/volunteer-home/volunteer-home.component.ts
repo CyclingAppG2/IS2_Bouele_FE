@@ -17,6 +17,7 @@ export class VolunteerHomeComponent implements OnInit {
   max_pages = 1;
   current_page;
   htmlContent;
+  public loading = true;
 
   constructor(
     private eventService: EventService,
@@ -28,12 +29,12 @@ export class VolunteerHomeComponent implements OnInit {
       .subscribe(
         events => {
           this.events = events;
+          this.loading = false;
         }
       );
   }
 
   onScroll() {
-    console.log('scrolled!!');
   }
 
   ngOnInit() {
@@ -56,10 +57,8 @@ export class VolunteerHomeComponent implements OnInit {
             title: 'Genial, MANOS A LA OBRA',
             text: '¡Ahora haces parte de este evento!'
           }).then((result) => {
-            console.log(result);
             if (result.value) {
               const index: number = eventArray.indexOf(eventID) + 1;
-              console.log(index);
               if (index !== -1) {
                 eventArray.splice(index, 1);
               }
@@ -70,7 +69,11 @@ export class VolunteerHomeComponent implements OnInit {
   }
 
   public receiveEvents($event) {
-    this.events = $event;
+    this.events = $event.subscribe(
+      resp => {
+        this.loading = false;
+      }
+    );
   }
 
   public getPage() {

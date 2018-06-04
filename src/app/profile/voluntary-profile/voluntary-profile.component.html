@@ -45,55 +45,7 @@
 
     </div>
     <div class="col-6 overflow-scroll vh-90">
-      <h1 class="text-center font-lobster">Mis eventos ({{my_events.length}})</h1>
-      <div *ngIf="loading" class="continer-fluid text-center text-secondary">
-        <i class="fas fa-spinner fa-pulse fa-5x"></i>
-        <br>
-        <h4 class="font-lobster">Cargando...</h4>
-      </div>
-      <div class="card my-2" *ngFor="let my_event of my_events">
-        <a class="fas fa-times-circle position-absolute p-2 text-white
-          " style="top: 0; right: 0; z-index: 1000;" id="unapply" title="Ya no quiero estar aquí" (click)="leaveEvent(my_events, my_event)">
-        </a>
-        <div class="card-img-top">
-          <ngb-carousel *ngIf="getImages( my_event.files[0].url )">
-            <ng-template ngbSlide *ngFor="let image of getImages( my_event.files[0].url )">
-              <div class="carousel-fill" [style.background-image]="getBackground(image)"></div>
-              <div class="carousel-caption rounded shadow-outside" style="background-color: rgba(248, 249, 250, 0.3); filter:alpha(opacity=20);">
-                <h3 class="font-lobster text-center text-dark"> {{my_event.name}}</h3>
-                <ng-template #t let-fill="fill">
-                  <span class="star" [class.full]="fill === 100">
-                    <span class="half" [style.width.%]="fill">
-                      <i class="fas fa-star"></i>
-                    </span>
-                    <i class="fas fa-star"></i>
-                  </span>
-                </ng-template>
-                <ngb-rating [(rate)]="my_event.organization.organization_score" max="5" [starTemplate]="t" [readonly]="true"></ngb-rating>
-                <small class="text-ellipsis-1 text-dark text-center d-block mx-auto" style="width: 15vw">
-                  <strong class="text-info">Organiza: </strong>{{my_event.organization.firm}} </small>
-                <small class="text-ellipsis-1 text-dark">
-                  <strong class="text-info">Fecha: </strong>
-                  <strong>{{my_event.start_datetime | date: 'd MMMM y' }}</strong>
-                </small>
-              </div>
-            </ng-template>
-          </ngb-carousel>
-        </div>
-        <div class="card-block p-2 bg-dark" routerLink="/event-detail/{{my_event.id}}">
-          <div class="row container fluid">
-            <div class="col-3"></div>
-            <div class="col-6">
-              <h6 class="text-center text-white text-ellipsis-1 font-lobster bg-dark">Descripción</h6>
-              <small class="text-muted text-ellipsis-5 text-center">{{my_event.description}}</small>
-            </div>
-            <div class="col-3"></div>
-          </div>
-        </div>
-      </div>
-      <div class="col-12 justify-content-center">
-        <ngb-pagination [collectionSize]="max_pages*10" [(page)]="current_page" (pageChange)="getPage()"></ngb-pagination>
-      </div>
+        <app-my-events></app-my-events>
     </div>
 
   </div>

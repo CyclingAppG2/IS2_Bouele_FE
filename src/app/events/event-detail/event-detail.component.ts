@@ -1,17 +1,19 @@
-import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Location} from '@angular/common';
-import {EventService} from '../../_services';
-import {FormBuilder, FormGroup, Validators, FormArray} from '@angular/forms';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { EventService, GenderService, MunicipalityService } from '../../_services';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import swal from 'sweetalert2/dist/sweetalert2.all';
-import {UNITS} from '../../_lists';
-import {MouseEvent} from '@agm/core';
-import {Chart} from 'chart.js';
-import {DomSanitizer} from '@angular/platform-browser';
-import {NgbModal, ModalDismissReasons, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import { UNITS } from '../../_lists';
+import { MouseEvent } from '@agm/core';
+import { Chart } from 'chart.js';
+import { DomSanitizer } from '@angular/platform-browser';
+import { NgbModal, ModalDismissReasons, NgbModalRef, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from '../../../environments/environment';
 
 
-const now = new Date();
+
+
 
 
 @Component({
@@ -22,7 +24,7 @@ const now = new Date();
 export class EventDetailComponent implements OnInit {
 
   pdfResult: any;
-  pdfSrc = '/pdf-test.pdf';
+  pdfSrc = 'http://www.orimi.com/pdf-test.pdf';
   event_id = +this.route.snapshot.paramMap.get('id');
   event: any;
   eventDetailForm: FormGroup;
@@ -33,12 +35,20 @@ export class EventDetailComponent implements OnInit {
   lng: number;
   editing = false;
   unidades;
-  minDate = {year: 2018, month: 1, day: 1};
-  maxDate = {year: 2029, month: 12, day: 31};
+  minDate = { year: 2018, month: 1, day: 1 };
+  maxDate = { year: 2029, month: 12, day: 31 };
   eventDate;
   markers: Marker[] = [];
   closeResult: string;
   modalReference: NgbModalRef;
+  public imInEvent = false;
+  public eventHappened = false;
+  model: NgbDateStruct;
+  private API_URL = environment.apiUrl;
+  public default_image: '/assets/images/default-cap.svg';
+  public role = localStorage.getItem('role');
+  public my_id = +localStorage.getItem('user-data-id');
+  public wasPresent = false;
 
 
   constructor(
@@ -49,13 +59,25 @@ export class EventDetailComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private modalService: NgbModal,
     private router: Router,
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
+    private _sanitizer: DomSanitizer,
+    private genderService: GenderService,
+    private municipalityService: MunicipalityService
   ) {
     this.eventService.getEventById(this.event_id)
       .subscribe(
         resp => {
           this.event = resp;
-          console.log(this.event);
+          for (const iterator of resp.event_voluntaries) {
+            if (iterator.voluntary_id === +localStorage.getItem('user-data-id')) {
+              this.imInEvent = true;
+              console.log(iterator.scorevoluntary);
+              iterator.scorevoluntary !== null ? this.wasPresent = true : this.wasPresent = false;
+            }
+          }
+          this.eventHappened = resp.start_datetime < new Date().getTime();
+          this.selectDate(resp.start_datetime);
+
           this.eventDetailForm = this.formBuilder.group({
             name: [''],
             description: [''],
@@ -68,9 +90,7 @@ export class EventDetailComponent implements OnInit {
             locations_describe: this.formBuilder.array([]),
             plusses: this.formBuilder.array([])
           });
-          console.log(resp.locations);
           resp.locations.forEach(location => {
-            console.log(location);
             this.markers.push({
               lat: location.latitude,
               lng: location.longitude,
@@ -79,7 +99,7 @@ export class EventDetailComponent implements OnInit {
           });
           this.eventDate = new Date(resp.start_datetime);
         }, err => {
-          console.log(err);
+          console.error(err);
           swal({
             title: 'Opss...',
             text: 'Algo ha ocurrido, quiza el evento no exista' + err,
@@ -91,7 +111,7 @@ export class EventDetailComponent implements OnInit {
     this.eventService.getVoluntariesInEvent(this.event_id, 'json')
       .subscribe(
         voluntaries => {
-          this.voluntaries_in_event = voluntaries;
+          this.voluntaries_in_event = voluntaries.body;
         }
       );
 
@@ -112,14 +132,11 @@ export class EventDetailComponent implements OnInit {
       .subscribe(
         resp => {
           this.event = resp;
-          console.log(resp);
-          console.log(this.event);
           return resp;
         }, err => {
-          console.log(err);
+          console.error(err);
         }
       );
-    console.log(this.event);
   }
 
 
@@ -128,7 +145,6 @@ export class EventDetailComponent implements OnInit {
       .subscribe(
         voluntaries => {
           this.voluntaries_in_event = voluntaries;
-          console.log(voluntaries);
           this.pdfResult = this.domSanitizer.bypassSecurityTrustResourceUrl(
             URL.createObjectURL(voluntaries)
           );
@@ -140,7 +156,7 @@ export class EventDetailComponent implements OnInit {
     this.ratingUserForm = this.formBuilder.group({
       score: ['', Validators.required],
       commentary: ['', Validators.required]
-    })
+    });
   }
 
   get locationsDescribes(): FormArray {
@@ -152,7 +168,6 @@ export class EventDetailComponent implements OnInit {
   }
 
   public applyToEvent() {
-    console.log(this.event.id);
     this.eventService.applyToEvent(this.event.id)
       .subscribe(
         data => {
@@ -221,6 +236,7 @@ export class EventDetailComponent implements OnInit {
 
         }).then(
           act => {
+            // tslint:disable-next-line:prefer-const
             let elem: Element = document.getElementById('content');
             this.open(elem);
           }
@@ -273,7 +289,7 @@ export class EventDetailComponent implements OnInit {
       .subscribe(
         resp => {
           swal({
-            title: "Gracias",
+            title: 'Gracias',
             text: 'Por calificar a nuestros voluntarios',
             type: 'success'
           });
@@ -283,8 +299,56 @@ export class EventDetailComponent implements OnInit {
       );
   }
 
-  public rateOrganization(){
+  public rateOrganization() {
 
+  }
+
+
+  selectDate(date) {
+    // tslint:disable-next-line:prefer-const
+    const now = new Date(date);
+    this.model = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
+    console.log(this.model);
+  }
+
+  public getImages(uri) {
+    const images = [];
+    const url_base = decodeURIComponent(uri).split('[')[0];
+    const image = decodeURIComponent(uri).split('[')[1].split(',');
+    image.forEach(element => {
+      images.push(
+        this.API_URL + url_base + element.split('"')[1]
+      );
+    });
+    return images;
+  }
+
+  public getBackground(image) {
+    return image ? this._sanitizer
+      .bypassSecurityTrustStyle(`url(${image})`) : this._sanitizer
+        .bypassSecurityTrustStyle(`url(` + this.default_image + `)`);
+  }
+
+  public getGender(gender_id) {
+     this.genderService.getGenderById(gender_id)
+      .subscribe(
+        resp => {
+          console.log(resp);
+        }
+      );
+  }
+
+  public getMunicipality(municipality_id) {
+    /*     this.municipalityService.getMunicipalityById(municipality_id)
+          .subscribe(
+            resp => {
+              return resp;
+            }
+          ); */
+  }
+
+  public downloadCertificate() {
+      this.pdfResult = this.eventService.getCertificationAssistence(this.event_id);
   }
 
 }

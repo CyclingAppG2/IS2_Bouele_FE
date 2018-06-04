@@ -79,11 +79,9 @@ export class ForumFormComponent implements OnInit {
   }
 
   public toEmptyUrls(array: Array<string>) {
-    console.log(array);
     array.forEach(element => {
       array.splice(element.indexOf(element));
     });
-    console.log(array);
   }
 
   public getEventsCategory() {
@@ -123,7 +121,6 @@ export class ForumFormComponent implements OnInit {
             .subscribe(
               data => {
                 alert('creado');
-                console.log(data);
               }
             );
         }

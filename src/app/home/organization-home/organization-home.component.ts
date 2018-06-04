@@ -153,7 +153,6 @@ export class OrganizationHomeComponent implements OnInit {
   }
 
   public onScrollDown() {
-    console.log('scrolled!!');
     this.loading = true;
     this.current_page = this.current_page + 1;
     this.eventService.getPage(this.current_page)

@@ -27,38 +27,11 @@ export class NavbarComponent implements OnInit {
     private dataService: UserService,
     private authService: AuthenticationService
   ) {
-    if (localStorage.getItem('access-token') !== null && localStorage.getItem('access-token') !== undefined) {
-      this.authService.validateToken()
-        .subscribe(
-          resp => {
-            this.isLogged = true;
-            this.image_url = JSON.parse(JSON.stringify(resp)).data.image.url;
-            this.name = JSON.parse(JSON.stringify(resp)).data.name;
-          }, err => {
-            this.isLogged = false;
-            this.authService.logout().subscribe(() => console.log('Has cerrado sesión'));
-          }
-        );
-    } else {
-      this.isLogged = false;
-    }
+    this.name = localStorage.getItem('name');
   }
 
   ngOnInit() {
     this.utcTime();
-  }
-
-
-  getImage() {
-    if (localStorage.getItem('access-token') !== null || localStorage.getItem('access-token') !== undefined) {
-      this.authService.validateToken()
-        .subscribe(
-          resp => {
-            this.image_url = JSON.parse(JSON.stringify(resp)).data.image.url;
-          }
-        );
-    }
-
   }
 
   onLogout() {
@@ -79,7 +52,6 @@ export class NavbarComponent implements OnInit {
 
   goHome() {
     const role = localStorage.getItem('role');
-    console.log(role);
     switch (role) {
       case 'Voluntary':
         this.router.navigateByUrl('voluntary-home');
@@ -98,7 +70,6 @@ export class NavbarComponent implements OnInit {
 
   goProfile() {
     const role = localStorage.getItem('role');
-    console.log(role);
     switch (role) {
       case 'Voluntary':
         this.router.navigateByUrl('voluntary-profile');
@@ -116,26 +87,13 @@ export class NavbarComponent implements OnInit {
   }
 
   public getAvatar() {
-    return this.image_url ? (this.API_URL + this.image_url) : '/assets/images/user-default.svg';
+    return localStorage.getItem('avatar') ? (localStorage.getItem('avatar')) : '/assets/images/user-default.svg';
   }
 
   utcTime(): void {
     setInterval(() => {
-      if (localStorage.getItem('access-token') !== null && localStorage.getItem('access-token') !== undefined) {
-        this.authService.validateToken()
-          .subscribe(
-            resp => {
-              this.isLogged = true;
-              this.image_url = JSON.parse(JSON.stringify(resp)).data.image.url;
-              this.name = JSON.parse(JSON.stringify(resp)).data.name;
-            }, err => {
-              this.isLogged = false;
-              this.authService.logout().subscribe(() => console.log('Has cerrado sesión'));
-            }
-          );
-      } else {
-        this.isLogged = false;
-      }
-    }, 30000);
+      localStorage.getItem('access-token') ? this.isLogged = true : this.isLogged = false;
+    }, 1000);
   }
+
 }
